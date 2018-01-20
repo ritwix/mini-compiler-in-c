@@ -2144,8 +2144,8 @@ void display_hash()
 
 
 
-int main(){
-	yyin = fopen("tc1.c","r");
+int main(int argc, char * argv){
+	yyin = fopen(argv,"r");
 	printf("Stream of tokens:\n\n");
 	yylex();
 	printf("\n\n\t\tSYMBOL TABLE\n");
