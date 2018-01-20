@@ -6,3 +6,4 @@ cc lex.yy.c
 ./a.out < tc1.c
 ```
 The report for the first phase of this project has been uploaded to this repository. The file is 'Project 1-Report.pdf'.
+Check the wiki page for more information. The same can be found in 'Documentaion.docx'.
