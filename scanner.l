@@ -7,22 +7,22 @@ void insert_hash(char *,char *,int);
 void display_hash();
 struct DataItem 
 {
-  	char* text;   
-  	char* type;
-  	int lineno;
-  	struct DataItem * next;
-  	int attr;
+  	char* text;     		/* The token*/
+  	char* type;			/* Type of the token*/
+  	int lineno;			/* Line number in the input file*/
+  	struct DataItem * next;		/*Pointer to next data item*/
+  	int attr;			/*Attribute value of a token */
 };
 
 struct DataItem* hashArray[SIZE]; 
 struct DataItem* item;
-int v=0;
+int v=0; 				/* variable maintained to assign unique attribute value*/
 %}
 alpha [a-zA-Z_]
 digit [0-9]
 
 %%
-[ \t]		;					//Removes spaces and tabs
+[ \t]		;					/*Removes spaces and tabs */
 [ \n]   { yylineno = yylineno + 1;}
 int 	{ECHO; insert_hash("int","Datatype",yylineno);}
 char 	{ECHO; insert_hash("char","Datatype",yylineno);}
@@ -80,7 +80,7 @@ return	{ECHO; insert_hash(yytext,"Keyword",yylineno);}
 %%
 
 
-int hashCode(char* key) 
+int hashCode(char* key) 			/* Returns unique index for a token */
 {
    unsigned int i,hash=7;
    for(i=0;i<strlen(key);++i)
