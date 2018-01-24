@@ -108,8 +108,21 @@ void insert_hash(char* text,char* type,int lineno)
 	   new->lineno= lineno;
 	   new-> text = (char *)malloc(len*sizeof(char));
 	   strcpy(new->text,text);
-	   new->attr = temp;
-    	
+     struct DataItem * node = head;
+	   if(!strcmp(head->text,text))
+        new->attr = temp;
+     else{
+        while(node!=NULL && strcmp(text,node->text)!=0){
+
+          node=node->next;
+        }
+
+        if(node==NULL)
+          new->attr=v++;
+        else{
+          new->attr=node->attr;
+        }
+     }
 	   while(head->next!=NULL){
 	   	head=head->next;
 
