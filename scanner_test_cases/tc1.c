@@ -5,9 +5,7 @@ int square (int x);
 	hi
 	goodbye*/
 void main(){
-	//int variables
 	int n,l;
-	
 	scanf ("%d", &n );
 	//function call
 	l=square(n);
