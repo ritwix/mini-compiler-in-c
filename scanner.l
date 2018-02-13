@@ -2,21 +2,7 @@
 %{
 	#include <stdio.h>
 	#include <string.h>
-#define SIZE 1000
-void insert_hash(char *,char *,int);
-void display_hash();
-struct DataItem 
-{
-  	char* text;     		/* The token*/
-  	char* type;			/* Type of the token*/
-  	int lineno;			/* Line number in the input file*/
-  	struct DataItem * next;		/*Pointer to next data item*/
-  	int attr;			/*Attribute value of a token */
-};
 
-struct DataItem* hashArray[SIZE]; 
-struct DataItem* item;
-int v=0; 				/* variable maintained to assign unique attribute value*/
 %}
 alpha [a-zA-Z_]
 digit [0-9]
@@ -24,52 +10,58 @@ digit [0-9]
 %%
 [ \t]		;					/*Removes spaces and tabs */
 [ \n]   { yylineno = yylineno + 1;}
-int 	{ECHO; insert_hash("int","Datatype",yylineno);}
-char 	{ECHO; insert_hash("char","Datatype",yylineno);}
-void 	{ECHO; insert_hash("void","Datatype",yylineno);}
-while	{ECHO; insert_hash("while","Keyword",yylineno);}
-if		{ECHO; insert_hash("if","Keyword",yylineno);}
-else	{ECHO; insert_hash("else","Keyword",yylineno);}
-printf  {ECHO; insert_hash("printf","Function",yylineno);}
-scanf 	{ECHO; insert_hash(yytext,"Function",yylineno);}
+int 	{ insert_hash("int","Datatype",yylineno); yylval=atoi(yytext);return INT;}
+"unsigned int" 	{ insert_hash(yytext,"Datatype",yylineno); yylval=atoi(yytext);return UINT;}
+"short int"  	{ insert_hash(yytext,"Datatype",yylineno); yylval=atoi(yytext);return SINT;}
+"long int"		{ insert_hash(yytext,"Datatype",yylineno); yylval=atoi(yytext);return LINT;} 
+char 	{ insert_hash("char","Datatype",yylineno); return CHAR;}
+void 	{ insert_hash("void","Datatype",yylineno); return VOID;}
+while	{ insert_hash("while","Keyword",yylineno); return WHILE;}
+if		{ insert_hash("if","Keyword",yylineno); return IF;}
+else	{ insert_hash("else","Keyword",yylineno); return ELSE;}
+main 	{ insert_hash(yytext,"Keyword",yylineno); return MAIN;}
+printf  { insert_hash("printf","Function",yylineno); return PRINTF;}
+scanf 	{ insert_hash(yytext,"Function",yylineno); return SCANF;}
+break	{ insert_hash(yytext,"Function",yylineno); return BREAK;}
 ^"#include ".+ ;
-return	{ECHO; insert_hash(yytext,"Keyword",yylineno);}
-{digit}+   {ECHO; insert_hash(yytext,"Integer",yylineno);} 
-{alpha}({alpha}|{digit})* {ECHO; insert_hash(yytext,"Identifier",yylineno);}
+return	{ insert_hash(yytext,"Keyword",yylineno); return RETURN;}
+{digit}+   { insert_hash(yytext,"Integer",yylineno); return NUM;} 
+{alpha}({alpha}|{digit})* { insert_hash(yytext,"Identifier",yylineno); return ID;}
 
 
 
-"{"     {ECHO; insert_hash("{","Sp. Char",yylineno);}
-"}"		{ECHO; insert_hash(yytext,"Sp. Char",yylineno);}
-"["		{ECHO; insert_hash(yytext,"Sp. Char",yylineno);}
-"]"		{ECHO; insert_hash(yytext,"Sp. Char",yylineno);}
-";"		{ECHO; insert_hash(yytext,"Sp. Char",yylineno);}
-"("		{ECHO; insert_hash(yytext,"Sp. Char",yylineno);}
-")"		{ECHO; insert_hash(yytext,"Sp. Char",yylineno);}
-"&"		{ECHO; insert_hash(yytext,"Sp. Char",yylineno);}
-"|"		{ECHO; insert_hash(yytext,"Sp. Char",yylineno);}
-"!"		{ECHO; insert_hash(yytext,"Sp. Char",yylineno);}
-","		{ECHO; insert_hash(yytext,"Sp. Char",yylineno);}
-"."		{ECHO; insert_hash(yytext,"Sp. Char",yylineno);}
-"%c"	{ECHO; insert_hash(yytext,"Sp. Char",yylineno);}
-"%d"	{ECHO; insert_hash(yytext,"Sp. Char",yylineno);}
-"'"		{ECHO; insert_hash(yytext,"Sp. Char",yylineno);}
+"{"     { insert_hash("{","Sp. Char",yylineno); return LBRACE;}
+"}"		{ insert_hash(yytext,"Sp. Char",yylineno); return RBRACE;}
+
+";"		{ insert_hash(yytext,"Sp. Char",yylineno); return SEMICOLON;}
+"("		{ insert_hash(yytext,"Sp. Char",yylineno); return LPAREN;}
+")"		{ insert_hash(yytext,"Sp. Char",yylineno); return RPAREN;}
+"&&"	{ insert_hash(yytext,"Operator",yylineno); return DAND;}
+"||"	{ insert_hash(yytext,"Operator",yylineno); return DOR;}
+"&"		{ insert_hash(yytext,"Sp. Char",yylineno); return AND;}
+"|"		{ insert_hash(yytext,"Sp. Char",yylineno); return OR;}
+"!"		{ insert_hash(yytext,"Sp. Char",yylineno); return NOT;}
+","		{ insert_hash(yytext,"Sp. Char",yylineno); return COMMA;}
+"."		{ insert_hash(yytext,"Sp. Char",yylineno); return DOT;}
+
+"'"		{ insert_hash(yytext,"Sp. Char",yylineno); return SQ;}
 
 	/*Operators*/
-"+"		{ECHO; insert_hash(yytext,"Operator",yylineno);}
-"-"		{ECHO; insert_hash(yytext,"Operator",yylineno);}
-"*"		{ECHO; insert_hash(yytext,"Operator",yylineno);}
-"%"		{ECHO; insert_hash(yytext,"Operator",yylineno);}
-"="		{ECHO; insert_hash(yytext,"Operator",yylineno);}
-"=="	{ECHO; insert_hash(yytext,"Operator",yylineno);}
-">="	{ECHO; insert_hash(yytext,"Operator",yylineno);}
-"<="	{ECHO; insert_hash(yytext,"Operator",yylineno);}
-">"		{ECHO; insert_hash(yytext,"Operator",yylineno);}
-"<"		{ECHO; insert_hash(yytext,"Operator",yylineno);}
-"&&"	{ECHO; insert_hash(yytext,"Operator",yylineno);}
-"||"	{ECHO; insert_hash(yytext,"Operator",yylineno);}
-"\""	{ECHO; insert_hash(yytext,"Operator",yylineno);}
-\\		{ECHO; insert_hash(yytext,"Operator",yylineno);}
+"+"		{ insert_hash(yytext,"Operator",yylineno); return ADD;}
+"-"		{ insert_hash(yytext,"Operator",yylineno); return SUB;}
+"*"		{ insert_hash(yytext,"Operator",yylineno); return MUL;}
+"%"		{ insert_hash(yytext,"Operator",yylineno); return MOD;}
+"/"		{ insert_hash(yytext,"Operator",yylineno); return DIV;}
+"=="	{ insert_hash(yytext,"Operator",yylineno); return ISEQ;}
+"!="	{ insert_hash(yytext,"Operator",yylineno); return NEQ;}
+"="		{ insert_hash(yytext,"Operator",yylineno); return ASSIGN;}
+">="	{ insert_hash(yytext,"Operator",yylineno); return GEQ;}
+"<="	{ insert_hash(yytext,"Operator",yylineno); return LEQ;}
+">"		{ insert_hash(yytext,"Operator",yylineno); return GT;}
+"<"		{ insert_hash(yytext,"Operator",yylineno); return LT;}
+
+\"(\\.|[^\\"])*\"	{ insert_hash(yytext,"String Literal",yylineno); return STRINGLIT;}
+
 	/*Comments*/
 \/\/.*	;
 \/\*(.*\n)*.*\*\/	;
@@ -78,107 +70,6 @@ return	{ECHO; insert_hash(yytext,"Keyword",yylineno);}
 			}
 
 %%
-
-
-int hashCode(char* key) 			/* Returns unique index for a token */
-{
-   unsigned int i,hash=7;
-   for(i=0;i<strlen(key);++i)
-   {
-       hash=hash*31+key[i];
-   }
-   return hash % SIZE;
-}
-void insert_hash(char* text,char* type,int lineno) 
-{
-	int len,len2;
-  	len= strlen(text);
-   	len2= strlen(type);
-
-   int hashIndex = hashCode(text);
-   if(hashArray[hashIndex] != NULL) 
-   {	
-		
-		struct DataItem * head = hashArray[hashIndex];
-		int temp = head->attr;
-		struct DataItem * new;
-		new = (struct DataItem *)malloc(sizeof(struct DataItem)); 	  
-	   new-> type = (char *)malloc(len2*sizeof(char));
-	   strcpy(new->type,type);
-	   new->lineno= lineno;
-	   new-> text = (char *)malloc(len*sizeof(char));
-	   strcpy(new->text,text);
-     struct DataItem * node = head;
-	   if(!strcmp(head->text,text))
-        new->attr = temp;
-     else{
-        while(node!=NULL && strcmp(text,node->text)!=0){
-
-          node=node->next;
-        }
-
-        if(node==NULL)
-          new->attr=v++;
-        else{
-          new->attr=node->attr;
-        }
-     }
-	   while(head->next!=NULL){
-	   	head=head->next;
-
-	   }
-	   head->next =new;
-
-	   
-
-	      
-   }
-
-   else{
-   
-   hashArray[hashIndex] = (struct DataItem*)malloc(sizeof(struct DataItem));
-   hashArray[hashIndex]-> type = (char *)malloc(len2*sizeof(char));
-   strcpy(hashArray[hashIndex]->type,type);
-   hashArray[hashIndex]-> lineno= lineno;
-   hashArray[hashIndex]-> text = (char *)malloc(len*sizeof(char));
-   strcpy(hashArray[hashIndex]->text,text);
-   hashArray[hashIndex]->next = NULL;
-   hashArray[hashIndex]->attr = v++;
-}
-}
-void display_hash() 
-{
-   int i = 0;
-  printf("Lexeme\t\tType\t\tLineno\t\tAttribute value\n"); 
-   for(i = 0; i<SIZE; i++) 
-   {
-      if(hashArray[i] != NULL){
-        struct DataItem * head = hashArray[i];
-        printf("%s\t\t%s\t\t%d\t\t%d\n",head->text,head->type,head->lineno,head->attr);
-        while(head->next!=NULL){
-        	head=head->next;
-        	printf("%s\t\t%s\t\t%d\t\t%d\n",head->text,head->type,head->lineno,head->attr);
-        }
-        
-      }
-  
-  
-      
-   }
-  
-   printf("\n");
-}
-
-
-
-int main(int argc, char * argv){
-	yyin = fopen(argv,"r");
-	printf("Stream of tokens:\n\n");
-	yylex();
-	printf("\n\n\t\tSYMBOL TABLE\n");
-	display_hash();
-	return 0;
-}
 int yywrap(){
 	return 1;
 }

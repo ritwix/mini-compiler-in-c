@@ -6,8 +6,8 @@ int main(){
 	int a=n;
 	if(a!=n
 	{
-		a++;
-		a%=n;
+		a=a+1;
+		a=n;
 	}
 
 	/*Goodbye*/

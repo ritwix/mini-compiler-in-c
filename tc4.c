@@ -1,7 +1,7 @@
 //correct testcase
 #include <stdio.h>
 //function prototype
-int square (int x);
+int square (int);
 /*hello
 	hi
 	goodbye*/
