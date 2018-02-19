@@ -38,22 +38,22 @@
 %start program
 
 %%
-program:     declist main funcdef
-        ;
+program:     declist main funcdef           /* declist stands for global variable declaration and/or function declaration before main */
+        ;                                   /* funcdef stands for function definitions present after main() function */
 declist:    declist functiondecl
         |   declist declaration
         |   %empty
         ;
-functiondecl: INT ID LPAREN argdecls1  RPAREN SEMICOLON
+functiondecl: INT ID LPAREN argdecls1  RPAREN SEMICOLON             
             | VOID ID LPAREN argdecls1 RPAREN SEMICOLON
             | CHAR ID LPAREN argdecls1 RPAREN SEMICOLON
             ;
-argdecls1: argdecls1 COMMA dt
+argdecls1: argdecls1 COMMA dt          /* Arguments should be of form (int,int) instead of (int a, int b) in function declaration */
 |           dt
 |           %empty
 
 funcdef:    funcdef function
-|           %empty      
+|           %empty             
 ;
 
 main:   INT MAIN LPAREN argdecls RPAREN compstmt
@@ -76,14 +76,14 @@ declstmt:        INT decllist
 |                CHAR decllist
 ;
 
-decllist:        decllist COMMA ID declassign  
+decllist:        decllist COMMA ID declassign  /* handles int a,b,c; case by left recursion of decllist */
 |                ID declassign
 ;
 
 declassign:            ASSIGN expr
 |                %empty
 ;
-compstmt:        LBRACE stmtlist  RBRACE
+compstmt:        LBRACE stmtlist  RBRACE    
 |                %empty
 ;
 
@@ -147,7 +147,7 @@ argassign:        '=' NUM
 ;
 
 
-snumlist:        COMMA AND ID snumlist
+snumlist:        COMMA AND ID snumlist  
 |                COMMA AND ID
 ;
 
@@ -170,7 +170,7 @@ expr :           LPAREN expr RPAREN
 |                expr GT expr               
 |                ID ASSIGN expr
 |                ID ASSIGN funcall
-|                '-' expr             
+|                '-' expr               /* Negative numbers */
 |                ID
 |                NUM
 ;
