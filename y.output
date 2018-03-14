@@ -1,0 +1,2549 @@
+Terminals unused in grammar
+
+   SINT
+   LINT
+   UINT
+   BREAK
+   DOT
+   SQ
+   OR
+   DAND
+   DOR
+
+
+State 33 conflicts: 11 shift/reduce
+State 34 conflicts: 11 shift/reduce
+State 55 conflicts: 2 shift/reduce
+State 69 conflicts: 2 shift/reduce
+State 70 conflicts: 2 shift/reduce
+State 71 conflicts: 2 shift/reduce
+State 72 conflicts: 2 shift/reduce
+State 73 conflicts: 11 shift/reduce
+State 74 conflicts: 2 shift/reduce
+State 75 conflicts: 2 shift/reduce
+State 76 conflicts: 2 shift/reduce
+State 77 conflicts: 2 shift/reduce
+State 78 conflicts: 2 shift/reduce
+State 79 conflicts: 11 shift/reduce
+State 122 conflicts: 16 shift/reduce
+State 162 conflicts: 15 shift/reduce
+State 163 conflicts: 15 shift/reduce
+State 170 conflicts: 1 shift/reduce
+State 177 conflicts: 15 shift/reduce
+
+
+Grammar
+
+    0 $accept: program $end
+
+    1 program: declist main funcdef
+
+    2 declist: declist functiondecl
+    3        | declist declaration
+    4        | %empty
+
+    5 functiondecl: INT ID LPAREN argdecls1 RPAREN SEMICOLON
+    6             | VOID ID LPAREN argdecls1 RPAREN SEMICOLON
+    7             | CHAR ID LPAREN argdecls1 RPAREN SEMICOLON
+
+    8 argdecls1: argdecls1 COMMA dt
+    9          | dt
+   10          | %empty
+
+   11 funcdef: funcdef function
+   12        | %empty
+
+   13 main: INT MAIN LPAREN argdecls RPAREN compstmt
+   14     | VOID MAIN LPAREN argdecls RPAREN compstmt
+
+   15 function: INT ID LPAREN argdecls RPAREN compstmt
+   16         | VOID ID LPAREN argdecls RPAREN compstmt
+   17         | CHAR ID LPAREN argdecls RPAREN compstmt
+
+   18 declaration: declstmt SEMICOLON
+   19            | expr SEMICOLON
+   20            | funcall SEMICOLON
+   21            | error SEMICOLON
+   22            | error RBRACE
+   23            | error RPAREN
+
+   24 declstmt: INT decllist
+   25         | CHAR decllist
+
+   26 decllist: decllist COMMA ID declassign
+   27         | ID declassign
+
+   28 declassign: ASSIGN expr
+   29           | %empty
+
+   30 compstmt: LBRACE stmtlist RBRACE
+   31         | %empty
+
+   32 stmtlist: stmtlist stmt
+   33         | %empty
+
+   34 stmt: matched_stmt
+   35     | unmatched_stmt
+
+   36 matched_stmt: IF LPAREN expr RPAREN matched_stmt ELSE matched_stmt
+   37             | compstmt
+   38             | whilestmt
+   39             | returnstmt
+   40             | declaration
+   41             | print
+   42             | scan
+   43             | SEMICOLON
+
+   44 unmatched_stmt: IF LPAREN expr RPAREN stmt
+   45               | IF LPAREN expr RPAREN matched_stmt ELSE unmatched_stmt
+
+   46 whilestmt: WHILE '(' expr ')' stmt
+
+   47 returnstmt: RETURN SEMICOLON
+   48           | RETURN expr SEMICOLON
+
+   49 funcall: ID LPAREN mult RPAREN
+
+   50 mult: const COMMA mult
+   51     | const
+   52     | %empty
+
+   53 const: NUM
+   54      | ID
+
+   55 print: PRINTF LPAREN STRINGLIT RPAREN SEMICOLON
+   56      | PRINTF LPAREN STRINGLIT numlist RPAREN SEMICOLON
+
+   57 scan: SCANF LPAREN STRINGLIT snumlist RPAREN SEMICOLON
+
+   58 argdecls: argdecls COMMA dt ID argassign
+   59         | dt ID argassign
+   60         | %empty
+
+   61 dt: INT
+   62   | CHAR
+
+   63 argassign: '=' NUM
+   64          | %empty
+
+   65 snumlist: COMMA AND ID snumlist
+   66         | COMMA AND ID
+
+   67 numlist: COMMA ID numlist
+   68        | COMMA ID
+
+   69 expr: LPAREN expr RPAREN
+   70     | expr ADD expr
+   71     | expr SUB expr
+   72     | expr MUL expr
+   73     | expr DIV expr
+   74     | expr MOD expr
+   75     | NOT expr
+   76     | expr ISEQ expr
+   77     | expr NEQ expr
+   78     | expr GEQ expr
+   79     | expr LEQ expr
+   80     | expr LT expr
+   81     | expr GT expr
+   82     | ID ASSIGN expr
+   83     | ID ASSIGN funcall
+   84     | '-' expr
+   85     | ID
+   86     | NUM
+
+
+Terminals, with rules where they appear
+
+$end (0) 0
+'(' (40) 46
+')' (41) 46
+'-' (45) 84
+'=' (61) 63
+error (256) 21 22 23
+ID (258) 5 6 7 15 16 17 26 27 49 54 58 59 65 66 67 68 82 83 85
+NUM (259) 53 63 86
+STRINGLIT (260) 55 56 57
+INT (261) 5 13 15 24 61
+SINT (262)
+LINT (263)
+UINT (264)
+CHAR (265) 7 17 25 62
+VOID (266) 6 14 16
+IF (267) 36 44 45
+ELSE (268) 36 45
+WHILE (269) 46
+BREAK (270)
+SCANF (271) 57
+PRINTF (272) 55 56
+RETURN (273) 47 48
+MAIN (274) 13 14
+LBRACE (275) 30
+RBRACE (276) 22 30
+LPAREN (277) 5 6 7 13 14 15 16 17 36 44 45 49 55 56 57 69
+RPAREN (278) 5 6 7 13 14 15 16 17 23 36 44 45 49 55 56 57 69
+SEMICOLON (279) 5 6 7 18 19 20 21 43 47 48 55 56 57
+COMMA (280) 8 26 50 58 65 66 67 68
+DOT (281)
+SQ (282)
+AND (283) 65 66
+NOT (284) 75
+OR (285)
+ADD (286) 70
+SUB (287) 71
+MUL (288) 72
+DIV (289) 73
+MOD (290) 74
+ASSIGN (291) 28 82 83
+ISEQ (292) 76
+GT (293) 81
+LT (294) 80
+GEQ (295) 78
+LEQ (296) 79
+DAND (297)
+DOR (298)
+NEQ (299) 77
+
+
+Nonterminals, with rules where they appear
+
+$accept (49)
+    on left: 0
+program (50)
+    on left: 1, on right: 0
+declist (51)
+    on left: 2 3 4, on right: 1 2 3
+functiondecl (52)
+    on left: 5 6 7, on right: 2
+argdecls1 (53)
+    on left: 8 9 10, on right: 5 6 7 8
+funcdef (54)
+    on left: 11 12, on right: 1 11
+main (55)
+    on left: 13 14, on right: 1
+function (56)
+    on left: 15 16 17, on right: 11
+declaration (57)
+    on left: 18 19 20 21 22 23, on right: 3 40
+declstmt (58)
+    on left: 24 25, on right: 18
+decllist (59)
+    on left: 26 27, on right: 24 25 26
+declassign (60)
+    on left: 28 29, on right: 26 27
+compstmt (61)
+    on left: 30 31, on right: 13 14 15 16 17 37
+stmtlist (62)
+    on left: 32 33, on right: 30 32
+stmt (63)
+    on left: 34 35, on right: 32 44 46
+matched_stmt (64)
+    on left: 36 37 38 39 40 41 42 43, on right: 34 36 45
+unmatched_stmt (65)
+    on left: 44 45, on right: 35 45
+whilestmt (66)
+    on left: 46, on right: 38
+returnstmt (67)
+    on left: 47 48, on right: 39
+funcall (68)
+    on left: 49, on right: 20 83
+mult (69)
+    on left: 50 51 52, on right: 49 50
+const (70)
+    on left: 53 54, on right: 50 51
+print (71)
+    on left: 55 56, on right: 41
+scan (72)
+    on left: 57, on right: 42
+argdecls (73)
+    on left: 58 59 60, on right: 13 14 15 16 17 58
+dt (74)
+    on left: 61 62, on right: 8 9 58 59
+argassign (75)
+    on left: 63 64, on right: 58 59
+snumlist (76)
+    on left: 65 66, on right: 57 65
+numlist (77)
+    on left: 67 68, on right: 56 67
+expr (78)
+    on left: 69 70 71 72 73 74 75 76 77 78 79 80 81 82 83 84 85 86,
+    on right: 19 28 36 44 45 46 48 69 70 71 72 73 74 75 76 77 78 79
+    80 81 82 84
+
+
+State 0
+
+    0 $accept: . program $end
+
+    $default  reduce using rule 4 (declist)
+
+    program  go to state 1
+    declist  go to state 2
+
+
+State 1
+
+    0 $accept: program . $end
+
+    $end  shift, and go to state 3
+
+
+State 2
+
+    1 program: declist . main funcdef
+    2 declist: declist . functiondecl
+    3        | declist . declaration
+
+    error   shift, and go to state 4
+    ID      shift, and go to state 5
+    NUM     shift, and go to state 6
+    INT     shift, and go to state 7
+    CHAR    shift, and go to state 8
+    VOID    shift, and go to state 9
+    LPAREN  shift, and go to state 10
+    NOT     shift, and go to state 11
+    '-'     shift, and go to state 12
+
+    functiondecl  go to state 13
+    main          go to state 14
+    declaration   go to state 15
+    declstmt      go to state 16
+    funcall       go to state 17
+    expr          go to state 18
+
+
+State 3
+
+    0 $accept: program $end .
+
+    $default  accept
+
+
+State 4
+
+   21 declaration: error . SEMICOLON
+   22            | error . RBRACE
+   23            | error . RPAREN
+
+    RBRACE     shift, and go to state 19
+    RPAREN     shift, and go to state 20
+    SEMICOLON  shift, and go to state 21
+
+
+State 5
+
+   49 funcall: ID . LPAREN mult RPAREN
+   82 expr: ID . ASSIGN expr
+   83     | ID . ASSIGN funcall
+   85     | ID .
+
+    LPAREN  shift, and go to state 22
+    ASSIGN  shift, and go to state 23
+
+    $default  reduce using rule 85 (expr)
+
+
+State 6
+
+   86 expr: NUM .
+
+    $default  reduce using rule 86 (expr)
+
+
+State 7
+
+    5 functiondecl: INT . ID LPAREN argdecls1 RPAREN SEMICOLON
+   13 main: INT . MAIN LPAREN argdecls RPAREN compstmt
+   24 declstmt: INT . decllist
+
+    ID    shift, and go to state 24
+    MAIN  shift, and go to state 25
+
+    decllist  go to state 26
+
+
+State 8
+
+    7 functiondecl: CHAR . ID LPAREN argdecls1 RPAREN SEMICOLON
+   25 declstmt: CHAR . decllist
+
+    ID  shift, and go to state 27
+
+    decllist  go to state 28
+
+
+State 9
+
+    6 functiondecl: VOID . ID LPAREN argdecls1 RPAREN SEMICOLON
+   14 main: VOID . MAIN LPAREN argdecls RPAREN compstmt
+
+    ID    shift, and go to state 29
+    MAIN  shift, and go to state 30
+
+
+State 10
+
+   69 expr: LPAREN . expr RPAREN
+
+    ID      shift, and go to state 31
+    NUM     shift, and go to state 6
+    LPAREN  shift, and go to state 10
+    NOT     shift, and go to state 11
+    '-'     shift, and go to state 12
+
+    expr  go to state 32
+
+
+State 11
+
+   75 expr: NOT . expr
+
+    ID      shift, and go to state 31
+    NUM     shift, and go to state 6
+    LPAREN  shift, and go to state 10
+    NOT     shift, and go to state 11
+    '-'     shift, and go to state 12
+
+    expr  go to state 33
+
+
+State 12
+
+   84 expr: '-' . expr
+
+    ID      shift, and go to state 31
+    NUM     shift, and go to state 6
+    LPAREN  shift, and go to state 10
+    NOT     shift, and go to state 11
+    '-'     shift, and go to state 12
+
+    expr  go to state 34
+
+
+State 13
+
+    2 declist: declist functiondecl .
+
+    $default  reduce using rule 2 (declist)
+
+
+State 14
+
+    1 program: declist main . funcdef
+
+    $default  reduce using rule 12 (funcdef)
+
+    funcdef  go to state 35
+
+
+State 15
+
+    3 declist: declist declaration .
+
+    $default  reduce using rule 3 (declist)
+
+
+State 16
+
+   18 declaration: declstmt . SEMICOLON
+
+    SEMICOLON  shift, and go to state 36
+
+
+State 17
+
+   20 declaration: funcall . SEMICOLON
+
+    SEMICOLON  shift, and go to state 37
+
+
+State 18
+
+   19 declaration: expr . SEMICOLON
+   70 expr: expr . ADD expr
+   71     | expr . SUB expr
+   72     | expr . MUL expr
+   73     | expr . DIV expr
+   74     | expr . MOD expr
+   76     | expr . ISEQ expr
+   77     | expr . NEQ expr
+   78     | expr . GEQ expr
+   79     | expr . LEQ expr
+   80     | expr . LT expr
+   81     | expr . GT expr
+
+    SEMICOLON  shift, and go to state 38
+    ADD        shift, and go to state 39
+    SUB        shift, and go to state 40
+    MUL        shift, and go to state 41
+    DIV        shift, and go to state 42
+    MOD        shift, and go to state 43
+    ISEQ       shift, and go to state 44
+    GT         shift, and go to state 45
+    LT         shift, and go to state 46
+    GEQ        shift, and go to state 47
+    LEQ        shift, and go to state 48
+    NEQ        shift, and go to state 49
+
+
+State 19
+
+   22 declaration: error RBRACE .
+
+    $default  reduce using rule 22 (declaration)
+
+
+State 20
+
+   23 declaration: error RPAREN .
+
+    $default  reduce using rule 23 (declaration)
+
+
+State 21
+
+   21 declaration: error SEMICOLON .
+
+    $default  reduce using rule 21 (declaration)
+
+
+State 22
+
+   49 funcall: ID LPAREN . mult RPAREN
+
+    ID   shift, and go to state 50
+    NUM  shift, and go to state 51
+
+    $default  reduce using rule 52 (mult)
+
+    mult   go to state 52
+    const  go to state 53
+
+
+State 23
+
+   82 expr: ID ASSIGN . expr
+   83     | ID ASSIGN . funcall
+
+    ID      shift, and go to state 5
+    NUM     shift, and go to state 6
+    LPAREN  shift, and go to state 10
+    NOT     shift, and go to state 11
+    '-'     shift, and go to state 12
+
+    funcall  go to state 54
+    expr     go to state 55
+
+
+State 24
+
+    5 functiondecl: INT ID . LPAREN argdecls1 RPAREN SEMICOLON
+   27 decllist: ID . declassign
+
+    LPAREN  shift, and go to state 56
+    ASSIGN  shift, and go to state 57
+
+    $default  reduce using rule 29 (declassign)
+
+    declassign  go to state 58
+
+
+State 25
+
+   13 main: INT MAIN . LPAREN argdecls RPAREN compstmt
+
+    LPAREN  shift, and go to state 59
+
+
+State 26
+
+   24 declstmt: INT decllist .
+   26 decllist: decllist . COMMA ID declassign
+
+    COMMA  shift, and go to state 60
+
+    $default  reduce using rule 24 (declstmt)
+
+
+State 27
+
+    7 functiondecl: CHAR ID . LPAREN argdecls1 RPAREN SEMICOLON
+   27 decllist: ID . declassign
+
+    LPAREN  shift, and go to state 61
+    ASSIGN  shift, and go to state 57
+
+    $default  reduce using rule 29 (declassign)
+
+    declassign  go to state 58
+
+
+State 28
+
+   25 declstmt: CHAR decllist .
+   26 decllist: decllist . COMMA ID declassign
+
+    COMMA  shift, and go to state 60
+
+    $default  reduce using rule 25 (declstmt)
+
+
+State 29
+
+    6 functiondecl: VOID ID . LPAREN argdecls1 RPAREN SEMICOLON
+
+    LPAREN  shift, and go to state 62
+
+
+State 30
+
+   14 main: VOID MAIN . LPAREN argdecls RPAREN compstmt
+
+    LPAREN  shift, and go to state 63
+
+
+State 31
+
+   82 expr: ID . ASSIGN expr
+   83     | ID . ASSIGN funcall
+   85     | ID .
+
+    ASSIGN  shift, and go to state 23
+
+    $default  reduce using rule 85 (expr)
+
+
+State 32
+
+   69 expr: LPAREN expr . RPAREN
+   70     | expr . ADD expr
+   71     | expr . SUB expr
+   72     | expr . MUL expr
+   73     | expr . DIV expr
+   74     | expr . MOD expr
+   76     | expr . ISEQ expr
+   77     | expr . NEQ expr
+   78     | expr . GEQ expr
+   79     | expr . LEQ expr
+   80     | expr . LT expr
+   81     | expr . GT expr
+
+    RPAREN  shift, and go to state 64
+    ADD     shift, and go to state 39
+    SUB     shift, and go to state 40
+    MUL     shift, and go to state 41
+    DIV     shift, and go to state 42
+    MOD     shift, and go to state 43
+    ISEQ    shift, and go to state 44
+    GT      shift, and go to state 45
+    LT      shift, and go to state 46
+    GEQ     shift, and go to state 47
+    LEQ     shift, and go to state 48
+    NEQ     shift, and go to state 49
+
+
+State 33
+
+   70 expr: expr . ADD expr
+   71     | expr . SUB expr
+   72     | expr . MUL expr
+   73     | expr . DIV expr
+   74     | expr . MOD expr
+   75     | NOT expr .
+   76     | expr . ISEQ expr
+   77     | expr . NEQ expr
+   78     | expr . GEQ expr
+   79     | expr . LEQ expr
+   80     | expr . LT expr
+   81     | expr . GT expr
+
+    ADD   shift, and go to state 39
+    SUB   shift, and go to state 40
+    MUL   shift, and go to state 41
+    DIV   shift, and go to state 42
+    MOD   shift, and go to state 43
+    ISEQ  shift, and go to state 44
+    GT    shift, and go to state 45
+    LT    shift, and go to state 46
+    GEQ   shift, and go to state 47
+    LEQ   shift, and go to state 48
+    NEQ   shift, and go to state 49
+
+    ADD       [reduce using rule 75 (expr)]
+    SUB       [reduce using rule 75 (expr)]
+    MUL       [reduce using rule 75 (expr)]
+    DIV       [reduce using rule 75 (expr)]
+    MOD       [reduce using rule 75 (expr)]
+    ISEQ      [reduce using rule 75 (expr)]
+    GT        [reduce using rule 75 (expr)]
+    LT        [reduce using rule 75 (expr)]
+    GEQ       [reduce using rule 75 (expr)]
+    LEQ       [reduce using rule 75 (expr)]
+    NEQ       [reduce using rule 75 (expr)]
+    $default  reduce using rule 75 (expr)
+
+
+State 34
+
+   70 expr: expr . ADD expr
+   71     | expr . SUB expr
+   72     | expr . MUL expr
+   73     | expr . DIV expr
+   74     | expr . MOD expr
+   76     | expr . ISEQ expr
+   77     | expr . NEQ expr
+   78     | expr . GEQ expr
+   79     | expr . LEQ expr
+   80     | expr . LT expr
+   81     | expr . GT expr
+   84     | '-' expr .
+
+    ADD   shift, and go to state 39
+    SUB   shift, and go to state 40
+    MUL   shift, and go to state 41
+    DIV   shift, and go to state 42
+    MOD   shift, and go to state 43
+    ISEQ  shift, and go to state 44
+    GT    shift, and go to state 45
+    LT    shift, and go to state 46
+    GEQ   shift, and go to state 47
+    LEQ   shift, and go to state 48
+    NEQ   shift, and go to state 49
+
+    ADD       [reduce using rule 84 (expr)]
+    SUB       [reduce using rule 84 (expr)]
+    MUL       [reduce using rule 84 (expr)]
+    DIV       [reduce using rule 84 (expr)]
+    MOD       [reduce using rule 84 (expr)]
+    ISEQ      [reduce using rule 84 (expr)]
+    GT        [reduce using rule 84 (expr)]
+    LT        [reduce using rule 84 (expr)]
+    GEQ       [reduce using rule 84 (expr)]
+    LEQ       [reduce using rule 84 (expr)]
+    NEQ       [reduce using rule 84 (expr)]
+    $default  reduce using rule 84 (expr)
+
+
+State 35
+
+    1 program: declist main funcdef .
+   11 funcdef: funcdef . function
+
+    INT   shift, and go to state 65
+    CHAR  shift, and go to state 66
+    VOID  shift, and go to state 67
+
+    $default  reduce using rule 1 (program)
+
+    function  go to state 68
+
+
+State 36
+
+   18 declaration: declstmt SEMICOLON .
+
+    $default  reduce using rule 18 (declaration)
+
+
+State 37
+
+   20 declaration: funcall SEMICOLON .
+
+    $default  reduce using rule 20 (declaration)
+
+
+State 38
+
+   19 declaration: expr SEMICOLON .
+
+    $default  reduce using rule 19 (declaration)
+
+
+State 39
+
+   70 expr: expr ADD . expr
+
+    ID      shift, and go to state 31
+    NUM     shift, and go to state 6
+    LPAREN  shift, and go to state 10
+    NOT     shift, and go to state 11
+    '-'     shift, and go to state 12
+
+    expr  go to state 69
+
+
+State 40
+
+   71 expr: expr SUB . expr
+
+    ID      shift, and go to state 31
+    NUM     shift, and go to state 6
+    LPAREN  shift, and go to state 10
+    NOT     shift, and go to state 11
+    '-'     shift, and go to state 12
+
+    expr  go to state 70
+
+
+State 41
+
+   72 expr: expr MUL . expr
+
+    ID      shift, and go to state 31
+    NUM     shift, and go to state 6
+    LPAREN  shift, and go to state 10
+    NOT     shift, and go to state 11
+    '-'     shift, and go to state 12
+
+    expr  go to state 71
+
+
+State 42
+
+   73 expr: expr DIV . expr
+
+    ID      shift, and go to state 31
+    NUM     shift, and go to state 6
+    LPAREN  shift, and go to state 10
+    NOT     shift, and go to state 11
+    '-'     shift, and go to state 12
+
+    expr  go to state 72
+
+
+State 43
+
+   74 expr: expr MOD . expr
+
+    ID      shift, and go to state 31
+    NUM     shift, and go to state 6
+    LPAREN  shift, and go to state 10
+    NOT     shift, and go to state 11
+    '-'     shift, and go to state 12
+
+    expr  go to state 73
+
+
+State 44
+
+   76 expr: expr ISEQ . expr
+
+    ID      shift, and go to state 31
+    NUM     shift, and go to state 6
+    LPAREN  shift, and go to state 10
+    NOT     shift, and go to state 11
+    '-'     shift, and go to state 12
+
+    expr  go to state 74
+
+
+State 45
+
+   81 expr: expr GT . expr
+
+    ID      shift, and go to state 31
+    NUM     shift, and go to state 6
+    LPAREN  shift, and go to state 10
+    NOT     shift, and go to state 11
+    '-'     shift, and go to state 12
+
+    expr  go to state 75
+
+
+State 46
+
+   80 expr: expr LT . expr
+
+    ID      shift, and go to state 31
+    NUM     shift, and go to state 6
+    LPAREN  shift, and go to state 10
+    NOT     shift, and go to state 11
+    '-'     shift, and go to state 12
+
+    expr  go to state 76
+
+
+State 47
+
+   78 expr: expr GEQ . expr
+
+    ID      shift, and go to state 31
+    NUM     shift, and go to state 6
+    LPAREN  shift, and go to state 10
+    NOT     shift, and go to state 11
+    '-'     shift, and go to state 12
+
+    expr  go to state 77
+
+
+State 48
+
+   79 expr: expr LEQ . expr
+
+    ID      shift, and go to state 31
+    NUM     shift, and go to state 6
+    LPAREN  shift, and go to state 10
+    NOT     shift, and go to state 11
+    '-'     shift, and go to state 12
+
+    expr  go to state 78
+
+
+State 49
+
+   77 expr: expr NEQ . expr
+
+    ID      shift, and go to state 31
+    NUM     shift, and go to state 6
+    LPAREN  shift, and go to state 10
+    NOT     shift, and go to state 11
+    '-'     shift, and go to state 12
+
+    expr  go to state 79
+
+
+State 50
+
+   54 const: ID .
+
+    $default  reduce using rule 54 (const)
+
+
+State 51
+
+   53 const: NUM .
+
+    $default  reduce using rule 53 (const)
+
+
+State 52
+
+   49 funcall: ID LPAREN mult . RPAREN
+
+    RPAREN  shift, and go to state 80
+
+
+State 53
+
+   50 mult: const . COMMA mult
+   51     | const .
+
+    COMMA  shift, and go to state 81
+
+    $default  reduce using rule 51 (mult)
+
+
+State 54
+
+   83 expr: ID ASSIGN funcall .
+
+    $default  reduce using rule 83 (expr)
+
+
+State 55
+
+   70 expr: expr . ADD expr
+   71     | expr . SUB expr
+   72     | expr . MUL expr
+   73     | expr . DIV expr
+   74     | expr . MOD expr
+   76     | expr . ISEQ expr
+   77     | expr . NEQ expr
+   78     | expr . GEQ expr
+   79     | expr . LEQ expr
+   80     | expr . LT expr
+   81     | expr . GT expr
+   82     | ID ASSIGN expr .
+
+    MOD  shift, and go to state 43
+    NEQ  shift, and go to state 49
+
+    MOD       [reduce using rule 82 (expr)]
+    NEQ       [reduce using rule 82 (expr)]
+    $default  reduce using rule 82 (expr)
+
+
+State 56
+
+    5 functiondecl: INT ID LPAREN . argdecls1 RPAREN SEMICOLON
+
+    INT   shift, and go to state 82
+    CHAR  shift, and go to state 83
+
+    $default  reduce using rule 10 (argdecls1)
+
+    argdecls1  go to state 84
+    dt         go to state 85
+
+
+State 57
+
+   28 declassign: ASSIGN . expr
+
+    ID      shift, and go to state 31
+    NUM     shift, and go to state 6
+    LPAREN  shift, and go to state 10
+    NOT     shift, and go to state 11
+    '-'     shift, and go to state 12
+
+    expr  go to state 86
+
+
+State 58
+
+   27 decllist: ID declassign .
+
+    $default  reduce using rule 27 (decllist)
+
+
+State 59
+
+   13 main: INT MAIN LPAREN . argdecls RPAREN compstmt
+
+    INT   shift, and go to state 82
+    CHAR  shift, and go to state 83
+
+    $default  reduce using rule 60 (argdecls)
+
+    argdecls  go to state 87
+    dt        go to state 88
+
+
+State 60
+
+   26 decllist: decllist COMMA . ID declassign
+
+    ID  shift, and go to state 89
+
+
+State 61
+
+    7 functiondecl: CHAR ID LPAREN . argdecls1 RPAREN SEMICOLON
+
+    INT   shift, and go to state 82
+    CHAR  shift, and go to state 83
+
+    $default  reduce using rule 10 (argdecls1)
+
+    argdecls1  go to state 90
+    dt         go to state 85
+
+
+State 62
+
+    6 functiondecl: VOID ID LPAREN . argdecls1 RPAREN SEMICOLON
+
+    INT   shift, and go to state 82
+    CHAR  shift, and go to state 83
+
+    $default  reduce using rule 10 (argdecls1)
+
+    argdecls1  go to state 91
+    dt         go to state 85
+
+
+State 63
+
+   14 main: VOID MAIN LPAREN . argdecls RPAREN compstmt
+
+    INT   shift, and go to state 82
+    CHAR  shift, and go to state 83
+
+    $default  reduce using rule 60 (argdecls)
+
+    argdecls  go to state 92
+    dt        go to state 88
+
+
+State 64
+
+   69 expr: LPAREN expr RPAREN .
+
+    $default  reduce using rule 69 (expr)
+
+
+State 65
+
+   15 function: INT . ID LPAREN argdecls RPAREN compstmt
+
+    ID  shift, and go to state 93
+
+
+State 66
+
+   17 function: CHAR . ID LPAREN argdecls RPAREN compstmt
+
+    ID  shift, and go to state 94
+
+
+State 67
+
+   16 function: VOID . ID LPAREN argdecls RPAREN compstmt
+
+    ID  shift, and go to state 95
+
+
+State 68
+
+   11 funcdef: funcdef function .
+
+    $default  reduce using rule 11 (funcdef)
+
+
+State 69
+
+   70 expr: expr . ADD expr
+   70     | expr ADD expr .
+   71     | expr . SUB expr
+   72     | expr . MUL expr
+   73     | expr . DIV expr
+   74     | expr . MOD expr
+   76     | expr . ISEQ expr
+   77     | expr . NEQ expr
+   78     | expr . GEQ expr
+   79     | expr . LEQ expr
+   80     | expr . LT expr
+   81     | expr . GT expr
+
+    MUL   shift, and go to state 41
+    DIV   shift, and go to state 42
+    MOD   shift, and go to state 43
+    ISEQ  shift, and go to state 44
+    GT    shift, and go to state 45
+    LT    shift, and go to state 46
+    GEQ   shift, and go to state 47
+    LEQ   shift, and go to state 48
+    NEQ   shift, and go to state 49
+
+    MOD       [reduce using rule 70 (expr)]
+    NEQ       [reduce using rule 70 (expr)]
+    $default  reduce using rule 70 (expr)
+
+
+State 70
+
+   70 expr: expr . ADD expr
+   71     | expr . SUB expr
+   71     | expr SUB expr .
+   72     | expr . MUL expr
+   73     | expr . DIV expr
+   74     | expr . MOD expr
+   76     | expr . ISEQ expr
+   77     | expr . NEQ expr
+   78     | expr . GEQ expr
+   79     | expr . LEQ expr
+   80     | expr . LT expr
+   81     | expr . GT expr
+
+    MUL   shift, and go to state 41
+    DIV   shift, and go to state 42
+    MOD   shift, and go to state 43
+    ISEQ  shift, and go to state 44
+    GT    shift, and go to state 45
+    LT    shift, and go to state 46
+    GEQ   shift, and go to state 47
+    LEQ   shift, and go to state 48
+    NEQ   shift, and go to state 49
+
+    MOD       [reduce using rule 71 (expr)]
+    NEQ       [reduce using rule 71 (expr)]
+    $default  reduce using rule 71 (expr)
+
+
+State 71
+
+   70 expr: expr . ADD expr
+   71     | expr . SUB expr
+   72     | expr . MUL expr
+   72     | expr MUL expr .
+   73     | expr . DIV expr
+   74     | expr . MOD expr
+   76     | expr . ISEQ expr
+   77     | expr . NEQ expr
+   78     | expr . GEQ expr
+   79     | expr . LEQ expr
+   80     | expr . LT expr
+   81     | expr . GT expr
+
+    MOD   shift, and go to state 43
+    ISEQ  shift, and go to state 44
+    GT    shift, and go to state 45
+    LT    shift, and go to state 46
+    GEQ   shift, and go to state 47
+    LEQ   shift, and go to state 48
+    NEQ   shift, and go to state 49
+
+    MOD       [reduce using rule 72 (expr)]
+    NEQ       [reduce using rule 72 (expr)]
+    $default  reduce using rule 72 (expr)
+
+
+State 72
+
+   70 expr: expr . ADD expr
+   71     | expr . SUB expr
+   72     | expr . MUL expr
+   73     | expr . DIV expr
+   73     | expr DIV expr .
+   74     | expr . MOD expr
+   76     | expr . ISEQ expr
+   77     | expr . NEQ expr
+   78     | expr . GEQ expr
+   79     | expr . LEQ expr
+   80     | expr . LT expr
+   81     | expr . GT expr
+
+    MOD   shift, and go to state 43
+    ISEQ  shift, and go to state 44
+    GT    shift, and go to state 45
+    LT    shift, and go to state 46
+    GEQ   shift, and go to state 47
+    LEQ   shift, and go to state 48
+    NEQ   shift, and go to state 49
+
+    MOD       [reduce using rule 73 (expr)]
+    NEQ       [reduce using rule 73 (expr)]
+    $default  reduce using rule 73 (expr)
+
+
+State 73
+
+   70 expr: expr . ADD expr
+   71     | expr . SUB expr
+   72     | expr . MUL expr
+   73     | expr . DIV expr
+   74     | expr . MOD expr
+   74     | expr MOD expr .
+   76     | expr . ISEQ expr
+   77     | expr . NEQ expr
+   78     | expr . GEQ expr
+   79     | expr . LEQ expr
+   80     | expr . LT expr
+   81     | expr . GT expr
+
+    ADD   shift, and go to state 39
+    SUB   shift, and go to state 40
+    MUL   shift, and go to state 41
+    DIV   shift, and go to state 42
+    MOD   shift, and go to state 43
+    ISEQ  shift, and go to state 44
+    GT    shift, and go to state 45
+    LT    shift, and go to state 46
+    GEQ   shift, and go to state 47
+    LEQ   shift, and go to state 48
+    NEQ   shift, and go to state 49
+
+    ADD       [reduce using rule 74 (expr)]
+    SUB       [reduce using rule 74 (expr)]
+    MUL       [reduce using rule 74 (expr)]
+    DIV       [reduce using rule 74 (expr)]
+    MOD       [reduce using rule 74 (expr)]
+    ISEQ      [reduce using rule 74 (expr)]
+    GT        [reduce using rule 74 (expr)]
+    LT        [reduce using rule 74 (expr)]
+    GEQ       [reduce using rule 74 (expr)]
+    LEQ       [reduce using rule 74 (expr)]
+    NEQ       [reduce using rule 74 (expr)]
+    $default  reduce using rule 74 (expr)
+
+
+State 74
+
+   70 expr: expr . ADD expr
+   71     | expr . SUB expr
+   72     | expr . MUL expr
+   73     | expr . DIV expr
+   74     | expr . MOD expr
+   76     | expr . ISEQ expr
+   76     | expr ISEQ expr .
+   77     | expr . NEQ expr
+   78     | expr . GEQ expr
+   79     | expr . LEQ expr
+   80     | expr . LT expr
+   81     | expr . GT expr
+
+    MOD  shift, and go to state 43
+    NEQ  shift, and go to state 49
+
+    MOD       [reduce using rule 76 (expr)]
+    NEQ       [reduce using rule 76 (expr)]
+    $default  reduce using rule 76 (expr)
+
+
+State 75
+
+   70 expr: expr . ADD expr
+   71     | expr . SUB expr
+   72     | expr . MUL expr
+   73     | expr . DIV expr
+   74     | expr . MOD expr
+   76     | expr . ISEQ expr
+   77     | expr . NEQ expr
+   78     | expr . GEQ expr
+   79     | expr . LEQ expr
+   80     | expr . LT expr
+   81     | expr . GT expr
+   81     | expr GT expr .
+
+    MOD  shift, and go to state 43
+    NEQ  shift, and go to state 49
+
+    MOD       [reduce using rule 81 (expr)]
+    NEQ       [reduce using rule 81 (expr)]
+    $default  reduce using rule 81 (expr)
+
+
+State 76
+
+   70 expr: expr . ADD expr
+   71     | expr . SUB expr
+   72     | expr . MUL expr
+   73     | expr . DIV expr
+   74     | expr . MOD expr
+   76     | expr . ISEQ expr
+   77     | expr . NEQ expr
+   78     | expr . GEQ expr
+   79     | expr . LEQ expr
+   80     | expr . LT expr
+   80     | expr LT expr .
+   81     | expr . GT expr
+
+    MOD  shift, and go to state 43
+    NEQ  shift, and go to state 49
+
+    MOD       [reduce using rule 80 (expr)]
+    NEQ       [reduce using rule 80 (expr)]
+    $default  reduce using rule 80 (expr)
+
+
+State 77
+
+   70 expr: expr . ADD expr
+   71     | expr . SUB expr
+   72     | expr . MUL expr
+   73     | expr . DIV expr
+   74     | expr . MOD expr
+   76     | expr . ISEQ expr
+   77     | expr . NEQ expr
+   78     | expr . GEQ expr
+   78     | expr GEQ expr .
+   79     | expr . LEQ expr
+   80     | expr . LT expr
+   81     | expr . GT expr
+
+    MOD  shift, and go to state 43
+    NEQ  shift, and go to state 49
+
+    MOD       [reduce using rule 78 (expr)]
+    NEQ       [reduce using rule 78 (expr)]
+    $default  reduce using rule 78 (expr)
+
+
+State 78
+
+   70 expr: expr . ADD expr
+   71     | expr . SUB expr
+   72     | expr . MUL expr
+   73     | expr . DIV expr
+   74     | expr . MOD expr
+   76     | expr . ISEQ expr
+   77     | expr . NEQ expr
+   78     | expr . GEQ expr
+   79     | expr . LEQ expr
+   79     | expr LEQ expr .
+   80     | expr . LT expr
+   81     | expr . GT expr
+
+    MOD  shift, and go to state 43
+    NEQ  shift, and go to state 49
+
+    MOD       [reduce using rule 79 (expr)]
+    NEQ       [reduce using rule 79 (expr)]
+    $default  reduce using rule 79 (expr)
+
+
+State 79
+
+   70 expr: expr . ADD expr
+   71     | expr . SUB expr
+   72     | expr . MUL expr
+   73     | expr . DIV expr
+   74     | expr . MOD expr
+   76     | expr . ISEQ expr
+   77     | expr . NEQ expr
+   77     | expr NEQ expr .
+   78     | expr . GEQ expr
+   79     | expr . LEQ expr
+   80     | expr . LT expr
+   81     | expr . GT expr
+
+    ADD   shift, and go to state 39
+    SUB   shift, and go to state 40
+    MUL   shift, and go to state 41
+    DIV   shift, and go to state 42
+    MOD   shift, and go to state 43
+    ISEQ  shift, and go to state 44
+    GT    shift, and go to state 45
+    LT    shift, and go to state 46
+    GEQ   shift, and go to state 47
+    LEQ   shift, and go to state 48
+    NEQ   shift, and go to state 49
+
+    ADD       [reduce using rule 77 (expr)]
+    SUB       [reduce using rule 77 (expr)]
+    MUL       [reduce using rule 77 (expr)]
+    DIV       [reduce using rule 77 (expr)]
+    MOD       [reduce using rule 77 (expr)]
+    ISEQ      [reduce using rule 77 (expr)]
+    GT        [reduce using rule 77 (expr)]
+    LT        [reduce using rule 77 (expr)]
+    GEQ       [reduce using rule 77 (expr)]
+    LEQ       [reduce using rule 77 (expr)]
+    NEQ       [reduce using rule 77 (expr)]
+    $default  reduce using rule 77 (expr)
+
+
+State 80
+
+   49 funcall: ID LPAREN mult RPAREN .
+
+    $default  reduce using rule 49 (funcall)
+
+
+State 81
+
+   50 mult: const COMMA . mult
+
+    ID   shift, and go to state 50
+    NUM  shift, and go to state 51
+
+    $default  reduce using rule 52 (mult)
+
+    mult   go to state 96
+    const  go to state 53
+
+
+State 82
+
+   61 dt: INT .
+
+    $default  reduce using rule 61 (dt)
+
+
+State 83
+
+   62 dt: CHAR .
+
+    $default  reduce using rule 62 (dt)
+
+
+State 84
+
+    5 functiondecl: INT ID LPAREN argdecls1 . RPAREN SEMICOLON
+    8 argdecls1: argdecls1 . COMMA dt
+
+    RPAREN  shift, and go to state 97
+    COMMA   shift, and go to state 98
+
+
+State 85
+
+    9 argdecls1: dt .
+
+    $default  reduce using rule 9 (argdecls1)
+
+
+State 86
+
+   28 declassign: ASSIGN expr .
+   70 expr: expr . ADD expr
+   71     | expr . SUB expr
+   72     | expr . MUL expr
+   73     | expr . DIV expr
+   74     | expr . MOD expr
+   76     | expr . ISEQ expr
+   77     | expr . NEQ expr
+   78     | expr . GEQ expr
+   79     | expr . LEQ expr
+   80     | expr . LT expr
+   81     | expr . GT expr
+
+    ADD   shift, and go to state 39
+    SUB   shift, and go to state 40
+    MUL   shift, and go to state 41
+    DIV   shift, and go to state 42
+    MOD   shift, and go to state 43
+    ISEQ  shift, and go to state 44
+    GT    shift, and go to state 45
+    LT    shift, and go to state 46
+    GEQ   shift, and go to state 47
+    LEQ   shift, and go to state 48
+    NEQ   shift, and go to state 49
+
+    $default  reduce using rule 28 (declassign)
+
+
+State 87
+
+   13 main: INT MAIN LPAREN argdecls . RPAREN compstmt
+   58 argdecls: argdecls . COMMA dt ID argassign
+
+    RPAREN  shift, and go to state 99
+    COMMA   shift, and go to state 100
+
+
+State 88
+
+   59 argdecls: dt . ID argassign
+
+    ID  shift, and go to state 101
+
+
+State 89
+
+   26 decllist: decllist COMMA ID . declassign
+
+    ASSIGN  shift, and go to state 57
+
+    $default  reduce using rule 29 (declassign)
+
+    declassign  go to state 102
+
+
+State 90
+
+    7 functiondecl: CHAR ID LPAREN argdecls1 . RPAREN SEMICOLON
+    8 argdecls1: argdecls1 . COMMA dt
+
+    RPAREN  shift, and go to state 103
+    COMMA   shift, and go to state 98
+
+
+State 91
+
+    6 functiondecl: VOID ID LPAREN argdecls1 . RPAREN SEMICOLON
+    8 argdecls1: argdecls1 . COMMA dt
+
+    RPAREN  shift, and go to state 104
+    COMMA   shift, and go to state 98
+
+
+State 92
+
+   14 main: VOID MAIN LPAREN argdecls . RPAREN compstmt
+   58 argdecls: argdecls . COMMA dt ID argassign
+
+    RPAREN  shift, and go to state 105
+    COMMA   shift, and go to state 100
+
+
+State 93
+
+   15 function: INT ID . LPAREN argdecls RPAREN compstmt
+
+    LPAREN  shift, and go to state 106
+
+
+State 94
+
+   17 function: CHAR ID . LPAREN argdecls RPAREN compstmt
+
+    LPAREN  shift, and go to state 107
+
+
+State 95
+
+   16 function: VOID ID . LPAREN argdecls RPAREN compstmt
+
+    LPAREN  shift, and go to state 108
+
+
+State 96
+
+   50 mult: const COMMA mult .
+
+    $default  reduce using rule 50 (mult)
+
+
+State 97
+
+    5 functiondecl: INT ID LPAREN argdecls1 RPAREN . SEMICOLON
+
+    SEMICOLON  shift, and go to state 109
+
+
+State 98
+
+    8 argdecls1: argdecls1 COMMA . dt
+
+    INT   shift, and go to state 82
+    CHAR  shift, and go to state 83
+
+    dt  go to state 110
+
+
+State 99
+
+   13 main: INT MAIN LPAREN argdecls RPAREN . compstmt
+
+    LBRACE  shift, and go to state 111
+
+    $default  reduce using rule 31 (compstmt)
+
+    compstmt  go to state 112
+
+
+State 100
+
+   58 argdecls: argdecls COMMA . dt ID argassign
+
+    INT   shift, and go to state 82
+    CHAR  shift, and go to state 83
+
+    dt  go to state 113
+
+
+State 101
+
+   59 argdecls: dt ID . argassign
+
+    '='  shift, and go to state 114
+
+    $default  reduce using rule 64 (argassign)
+
+    argassign  go to state 115
+
+
+State 102
+
+   26 decllist: decllist COMMA ID declassign .
+
+    $default  reduce using rule 26 (decllist)
+
+
+State 103
+
+    7 functiondecl: CHAR ID LPAREN argdecls1 RPAREN . SEMICOLON
+
+    SEMICOLON  shift, and go to state 116
+
+
+State 104
+
+    6 functiondecl: VOID ID LPAREN argdecls1 RPAREN . SEMICOLON
+
+    SEMICOLON  shift, and go to state 117
+
+
+State 105
+
+   14 main: VOID MAIN LPAREN argdecls RPAREN . compstmt
+
+    LBRACE  shift, and go to state 111
+
+    $default  reduce using rule 31 (compstmt)
+
+    compstmt  go to state 118
+
+
+State 106
+
+   15 function: INT ID LPAREN . argdecls RPAREN compstmt
+
+    INT   shift, and go to state 82
+    CHAR  shift, and go to state 83
+
+    $default  reduce using rule 60 (argdecls)
+
+    argdecls  go to state 119
+    dt        go to state 88
+
+
+State 107
+
+   17 function: CHAR ID LPAREN . argdecls RPAREN compstmt
+
+    INT   shift, and go to state 82
+    CHAR  shift, and go to state 83
+
+    $default  reduce using rule 60 (argdecls)
+
+    argdecls  go to state 120
+    dt        go to state 88
+
+
+State 108
+
+   16 function: VOID ID LPAREN . argdecls RPAREN compstmt
+
+    INT   shift, and go to state 82
+    CHAR  shift, and go to state 83
+
+    $default  reduce using rule 60 (argdecls)
+
+    argdecls  go to state 121
+    dt        go to state 88
+
+
+State 109
+
+    5 functiondecl: INT ID LPAREN argdecls1 RPAREN SEMICOLON .
+
+    $default  reduce using rule 5 (functiondecl)
+
+
+State 110
+
+    8 argdecls1: argdecls1 COMMA dt .
+
+    $default  reduce using rule 8 (argdecls1)
+
+
+State 111
+
+   30 compstmt: LBRACE . stmtlist RBRACE
+
+    $default  reduce using rule 33 (stmtlist)
+
+    stmtlist  go to state 122
+
+
+State 112
+
+   13 main: INT MAIN LPAREN argdecls RPAREN compstmt .
+
+    $default  reduce using rule 13 (main)
+
+
+State 113
+
+   58 argdecls: argdecls COMMA dt . ID argassign
+
+    ID  shift, and go to state 123
+
+
+State 114
+
+   63 argassign: '=' . NUM
+
+    NUM  shift, and go to state 124
+
+
+State 115
+
+   59 argdecls: dt ID argassign .
+
+    $default  reduce using rule 59 (argdecls)
+
+
+State 116
+
+    7 functiondecl: CHAR ID LPAREN argdecls1 RPAREN SEMICOLON .
+
+    $default  reduce using rule 7 (functiondecl)
+
+
+State 117
+
+    6 functiondecl: VOID ID LPAREN argdecls1 RPAREN SEMICOLON .
+
+    $default  reduce using rule 6 (functiondecl)
+
+
+State 118
+
+   14 main: VOID MAIN LPAREN argdecls RPAREN compstmt .
+
+    $default  reduce using rule 14 (main)
+
+
+State 119
+
+   15 function: INT ID LPAREN argdecls . RPAREN compstmt
+   58 argdecls: argdecls . COMMA dt ID argassign
+
+    RPAREN  shift, and go to state 125
+    COMMA   shift, and go to state 100
+
+
+State 120
+
+   17 function: CHAR ID LPAREN argdecls . RPAREN compstmt
+   58 argdecls: argdecls . COMMA dt ID argassign
+
+    RPAREN  shift, and go to state 126
+    COMMA   shift, and go to state 100
+
+
+State 121
+
+   16 function: VOID ID LPAREN argdecls . RPAREN compstmt
+   58 argdecls: argdecls . COMMA dt ID argassign
+
+    RPAREN  shift, and go to state 127
+    COMMA   shift, and go to state 100
+
+
+State 122
+
+   30 compstmt: LBRACE stmtlist . RBRACE
+   32 stmtlist: stmtlist . stmt
+
+    error      shift, and go to state 4
+    ID         shift, and go to state 5
+    NUM        shift, and go to state 6
+    INT        shift, and go to state 128
+    CHAR       shift, and go to state 129
+    IF         shift, and go to state 130
+    WHILE      shift, and go to state 131
+    SCANF      shift, and go to state 132
+    PRINTF     shift, and go to state 133
+    RETURN     shift, and go to state 134
+    LBRACE     shift, and go to state 111
+    RBRACE     shift, and go to state 135
+    LPAREN     shift, and go to state 10
+    SEMICOLON  shift, and go to state 136
+    NOT        shift, and go to state 11
+    '-'        shift, and go to state 12
+
+    error      [reduce using rule 31 (compstmt)]
+    ID         [reduce using rule 31 (compstmt)]
+    NUM        [reduce using rule 31 (compstmt)]
+    INT        [reduce using rule 31 (compstmt)]
+    CHAR       [reduce using rule 31 (compstmt)]
+    IF         [reduce using rule 31 (compstmt)]
+    WHILE      [reduce using rule 31 (compstmt)]
+    SCANF      [reduce using rule 31 (compstmt)]
+    PRINTF     [reduce using rule 31 (compstmt)]
+    RETURN     [reduce using rule 31 (compstmt)]
+    LBRACE     [reduce using rule 31 (compstmt)]
+    RBRACE     [reduce using rule 31 (compstmt)]
+    LPAREN     [reduce using rule 31 (compstmt)]
+    SEMICOLON  [reduce using rule 31 (compstmt)]
+    NOT        [reduce using rule 31 (compstmt)]
+    '-'        [reduce using rule 31 (compstmt)]
+
+    declaration     go to state 137
+    declstmt        go to state 16
+    compstmt        go to state 138
+    stmt            go to state 139
+    matched_stmt    go to state 140
+    unmatched_stmt  go to state 141
+    whilestmt       go to state 142
+    returnstmt      go to state 143
+    funcall         go to state 17
+    print           go to state 144
+    scan            go to state 145
+    expr            go to state 18
+
+
+State 123
+
+   58 argdecls: argdecls COMMA dt ID . argassign
+
+    '='  shift, and go to state 114
+
+    $default  reduce using rule 64 (argassign)
+
+    argassign  go to state 146
+
+
+State 124
+
+   63 argassign: '=' NUM .
+
+    $default  reduce using rule 63 (argassign)
+
+
+State 125
+
+   15 function: INT ID LPAREN argdecls RPAREN . compstmt
+
+    LBRACE  shift, and go to state 111
+
+    $default  reduce using rule 31 (compstmt)
+
+    compstmt  go to state 147
+
+
+State 126
+
+   17 function: CHAR ID LPAREN argdecls RPAREN . compstmt
+
+    LBRACE  shift, and go to state 111
+
+    $default  reduce using rule 31 (compstmt)
+
+    compstmt  go to state 148
+
+
+State 127
+
+   16 function: VOID ID LPAREN argdecls RPAREN . compstmt
+
+    LBRACE  shift, and go to state 111
+
+    $default  reduce using rule 31 (compstmt)
+
+    compstmt  go to state 149
+
+
+State 128
+
+   24 declstmt: INT . decllist
+
+    ID  shift, and go to state 150
+
+    decllist  go to state 26
+
+
+State 129
+
+   25 declstmt: CHAR . decllist
+
+    ID  shift, and go to state 150
+
+    decllist  go to state 28
+
+
+State 130
+
+   36 matched_stmt: IF . LPAREN expr RPAREN matched_stmt ELSE matched_stmt
+   44 unmatched_stmt: IF . LPAREN expr RPAREN stmt
+   45               | IF . LPAREN expr RPAREN matched_stmt ELSE unmatched_stmt
+
+    LPAREN  shift, and go to state 151
+
+
+State 131
+
+   46 whilestmt: WHILE . '(' expr ')' stmt
+
+    '('  shift, and go to state 152
+
+
+State 132
+
+   57 scan: SCANF . LPAREN STRINGLIT snumlist RPAREN SEMICOLON
+
+    LPAREN  shift, and go to state 153
+
+
+State 133
+
+   55 print: PRINTF . LPAREN STRINGLIT RPAREN SEMICOLON
+   56      | PRINTF . LPAREN STRINGLIT numlist RPAREN SEMICOLON
+
+    LPAREN  shift, and go to state 154
+
+
+State 134
+
+   47 returnstmt: RETURN . SEMICOLON
+   48           | RETURN . expr SEMICOLON
+
+    ID         shift, and go to state 31
+    NUM        shift, and go to state 6
+    LPAREN     shift, and go to state 10
+    SEMICOLON  shift, and go to state 155
+    NOT        shift, and go to state 11
+    '-'        shift, and go to state 12
+
+    expr  go to state 156
+
+
+State 135
+
+   30 compstmt: LBRACE stmtlist RBRACE .
+
+    $default  reduce using rule 30 (compstmt)
+
+
+State 136
+
+   43 matched_stmt: SEMICOLON .
+
+    $default  reduce using rule 43 (matched_stmt)
+
+
+State 137
+
+   40 matched_stmt: declaration .
+
+    $default  reduce using rule 40 (matched_stmt)
+
+
+State 138
+
+   37 matched_stmt: compstmt .
+
+    $default  reduce using rule 37 (matched_stmt)
+
+
+State 139
+
+   32 stmtlist: stmtlist stmt .
+
+    $default  reduce using rule 32 (stmtlist)
+
+
+State 140
+
+   34 stmt: matched_stmt .
+
+    $default  reduce using rule 34 (stmt)
+
+
+State 141
+
+   35 stmt: unmatched_stmt .
+
+    $default  reduce using rule 35 (stmt)
+
+
+State 142
+
+   38 matched_stmt: whilestmt .
+
+    $default  reduce using rule 38 (matched_stmt)
+
+
+State 143
+
+   39 matched_stmt: returnstmt .
+
+    $default  reduce using rule 39 (matched_stmt)
+
+
+State 144
+
+   41 matched_stmt: print .
+
+    $default  reduce using rule 41 (matched_stmt)
+
+
+State 145
+
+   42 matched_stmt: scan .
+
+    $default  reduce using rule 42 (matched_stmt)
+
+
+State 146
+
+   58 argdecls: argdecls COMMA dt ID argassign .
+
+    $default  reduce using rule 58 (argdecls)
+
+
+State 147
+
+   15 function: INT ID LPAREN argdecls RPAREN compstmt .
+
+    $default  reduce using rule 15 (function)
+
+
+State 148
+
+   17 function: CHAR ID LPAREN argdecls RPAREN compstmt .
+
+    $default  reduce using rule 17 (function)
+
+
+State 149
+
+   16 function: VOID ID LPAREN argdecls RPAREN compstmt .
+
+    $default  reduce using rule 16 (function)
+
+
+State 150
+
+   27 decllist: ID . declassign
+
+    ASSIGN  shift, and go to state 57
+
+    $default  reduce using rule 29 (declassign)
+
+    declassign  go to state 58
+
+
+State 151
+
+   36 matched_stmt: IF LPAREN . expr RPAREN matched_stmt ELSE matched_stmt
+   44 unmatched_stmt: IF LPAREN . expr RPAREN stmt
+   45               | IF LPAREN . expr RPAREN matched_stmt ELSE unmatched_stmt
+
+    ID      shift, and go to state 31
+    NUM     shift, and go to state 6
+    LPAREN  shift, and go to state 10
+    NOT     shift, and go to state 11
+    '-'     shift, and go to state 12
+
+    expr  go to state 157
+
+
+State 152
+
+   46 whilestmt: WHILE '(' . expr ')' stmt
+
+    ID      shift, and go to state 31
+    NUM     shift, and go to state 6
+    LPAREN  shift, and go to state 10
+    NOT     shift, and go to state 11
+    '-'     shift, and go to state 12
+
+    expr  go to state 158
+
+
+State 153
+
+   57 scan: SCANF LPAREN . STRINGLIT snumlist RPAREN SEMICOLON
+
+    STRINGLIT  shift, and go to state 159
+
+
+State 154
+
+   55 print: PRINTF LPAREN . STRINGLIT RPAREN SEMICOLON
+   56      | PRINTF LPAREN . STRINGLIT numlist RPAREN SEMICOLON
+
+    STRINGLIT  shift, and go to state 160
+
+
+State 155
+
+   47 returnstmt: RETURN SEMICOLON .
+
+    $default  reduce using rule 47 (returnstmt)
+
+
+State 156
+
+   48 returnstmt: RETURN expr . SEMICOLON
+   70 expr: expr . ADD expr
+   71     | expr . SUB expr
+   72     | expr . MUL expr
+   73     | expr . DIV expr
+   74     | expr . MOD expr
+   76     | expr . ISEQ expr
+   77     | expr . NEQ expr
+   78     | expr . GEQ expr
+   79     | expr . LEQ expr
+   80     | expr . LT expr
+   81     | expr . GT expr
+
+    SEMICOLON  shift, and go to state 161
+    ADD        shift, and go to state 39
+    SUB        shift, and go to state 40
+    MUL        shift, and go to state 41
+    DIV        shift, and go to state 42
+    MOD        shift, and go to state 43
+    ISEQ       shift, and go to state 44
+    GT         shift, and go to state 45
+    LT         shift, and go to state 46
+    GEQ        shift, and go to state 47
+    LEQ        shift, and go to state 48
+    NEQ        shift, and go to state 49
+
+
+State 157
+
+   36 matched_stmt: IF LPAREN expr . RPAREN matched_stmt ELSE matched_stmt
+   44 unmatched_stmt: IF LPAREN expr . RPAREN stmt
+   45               | IF LPAREN expr . RPAREN matched_stmt ELSE unmatched_stmt
+   70 expr: expr . ADD expr
+   71     | expr . SUB expr
+   72     | expr . MUL expr
+   73     | expr . DIV expr
+   74     | expr . MOD expr
+   76     | expr . ISEQ expr
+   77     | expr . NEQ expr
+   78     | expr . GEQ expr
+   79     | expr . LEQ expr
+   80     | expr . LT expr
+   81     | expr . GT expr
+
+    RPAREN  shift, and go to state 162
+    ADD     shift, and go to state 39
+    SUB     shift, and go to state 40
+    MUL     shift, and go to state 41
+    DIV     shift, and go to state 42
+    MOD     shift, and go to state 43
+    ISEQ    shift, and go to state 44
+    GT      shift, and go to state 45
+    LT      shift, and go to state 46
+    GEQ     shift, and go to state 47
+    LEQ     shift, and go to state 48
+    NEQ     shift, and go to state 49
+
+
+State 158
+
+   46 whilestmt: WHILE '(' expr . ')' stmt
+   70 expr: expr . ADD expr
+   71     | expr . SUB expr
+   72     | expr . MUL expr
+   73     | expr . DIV expr
+   74     | expr . MOD expr
+   76     | expr . ISEQ expr
+   77     | expr . NEQ expr
+   78     | expr . GEQ expr
+   79     | expr . LEQ expr
+   80     | expr . LT expr
+   81     | expr . GT expr
+
+    ADD   shift, and go to state 39
+    SUB   shift, and go to state 40
+    MUL   shift, and go to state 41
+    DIV   shift, and go to state 42
+    MOD   shift, and go to state 43
+    ISEQ  shift, and go to state 44
+    GT    shift, and go to state 45
+    LT    shift, and go to state 46
+    GEQ   shift, and go to state 47
+    LEQ   shift, and go to state 48
+    NEQ   shift, and go to state 49
+    ')'   shift, and go to state 163
+
+
+State 159
+
+   57 scan: SCANF LPAREN STRINGLIT . snumlist RPAREN SEMICOLON
+
+    COMMA  shift, and go to state 164
+
+    snumlist  go to state 165
+
+
+State 160
+
+   55 print: PRINTF LPAREN STRINGLIT . RPAREN SEMICOLON
+   56      | PRINTF LPAREN STRINGLIT . numlist RPAREN SEMICOLON
+
+    RPAREN  shift, and go to state 166
+    COMMA   shift, and go to state 167
+
+    numlist  go to state 168
+
+
+State 161
+
+   48 returnstmt: RETURN expr SEMICOLON .
+
+    $default  reduce using rule 48 (returnstmt)
+
+
+State 162
+
+   36 matched_stmt: IF LPAREN expr RPAREN . matched_stmt ELSE matched_stmt
+   44 unmatched_stmt: IF LPAREN expr RPAREN . stmt
+   45               | IF LPAREN expr RPAREN . matched_stmt ELSE unmatched_stmt
+
+    error      shift, and go to state 4
+    ID         shift, and go to state 5
+    NUM        shift, and go to state 6
+    INT        shift, and go to state 128
+    CHAR       shift, and go to state 129
+    IF         shift, and go to state 130
+    WHILE      shift, and go to state 131
+    SCANF      shift, and go to state 132
+    PRINTF     shift, and go to state 133
+    RETURN     shift, and go to state 134
+    LBRACE     shift, and go to state 111
+    LPAREN     shift, and go to state 10
+    SEMICOLON  shift, and go to state 136
+    NOT        shift, and go to state 11
+    '-'        shift, and go to state 12
+
+    error      [reduce using rule 31 (compstmt)]
+    ID         [reduce using rule 31 (compstmt)]
+    NUM        [reduce using rule 31 (compstmt)]
+    INT        [reduce using rule 31 (compstmt)]
+    CHAR       [reduce using rule 31 (compstmt)]
+    IF         [reduce using rule 31 (compstmt)]
+    ELSE       reduce using rule 31 (compstmt)
+    WHILE      [reduce using rule 31 (compstmt)]
+    SCANF      [reduce using rule 31 (compstmt)]
+    PRINTF     [reduce using rule 31 (compstmt)]
+    RETURN     [reduce using rule 31 (compstmt)]
+    LBRACE     [reduce using rule 31 (compstmt)]
+    RBRACE     reduce using rule 31 (compstmt)
+    LPAREN     [reduce using rule 31 (compstmt)]
+    SEMICOLON  [reduce using rule 31 (compstmt)]
+    NOT        [reduce using rule 31 (compstmt)]
+    '-'        [reduce using rule 31 (compstmt)]
+
+    declaration     go to state 137
+    declstmt        go to state 16
+    compstmt        go to state 138
+    stmt            go to state 169
+    matched_stmt    go to state 170
+    unmatched_stmt  go to state 141
+    whilestmt       go to state 142
+    returnstmt      go to state 143
+    funcall         go to state 17
+    print           go to state 144
+    scan            go to state 145
+    expr            go to state 18
+
+
+State 163
+
+   46 whilestmt: WHILE '(' expr ')' . stmt
+
+    error      shift, and go to state 4
+    ID         shift, and go to state 5
+    NUM        shift, and go to state 6
+    INT        shift, and go to state 128
+    CHAR       shift, and go to state 129
+    IF         shift, and go to state 130
+    WHILE      shift, and go to state 131
+    SCANF      shift, and go to state 132
+    PRINTF     shift, and go to state 133
+    RETURN     shift, and go to state 134
+    LBRACE     shift, and go to state 111
+    LPAREN     shift, and go to state 10
+    SEMICOLON  shift, and go to state 136
+    NOT        shift, and go to state 11
+    '-'        shift, and go to state 12
+
+    error      [reduce using rule 31 (compstmt)]
+    ID         [reduce using rule 31 (compstmt)]
+    NUM        [reduce using rule 31 (compstmt)]
+    INT        [reduce using rule 31 (compstmt)]
+    CHAR       [reduce using rule 31 (compstmt)]
+    IF         [reduce using rule 31 (compstmt)]
+    ELSE       reduce using rule 31 (compstmt)
+    WHILE      [reduce using rule 31 (compstmt)]
+    SCANF      [reduce using rule 31 (compstmt)]
+    PRINTF     [reduce using rule 31 (compstmt)]
+    RETURN     [reduce using rule 31 (compstmt)]
+    LBRACE     [reduce using rule 31 (compstmt)]
+    RBRACE     reduce using rule 31 (compstmt)
+    LPAREN     [reduce using rule 31 (compstmt)]
+    SEMICOLON  [reduce using rule 31 (compstmt)]
+    NOT        [reduce using rule 31 (compstmt)]
+    '-'        [reduce using rule 31 (compstmt)]
+
+    declaration     go to state 137
+    declstmt        go to state 16
+    compstmt        go to state 138
+    stmt            go to state 171
+    matched_stmt    go to state 140
+    unmatched_stmt  go to state 141
+    whilestmt       go to state 142
+    returnstmt      go to state 143
+    funcall         go to state 17
+    print           go to state 144
+    scan            go to state 145
+    expr            go to state 18
+
+
+State 164
+
+   65 snumlist: COMMA . AND ID snumlist
+   66         | COMMA . AND ID
+
+    AND  shift, and go to state 172
+
+
+State 165
+
+   57 scan: SCANF LPAREN STRINGLIT snumlist . RPAREN SEMICOLON
+
+    RPAREN  shift, and go to state 173
+
+
+State 166
+
+   55 print: PRINTF LPAREN STRINGLIT RPAREN . SEMICOLON
+
+    SEMICOLON  shift, and go to state 174
+
+
+State 167
+
+   67 numlist: COMMA . ID numlist
+   68        | COMMA . ID
+
+    ID  shift, and go to state 175
+
+
+State 168
+
+   56 print: PRINTF LPAREN STRINGLIT numlist . RPAREN SEMICOLON
+
+    RPAREN  shift, and go to state 176
+
+
+State 169
+
+   44 unmatched_stmt: IF LPAREN expr RPAREN stmt .
+
+    $default  reduce using rule 44 (unmatched_stmt)
+
+
+State 170
+
+   34 stmt: matched_stmt .
+   36 matched_stmt: IF LPAREN expr RPAREN matched_stmt . ELSE matched_stmt
+   45 unmatched_stmt: IF LPAREN expr RPAREN matched_stmt . ELSE unmatched_stmt
+
+    ELSE  shift, and go to state 177
+
+    ELSE      [reduce using rule 34 (stmt)]
+    $default  reduce using rule 34 (stmt)
+
+
+State 171
+
+   46 whilestmt: WHILE '(' expr ')' stmt .
+
+    $default  reduce using rule 46 (whilestmt)
+
+
+State 172
+
+   65 snumlist: COMMA AND . ID snumlist
+   66         | COMMA AND . ID
+
+    ID  shift, and go to state 178
+
+
+State 173
+
+   57 scan: SCANF LPAREN STRINGLIT snumlist RPAREN . SEMICOLON
+
+    SEMICOLON  shift, and go to state 179
+
+
+State 174
+
+   55 print: PRINTF LPAREN STRINGLIT RPAREN SEMICOLON .
+
+    $default  reduce using rule 55 (print)
+
+
+State 175
+
+   67 numlist: COMMA ID . numlist
+   68        | COMMA ID .
+
+    COMMA  shift, and go to state 167
+
+    $default  reduce using rule 68 (numlist)
+
+    numlist  go to state 180
+
+
+State 176
+
+   56 print: PRINTF LPAREN STRINGLIT numlist RPAREN . SEMICOLON
+
+    SEMICOLON  shift, and go to state 181
+
+
+State 177
+
+   36 matched_stmt: IF LPAREN expr RPAREN matched_stmt ELSE . matched_stmt
+   45 unmatched_stmt: IF LPAREN expr RPAREN matched_stmt ELSE . unmatched_stmt
+
+    error      shift, and go to state 4
+    ID         shift, and go to state 5
+    NUM        shift, and go to state 6
+    INT        shift, and go to state 128
+    CHAR       shift, and go to state 129
+    IF         shift, and go to state 130
+    WHILE      shift, and go to state 131
+    SCANF      shift, and go to state 132
+    PRINTF     shift, and go to state 133
+    RETURN     shift, and go to state 134
+    LBRACE     shift, and go to state 111
+    LPAREN     shift, and go to state 10
+    SEMICOLON  shift, and go to state 136
+    NOT        shift, and go to state 11
+    '-'        shift, and go to state 12
+
+    error      [reduce using rule 31 (compstmt)]
+    ID         [reduce using rule 31 (compstmt)]
+    NUM        [reduce using rule 31 (compstmt)]
+    INT        [reduce using rule 31 (compstmt)]
+    CHAR       [reduce using rule 31 (compstmt)]
+    IF         [reduce using rule 31 (compstmt)]
+    ELSE       reduce using rule 31 (compstmt)
+    WHILE      [reduce using rule 31 (compstmt)]
+    SCANF      [reduce using rule 31 (compstmt)]
+    PRINTF     [reduce using rule 31 (compstmt)]
+    RETURN     [reduce using rule 31 (compstmt)]
+    LBRACE     [reduce using rule 31 (compstmt)]
+    RBRACE     reduce using rule 31 (compstmt)
+    LPAREN     [reduce using rule 31 (compstmt)]
+    SEMICOLON  [reduce using rule 31 (compstmt)]
+    NOT        [reduce using rule 31 (compstmt)]
+    '-'        [reduce using rule 31 (compstmt)]
+
+    declaration     go to state 137
+    declstmt        go to state 16
+    compstmt        go to state 138
+    matched_stmt    go to state 182
+    unmatched_stmt  go to state 183
+    whilestmt       go to state 142
+    returnstmt      go to state 143
+    funcall         go to state 17
+    print           go to state 144
+    scan            go to state 145
+    expr            go to state 18
+
+
+State 178
+
+   65 snumlist: COMMA AND ID . snumlist
+   66         | COMMA AND ID .
+
+    COMMA  shift, and go to state 164
+
+    $default  reduce using rule 66 (snumlist)
+
+    snumlist  go to state 184
+
+
+State 179
+
+   57 scan: SCANF LPAREN STRINGLIT snumlist RPAREN SEMICOLON .
+
+    $default  reduce using rule 57 (scan)
+
+
+State 180
+
+   67 numlist: COMMA ID numlist .
+
+    $default  reduce using rule 67 (numlist)
+
+
+State 181
+
+   56 print: PRINTF LPAREN STRINGLIT numlist RPAREN SEMICOLON .
+
+    $default  reduce using rule 56 (print)
+
+
+State 182
+
+   36 matched_stmt: IF LPAREN expr RPAREN matched_stmt ELSE matched_stmt .
+
+    $default  reduce using rule 36 (matched_stmt)
+
+
+State 183
+
+   45 unmatched_stmt: IF LPAREN expr RPAREN matched_stmt ELSE unmatched_stmt .
+
+    $default  reduce using rule 45 (unmatched_stmt)
+
+
+State 184
+
+   65 snumlist: COMMA AND ID snumlist .
+
+    $default  reduce using rule 65 (snumlist)
