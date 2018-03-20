@@ -544,7 +544,7 @@ static const yytype_uint8 yyrline[] =
      164,   165,   166,   168,   169,   171,   172,   173,   175,   176,
      177,   179,   180,   181,   182,   183,   184,   185,   186,   187,
      188,   189,   190,   191,   192,   193,   194,   195,   196,   197,
-     199,   208,   216
+     199,   208,   240
 };
 #endif
 
@@ -1549,17 +1549,41 @@ yyreduce:
 
   case 81:
 #line 209 "par.y" /* yacc.c:1646  */
-    {
+    {	
+
 	if(hash_lookup_scope(idname)==0){
 		printf("Undeclared Variable: '%s' in line %d\n",idname,yylineno);
 		return -1;
 	}
+	int hashIndex = hashCode(idname);
+	int f=0;
+	struct DataItem * temp = hashArray[hashIndex];
+
+	while(temp!=NULL){
+		if(strcmp(temp->text,idname)==0){
+			int sc=temp->scope;
+			if(isScopeValid(sc)==1){
+				if(strcmp(temp->type,"array")!=0){
+					f=1;
+				}
+			}
+				
+		}
+		temp=temp->next;
+	}
+	if(f==1){
+		printf("Single variable id or function has subscript\n");
+		return -1;
+	}
+	
+return 0;
+
 }
-#line 1559 "y.tab.c" /* yacc.c:1646  */
+#line 1583 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 82:
-#line 217 "par.y" /* yacc.c:1646  */
+#line 241 "par.y" /* yacc.c:1646  */
     {
 	dim = (yyvsp[-2]);
 	if(dim<1){
@@ -1568,11 +1592,11 @@ yyreduce:
 	}
 	insert_hash(idname,"array",getCurrentScope(),yylineno,dim,"NA");
 }
-#line 1572 "y.tab.c" /* yacc.c:1646  */
+#line 1596 "y.tab.c" /* yacc.c:1646  */
     break;
 
 
-#line 1576 "y.tab.c" /* yacc.c:1646  */
+#line 1600 "y.tab.c" /* yacc.c:1646  */
       default: break;
     }
   /* User semantic actions sometimes alter yychar, and that requires
@@ -1800,7 +1824,7 @@ yyreturn:
 #endif
   return yyresult;
 }
-#line 233 "par.y" /* yacc.c:1906  */
+#line 257 "par.y" /* yacc.c:1906  */
 
 #include"lex.yy.c"
 #include<ctype.h>

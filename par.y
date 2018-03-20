@@ -206,11 +206,35 @@ identifier: ID
 }
 ;
 arrid: ID LSQ
-{
+{	
+
 	if(hash_lookup_scope(idname)==0){
 		printf("Undeclared Variable: '%s' in line %d\n",idname,yylineno);
 		return -1;
 	}
+	int hashIndex = hashCode(idname);
+	int f=0;
+	struct DataItem * temp = hashArray[hashIndex];
+
+	while(temp!=NULL){
+		if(strcmp(temp->text,idname)==0){
+			int sc=temp->scope;
+			if(isScopeValid(sc)==1){
+				if(strcmp(temp->type,"array")!=0){
+					f=1;
+				}
+			}
+				
+		}
+		temp=temp->next;
+	}
+	if(f==1){
+		printf("Single variable id or function has subscript\n");
+		return -1;
+	}
+	
+return 0;
+
 }
 ;
 declarray:  INT ID LSQ NUM RSQ SEMICOLON 
