@@ -1,8 +1,8 @@
-/* A Bison parser, made by GNU Bison 3.0.2.  */
+/* A Bison parser, made by GNU Bison 3.0.4.  */
 
 /* Bison interface for Yacc-like parsers in C
 
-   Copyright (C) 1984, 1989-1990, 2000-2013 Free Software Foundation, Inc.
+   Copyright (C) 1984, 1989-1990, 2000-2015 Free Software Foundation, Inc.
 
    This program is free software: you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -49,44 +49,41 @@ extern int yydebug;
     NUM = 259,
     STRINGLIT = 260,
     INT = 261,
-    SINT = 262,
-    LINT = 263,
-    UINT = 264,
-    CHAR = 265,
-    VOID = 266,
-    IF = 267,
-    ELSE = 268,
-    WHILE = 269,
-    BREAK = 270,
-    SCANF = 271,
-    PRINTF = 272,
-    RETURN = 273,
-    MAIN = 274,
-    LBRACE = 275,
-    RBRACE = 276,
-    LPAREN = 277,
-    RPAREN = 278,
-    SEMICOLON = 279,
-    COMMA = 280,
-    DOT = 281,
-    SQ = 282,
-    AND = 283,
-    NOT = 284,
-    OR = 285,
-    ADD = 286,
-    SUB = 287,
-    MUL = 288,
-    DIV = 289,
-    MOD = 290,
-    ASSIGN = 291,
-    ISEQ = 292,
-    GT = 293,
-    LT = 294,
-    GEQ = 295,
-    LEQ = 296,
-    DAND = 297,
-    DOR = 298,
-    NEQ = 299
+    VOID = 262,
+    IF = 263,
+    ELSE = 264,
+    WHILE = 265,
+    BREAK = 266,
+    SCANF = 267,
+    PRINTF = 268,
+    RETURN = 269,
+    LBRACE = 270,
+    RBRACE = 271,
+    LPAREN = 272,
+    RPAREN = 273,
+    SEMICOLON = 274,
+    COMMA = 275,
+    DOT = 276,
+    LSQ = 277,
+    RSQ = 278,
+    QM = 279,
+    AND = 280,
+    NOT = 281,
+    OR = 282,
+    ADD = 283,
+    SUB = 284,
+    MUL = 285,
+    DIV = 286,
+    MOD = 287,
+    ASSIGN = 288,
+    ISEQ = 289,
+    GT = 290,
+    LT = 291,
+    GEQ = 292,
+    LEQ = 293,
+    DAND = 294,
+    DOR = 295,
+    NEQ = 296
   };
 #endif
 /* Tokens.  */
@@ -94,44 +91,41 @@ extern int yydebug;
 #define NUM 259
 #define STRINGLIT 260
 #define INT 261
-#define SINT 262
-#define LINT 263
-#define UINT 264
-#define CHAR 265
-#define VOID 266
-#define IF 267
-#define ELSE 268
-#define WHILE 269
-#define BREAK 270
-#define SCANF 271
-#define PRINTF 272
-#define RETURN 273
-#define MAIN 274
-#define LBRACE 275
-#define RBRACE 276
-#define LPAREN 277
-#define RPAREN 278
-#define SEMICOLON 279
-#define COMMA 280
-#define DOT 281
-#define SQ 282
-#define AND 283
-#define NOT 284
-#define OR 285
-#define ADD 286
-#define SUB 287
-#define MUL 288
-#define DIV 289
-#define MOD 290
-#define ASSIGN 291
-#define ISEQ 292
-#define GT 293
-#define LT 294
-#define GEQ 295
-#define LEQ 296
-#define DAND 297
-#define DOR 298
-#define NEQ 299
+#define VOID 262
+#define IF 263
+#define ELSE 264
+#define WHILE 265
+#define BREAK 266
+#define SCANF 267
+#define PRINTF 268
+#define RETURN 269
+#define LBRACE 270
+#define RBRACE 271
+#define LPAREN 272
+#define RPAREN 273
+#define SEMICOLON 274
+#define COMMA 275
+#define DOT 276
+#define LSQ 277
+#define RSQ 278
+#define QM 279
+#define AND 280
+#define NOT 281
+#define OR 282
+#define ADD 283
+#define SUB 284
+#define MUL 285
+#define DIV 286
+#define MOD 287
+#define ASSIGN 288
+#define ISEQ 289
+#define GT 290
+#define LT 291
+#define GEQ 292
+#define LEQ 293
+#define DAND 294
+#define DOR 295
+#define NEQ 296
 
 /* Value type.  */
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
