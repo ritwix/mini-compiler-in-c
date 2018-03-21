@@ -4,7 +4,7 @@ A mini compiler project in C language for Compiler Design Lab, Dept. of CSE, NIT
 lex scanner.l
 yacc -d parser.y
 cc y.tab.c -ll -ly
-./a.out tcx.c
+./a.out test.c
 ```
 
 The report for the first phase of this project has been uploaded to this repository. The file is 'Project 1-Report.pdf'.
