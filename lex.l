@@ -5,7 +5,7 @@
 %}
 alpha [a-zA-Z_]
 digit [-]?[0-9]
-
+charlit [a-zA-Z0-9]
 %%
 [ \t]		;					/*Removes spaces and tabs */
 [ \n]   { yylineno = yylineno + 1;}
@@ -20,7 +20,8 @@ scanf 	{ return SCANF;}
 break	{ return BREAK;}
 ^"#include ".+ ;
 return	{ return RETURN;}
-{digit}+   {yylval=atoi(yytext); return NUM;} 
+{digit}+   {yylval=atoi(yytext); return NUM;}
+\'{charlit}\'			{	 return CHLIT;}  
 {alpha}({alpha}|{digit})* { strcpy(idname,yytext); return ID;}
 
 

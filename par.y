@@ -34,9 +34,12 @@ void startNewScope();
 void endCurrentScope();
 int isScopeValid(int);
 int hash_lookup_scope(char * key);
-    
+void getidtype(char *);
+int gdim=0;  
+char * typ, * op1,* op2; 
+int flg=0; 
 %}
-%token ID NUM STRINGLIT INT VOID CHAR UMINUS
+%token ID NUM CHLIT STRINGLIT INT VOID CHAR UMINUS
 %token IF ELSE WHILE BREAK SCANF PRINTF RETURN
 %token LBRACE RBRACE LPAREN RPAREN SEMICOLON COMMA DOT LSQ RSQ QM
 %token AND NOT OR 
@@ -176,33 +179,229 @@ scanstmt: SCANF LPAREN STRINGLIT RPAREN SEMICOLON
 | SCANF LPAREN STRINGLIT COMMA AND ID RPAREN SEMICOLON
 | SCANF LPAREN STRINGLIT COMMA AND ID COMMA AND ID RPAREN SEMICOLON
 ;
-expr: identifier 
-| NUM
-| identifier ASSIGN expr
-| identifier ASSIGN funcall
-| arrid expr RSQ
-| arrid expr RSQ ASSIGN expr
+expr: identifier	{flg=0;}  
+| NUM {flg=1;}
+| CHLIT	{flg=2;}
+| identifier ASSIGN {getidtype(idname) ;  if(strcmp(typ,"int")!=0) {printf("LHS of assignment should be int in line %d",yylineno); return -1;} } expr 
+| arrid expr RSQ	
+| arrid expr RSQ ASSIGN expr 
 | arrid expr RSQ ASSIGN funcall
-| expr ADD expr
-| expr SUB expr
-| expr MUL expr
-| expr DIV expr
-| expr GEQ expr
-| expr LEQ expr
-| expr GT expr
-| expr LT expr
-| expr ISEQ expr
-| expr NEQ expr
+| expr ADD{
+	if(flg==0){
+	getidtype(idname); op1=(char *)malloc(strlen(typ)*sizeof(char));  strcpy(op1,typ);}
+	if(flg==2){
+		printf("Character can't be operand\n in line %d",yylineno);
+		return -1;
+	}
+} expr	{
+if(flg==0){
+	getidtype(idname); op2=(char *)malloc(strlen(typ)*sizeof(char));  strcpy(op2,typ);
+	if(strcmp(op1,op2)!=0){
+		printf("Operand are of different types in line %d\n",yylineno);
+		return -1;
+	}
+	}
+	if(flg==2){
+		printf("Character can't be operand\n in line %d",yylineno);
+		return -1;
+	}
+}
+| expr SUB {
+	if(flg==0){
+	getidtype(idname); op1=(char *)malloc(strlen(typ)*sizeof(char));  strcpy(op1,typ);}
+	if(flg==2){
+		printf("Character can't be operand\n in line %d",yylineno);
+		return -1;
+	}
+} expr {
+if(flg==0){
+	getidtype(idname); op2=(char *)malloc(strlen(typ)*sizeof(char));  strcpy(op2,typ);
+	if(strcmp(op1,op2)!=0){
+		printf("Operand are of different types in line %d\n",yylineno);
+		return -1;
+	}
+	}
+	if(flg==2){
+		printf("Character can't be operand\n in line %d",yylineno);
+		return -1;
+	}
+}
+| expr MUL {
+	if(flg==0){
+	getidtype(idname); op1=(char *)malloc(strlen(typ)*sizeof(char));  strcpy(op1,typ);}
+	if(flg==2){
+		printf("Character can't be operand\n in line %d",yylineno);
+		return -1;
+	}
+} expr {
+if(flg==0){
+	getidtype(idname); op2=(char *)malloc(strlen(typ)*sizeof(char));  strcpy(op2,typ);
+	if(strcmp(op1,op2)!=0){
+		printf("Operand are of different types in line %d\n",yylineno);
+		return -1;
+	}
+	}
+	if(flg==2){
+		printf("Character can't be operand\n in line %d",yylineno);
+		return -1;
+	}
+}
+| expr DIV {
+	if(flg==0){
+	getidtype(idname); op1=(char *)malloc(strlen(typ)*sizeof(char));  strcpy(op1,typ);}
+	if(flg==2){
+		printf("Character can't be operand\n in line %d",yylineno);
+		return -1;
+	}
+} expr {
+if(flg==0){
+	getidtype(idname); op2=(char *)malloc(strlen(typ)*sizeof(char));  strcpy(op2,typ);
+	if(strcmp(op1,op2)!=0){
+		printf("Operand are of different types in line %d\n",yylineno);
+		return -1;
+	}
+	}
+	if(flg==2){
+		printf("Character can't be operand\n in line %d",yylineno);
+		return -1;
+	}
+}
+| expr GEQ {
+	if(flg==0){
+	getidtype(idname); op1=(char *)malloc(strlen(typ)*sizeof(char));  strcpy(op1,typ);}
+	if(flg==2){
+		printf("Character can't be operand\n in line %d",yylineno);
+		return -1;
+	}
+} expr {
+if(flg==0){
+	getidtype(idname); op2=(char *)malloc(strlen(typ)*sizeof(char));  strcpy(op2,typ);
+	if(strcmp(op1,op2)!=0){
+		printf("Operand are of different types in line %d\n",yylineno);
+		return -1;
+	}
+	}
+	if(flg==2){
+		printf("Character can't be operand\n in line %d",yylineno);
+		return -1;
+	}
+}
+| expr LEQ {
+	if(flg==0){
+	getidtype(idname); op1=(char *)malloc(strlen(typ)*sizeof(char));  strcpy(op1,typ);}
+	if(flg==2){
+		printf("Character can't be operand\n in line %d",yylineno);
+		return -1;
+	}
+} expr {
+if(flg==0){
+	getidtype(idname); op2=(char *)malloc(strlen(typ)*sizeof(char));  strcpy(op2,typ);
+	if(strcmp(op1,op2)!=0){
+		printf("Operand are of different types in line %d\n",yylineno);
+		return -1;
+	}
+	}
+	if(flg==2){
+		printf("Character can't be operand\n in line %d",yylineno);
+		return -1;
+	}
+}
+| expr GT {
+	if(flg==0){
+	getidtype(idname); op1=(char *)malloc(strlen(typ)*sizeof(char));  strcpy(op1,typ);}
+	if(flg==2){
+		printf("Character can't be operand\n in line %d",yylineno);
+		return -1;
+	}
+} expr {
+if(flg==0){
+	getidtype(idname); op2=(char *)malloc(strlen(typ)*sizeof(char));  strcpy(op2,typ);
+	if(strcmp(op1,op2)!=0){
+		printf("Operand are of different types in line %d\n",yylineno);
+		return -1;
+	}
+	}
+	if(flg==2){
+		printf("Character can't be operand\n in line %d",yylineno);
+		return -1;
+	}
+}
+| expr LT {
+	if(flg==0){
+	getidtype(idname); op1=(char *)malloc(strlen(typ)*sizeof(char));  strcpy(op1,typ);}
+	if(flg==2){
+		printf("Character can't be operand\n in line %d",yylineno);
+		return -1;
+	}
+} expr {
+if(flg==0){
+	getidtype(idname); op2=(char *)malloc(strlen(typ)*sizeof(char));  strcpy(op2,typ);
+	if(strcmp(op1,op2)!=0){
+		printf("Operand are of different types in line %d\n",yylineno);
+		return -1;
+	}
+	}
+	if(flg==2){
+		printf("Character can't be operand\n in line %d",yylineno);
+		return -1;
+	}
+}
+| expr ISEQ {
+	if(flg==0){
+	getidtype(idname); op1=(char *)malloc(strlen(typ)*sizeof(char));  strcpy(op1,typ);}
+	if(flg==2){
+		printf("Character can't be operand\n in line %d",yylineno);
+		return -1;
+	}
+} expr {
+if(flg==0){
+	getidtype(idname); op2=(char *)malloc(strlen(typ)*sizeof(char));  strcpy(op2,typ);
+	if(strcmp(op1,op2)!=0){
+		printf("Operand are of different types in line %d\n",yylineno);
+		return -1;
+	}
+	}
+	if(flg==2){
+		printf("Character can't be operand\n in line %d",yylineno);
+		return -1;
+	}
+}
+| expr NEQ {
+	if(flg==0){
+	getidtype(idname); op1=(char *)malloc(strlen(typ)*sizeof(char));  strcpy(op1,typ);}
+	if(flg==2){
+		printf("Character can't be operand\n in line %d",yylineno);
+		return -1;
+	}
+} expr {
+if(flg==0){
+	getidtype(idname); op2=(char *)malloc(strlen(typ)*sizeof(char));  strcpy(op2,typ);
+	if(strcmp(op1,op2)!=0){
+		printf("Operand are of different types in line %d\n",yylineno);
+		return -1;
+	}
+	}
+	if(flg==2){
+		printf("Character can't be operand\n in line %d",yylineno);
+		return -1;
+	}
+}
 | LPAREN expr RPAREN
 | SUB expr 		%prec UMINUS
+{
+	if(flg!=1){
+		printf("Invalid operand in line %d",yylineno);
+		return -1;
+	}
+}
 ;
 identifier: ID
 {	
-		printf("heelo\n");
 		if(hash_lookup_scope(idname)==0){
 			printf("Undeclared Variable: '%s' in line %d\n",idname,yylineno);
 			return -1;
 		}
+		
 }
 ;
 arrid: ID LSQ
@@ -223,6 +422,7 @@ arrid: ID LSQ
 				if(strcmp(temp->type,"array")!=0){
 					f=1;
 				}
+				else gdim=temp->arrdim;
 			}
 				
 		}
@@ -275,10 +475,50 @@ void endCurrentScope ()
 
 int isScopeValid (int scope)
 {
-   for (int i = scopesLength-1; i>=0; i--)
+   int i=0;
+   for (i = scopesLength-1; i>=0; i--)
         if (scopes[i] == scope)
             return 1;
    return 0;
+}
+int hash_lookup_scope(char * key)
+{
+int hashIndex = hashCode(key);
+if(hashArray[hashIndex]!=NULL){
+	struct DataItem * temp = hashArray[hashIndex];
+
+	while(temp!=NULL){
+		if(strcmp(temp->text,key)==0){
+			int sc=temp->scope;
+			if(isScopeValid(sc)==1)
+				return 1;
+		}
+		temp=temp->next;
+	}
+	}
+return 0;
+}
+void getidtype(char * key){
+	
+		if(hash_lookup_scope(key)==1){
+			int hashIndex=hashCode(key);
+			struct DataItem * temp = hashArray[hashIndex];
+			while(temp!=NULL){
+				if(strcmp(temp->text,key)==0){
+					int sc=temp->scope;
+					if(isScopeValid(sc)==1){
+						
+						typ=(char *)malloc(sizeof(char)*strlen(temp->type));
+						strcpy(typ,temp->type);
+						
+					}
+				}
+				temp=temp->next;
+			}
+		}
+		
+
+
 }
 
 int hashCode(char* key)             /* Returns unique index for a token */
@@ -361,23 +601,7 @@ void display_hash()
   
    printf("\n");
 }
-int hash_lookup_scope(char * key)
-{
-int hashIndex = hashCode(key);
-if(hashArray[hashIndex]!=NULL){
-	struct DataItem * temp = hashArray[hashIndex];
 
-	while(temp!=NULL){
-		if(strcmp(temp->text,key)==0){
-			int sc=temp->scope;
-			if(isScopeValid(sc)==1)
-				return 1;
-		}
-		temp=temp->next;
-	}
-	}
-return 0;
-}
 
 int main(int argc, char *argv[])
 {

@@ -1,9 +1,10 @@
 #include <stdio.h>
-int main(int a){
-	return a;
+void add(int a,int b){
+	return a+b;
 }
 int main()
 {
 	/* code */
 	;
+	add(4);
 }

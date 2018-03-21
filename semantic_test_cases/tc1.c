@@ -2,10 +2,14 @@
 int main()
 {
 	/* code */
-	int a;
+	
 	if(1){
+		int b;
 		int a;
+		char a;
 	}
-	int a;
-	return 0;
+	if(2){
+	a=5;
+	}
+	
 }

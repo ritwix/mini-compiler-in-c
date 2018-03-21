@@ -1,11 +1,11 @@
+//single variable has subscript
 #include <stdio.h>
 
 int main()
 {
 	/* code */
 	int a;
-	char b;
-	int c;
-	c=a+b;
+	if(a[2])
+		{;
+		}
 }
-
