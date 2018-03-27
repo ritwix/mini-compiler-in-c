@@ -15,14 +15,14 @@
     void display_hash();
     struct DataItem 
     {
-        char* text;             /* The token*/
-        char* type;         /* Type of the token*/
-        int scope;
-        int lineno;         /* Line number in the input file*/
-        int arrdim;
-        char* retype;
+        char* text;      		   /* The token*/
+        char* type;      		   /* Type of the token*/
+        int scope;      		   /* Scope of the variable */
+        int lineno;     		   /* Line number in the input file*/
+        int arrdim;	  		   /* Only for array, the dimension of array */
+        char* retype;	   		   /* Only for function, the return type of function */
      	
-        struct DataItem * next;     /*Pointer to next data item*/
+        struct DataItem * next;            /*Pointer to next data item*/
     };
     struct DataItem* hashArray[SIZE]; 
     struct DataItem* item;
