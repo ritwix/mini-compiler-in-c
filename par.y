@@ -111,6 +111,7 @@ block_start: LBRACE
 	startNewScope();
 	//printf("%d\n",getCurrentScope());
 }
+;
 block_end: RBRACE
 {
 	endCurrentScope();

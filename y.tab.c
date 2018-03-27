@@ -543,14 +543,14 @@ static const yytype_uint16 yyrline[] =
 {
        0,    58,    58,    59,    61,    62,    65,    66,    67,    68,
       69,    71,    78,    84,    85,    87,    88,    90,    91,    92,
-      93,    94,    95,    97,   102,   107,   109,   114,   120,   121,
-     123,   124,   125,   126,   127,   128,   129,   130,   131,   133,
-     134,   135,   136,   137,   139,   140,   141,   143,   164,   165,
-     167,   168,   169,   171,   172,   174,   175,   176,   178,   179,
-     180,   182,   183,   184,   185,   185,   186,   187,   188,   189,
-     189,   209,   209,   229,   229,   249,   249,   269,   269,   289,
-     289,   309,   309,   329,   329,   349,   349,   369,   369,   389,
-     390,   398,   407,   440
+      93,    94,    95,    97,   102,   107,   109,   115,   121,   122,
+     124,   125,   126,   127,   128,   129,   130,   131,   132,   134,
+     135,   136,   137,   138,   140,   141,   142,   144,   165,   166,
+     168,   169,   170,   172,   173,   175,   176,   177,   179,   180,
+     181,   183,   184,   185,   186,   186,   187,   188,   189,   190,
+     190,   210,   210,   230,   230,   250,   250,   270,   270,   290,
+     290,   310,   310,   330,   330,   350,   350,   370,   370,   390,
+     391,   399,   408,   441
 };
 #endif
 
@@ -1521,7 +1521,7 @@ yyreduce:
     break;
 
   case 27:
-#line 115 "par.y" /* yacc.c:1646  */
+#line 116 "par.y" /* yacc.c:1646  */
     {
 	endCurrentScope();
 	
@@ -1530,7 +1530,7 @@ yyreduce:
     break;
 
   case 47:
-#line 144 "par.y" /* yacc.c:1646  */
+#line 145 "par.y" /* yacc.c:1646  */
     {
 	int hashIndex = hashCode(idname);
 	int flag=0;
@@ -1554,43 +1554,31 @@ yyreduce:
     break;
 
   case 61:
-#line 182 "par.y" /* yacc.c:1646  */
+#line 183 "par.y" /* yacc.c:1646  */
     {flg=0;}
 #line 1560 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 62:
-#line 183 "par.y" /* yacc.c:1646  */
+#line 184 "par.y" /* yacc.c:1646  */
     {flg=1;}
 #line 1566 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 63:
-#line 184 "par.y" /* yacc.c:1646  */
+#line 185 "par.y" /* yacc.c:1646  */
     {flg=2;}
 #line 1572 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 64:
-#line 185 "par.y" /* yacc.c:1646  */
+#line 186 "par.y" /* yacc.c:1646  */
     {getidtype(idname) ;  if(strcmp(typ,"int")!=0) {printf("LHS of assignment should be int in line %d",yylineno); return -1;} }
 #line 1578 "y.tab.c" /* yacc.c:1646  */
     break;
 
-  case 66:
-#line 186 "par.y" /* yacc.c:1646  */
-    {printf("heelo\n"); if((yyvsp[-1])>=gdim) {printf("array out of bounds in line %d\n",yylineno); return -1;}}
-#line 1584 "y.tab.c" /* yacc.c:1646  */
-    break;
-
-  case 67:
-#line 187 "par.y" /* yacc.c:1646  */
-    {printf("heelo\n"); if((yyvsp[-3])>=gdim) {printf("array out of bounds in line %d\n",yylineno); return -1;}}
-#line 1590 "y.tab.c" /* yacc.c:1646  */
-    break;
-
   case 69:
-#line 189 "par.y" /* yacc.c:1646  */
+#line 190 "par.y" /* yacc.c:1646  */
     {
 	if(flg==0){
 	getidtype(idname); op1=(char *)malloc(strlen(typ)*sizeof(char));  strcpy(op1,typ);}
@@ -1599,11 +1587,11 @@ yyreduce:
 		return -1;
 	}
 }
-#line 1603 "y.tab.c" /* yacc.c:1646  */
+#line 1591 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 70:
-#line 196 "par.y" /* yacc.c:1646  */
+#line 197 "par.y" /* yacc.c:1646  */
     {
 if(flg==0){
 	getidtype(idname); op2=(char *)malloc(strlen(typ)*sizeof(char));  strcpy(op2,typ);
@@ -1617,11 +1605,11 @@ if(flg==0){
 		return -1;
 	}
 }
-#line 1621 "y.tab.c" /* yacc.c:1646  */
+#line 1609 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 71:
-#line 209 "par.y" /* yacc.c:1646  */
+#line 210 "par.y" /* yacc.c:1646  */
     {
 	if(flg==0){
 	getidtype(idname); op1=(char *)malloc(strlen(typ)*sizeof(char));  strcpy(op1,typ);}
@@ -1630,11 +1618,11 @@ if(flg==0){
 		return -1;
 	}
 }
-#line 1634 "y.tab.c" /* yacc.c:1646  */
+#line 1622 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 72:
-#line 216 "par.y" /* yacc.c:1646  */
+#line 217 "par.y" /* yacc.c:1646  */
     {
 if(flg==0){
 	getidtype(idname); op2=(char *)malloc(strlen(typ)*sizeof(char));  strcpy(op2,typ);
@@ -1648,11 +1636,11 @@ if(flg==0){
 		return -1;
 	}
 }
-#line 1652 "y.tab.c" /* yacc.c:1646  */
+#line 1640 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 73:
-#line 229 "par.y" /* yacc.c:1646  */
+#line 230 "par.y" /* yacc.c:1646  */
     {
 	if(flg==0){
 	getidtype(idname); op1=(char *)malloc(strlen(typ)*sizeof(char));  strcpy(op1,typ);}
@@ -1661,11 +1649,11 @@ if(flg==0){
 		return -1;
 	}
 }
-#line 1665 "y.tab.c" /* yacc.c:1646  */
+#line 1653 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 74:
-#line 236 "par.y" /* yacc.c:1646  */
+#line 237 "par.y" /* yacc.c:1646  */
     {
 if(flg==0){
 	getidtype(idname); op2=(char *)malloc(strlen(typ)*sizeof(char));  strcpy(op2,typ);
@@ -1679,11 +1667,11 @@ if(flg==0){
 		return -1;
 	}
 }
-#line 1683 "y.tab.c" /* yacc.c:1646  */
+#line 1671 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 75:
-#line 249 "par.y" /* yacc.c:1646  */
+#line 250 "par.y" /* yacc.c:1646  */
     {
 	if(flg==0){
 	getidtype(idname); op1=(char *)malloc(strlen(typ)*sizeof(char));  strcpy(op1,typ);}
@@ -1692,11 +1680,11 @@ if(flg==0){
 		return -1;
 	}
 }
-#line 1696 "y.tab.c" /* yacc.c:1646  */
+#line 1684 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 76:
-#line 256 "par.y" /* yacc.c:1646  */
+#line 257 "par.y" /* yacc.c:1646  */
     {
 if(flg==0){
 	getidtype(idname); op2=(char *)malloc(strlen(typ)*sizeof(char));  strcpy(op2,typ);
@@ -1710,11 +1698,11 @@ if(flg==0){
 		return -1;
 	}
 }
-#line 1714 "y.tab.c" /* yacc.c:1646  */
+#line 1702 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 77:
-#line 269 "par.y" /* yacc.c:1646  */
+#line 270 "par.y" /* yacc.c:1646  */
     {
 	if(flg==0){
 	getidtype(idname); op1=(char *)malloc(strlen(typ)*sizeof(char));  strcpy(op1,typ);}
@@ -1723,11 +1711,11 @@ if(flg==0){
 		return -1;
 	}
 }
-#line 1727 "y.tab.c" /* yacc.c:1646  */
+#line 1715 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 78:
-#line 276 "par.y" /* yacc.c:1646  */
+#line 277 "par.y" /* yacc.c:1646  */
     {
 if(flg==0){
 	getidtype(idname); op2=(char *)malloc(strlen(typ)*sizeof(char));  strcpy(op2,typ);
@@ -1741,11 +1729,11 @@ if(flg==0){
 		return -1;
 	}
 }
-#line 1745 "y.tab.c" /* yacc.c:1646  */
+#line 1733 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 79:
-#line 289 "par.y" /* yacc.c:1646  */
+#line 290 "par.y" /* yacc.c:1646  */
     {
 	if(flg==0){
 	getidtype(idname); op1=(char *)malloc(strlen(typ)*sizeof(char));  strcpy(op1,typ);}
@@ -1754,11 +1742,11 @@ if(flg==0){
 		return -1;
 	}
 }
-#line 1758 "y.tab.c" /* yacc.c:1646  */
+#line 1746 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 80:
-#line 296 "par.y" /* yacc.c:1646  */
+#line 297 "par.y" /* yacc.c:1646  */
     {
 if(flg==0){
 	getidtype(idname); op2=(char *)malloc(strlen(typ)*sizeof(char));  strcpy(op2,typ);
@@ -1772,11 +1760,11 @@ if(flg==0){
 		return -1;
 	}
 }
-#line 1776 "y.tab.c" /* yacc.c:1646  */
+#line 1764 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 81:
-#line 309 "par.y" /* yacc.c:1646  */
+#line 310 "par.y" /* yacc.c:1646  */
     {
 	if(flg==0){
 	getidtype(idname); op1=(char *)malloc(strlen(typ)*sizeof(char));  strcpy(op1,typ);}
@@ -1785,11 +1773,11 @@ if(flg==0){
 		return -1;
 	}
 }
-#line 1789 "y.tab.c" /* yacc.c:1646  */
+#line 1777 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 82:
-#line 316 "par.y" /* yacc.c:1646  */
+#line 317 "par.y" /* yacc.c:1646  */
     {
 if(flg==0){
 	getidtype(idname); op2=(char *)malloc(strlen(typ)*sizeof(char));  strcpy(op2,typ);
@@ -1803,11 +1791,11 @@ if(flg==0){
 		return -1;
 	}
 }
-#line 1807 "y.tab.c" /* yacc.c:1646  */
+#line 1795 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 83:
-#line 329 "par.y" /* yacc.c:1646  */
+#line 330 "par.y" /* yacc.c:1646  */
     {
 	if(flg==0){
 	getidtype(idname); op1=(char *)malloc(strlen(typ)*sizeof(char));  strcpy(op1,typ);}
@@ -1816,11 +1804,11 @@ if(flg==0){
 		return -1;
 	}
 }
-#line 1820 "y.tab.c" /* yacc.c:1646  */
+#line 1808 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 84:
-#line 336 "par.y" /* yacc.c:1646  */
+#line 337 "par.y" /* yacc.c:1646  */
     {
 if(flg==0){
 	getidtype(idname); op2=(char *)malloc(strlen(typ)*sizeof(char));  strcpy(op2,typ);
@@ -1834,11 +1822,11 @@ if(flg==0){
 		return -1;
 	}
 }
-#line 1838 "y.tab.c" /* yacc.c:1646  */
+#line 1826 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 85:
-#line 349 "par.y" /* yacc.c:1646  */
+#line 350 "par.y" /* yacc.c:1646  */
     {
 	if(flg==0){
 	getidtype(idname); op1=(char *)malloc(strlen(typ)*sizeof(char));  strcpy(op1,typ);}
@@ -1847,11 +1835,11 @@ if(flg==0){
 		return -1;
 	}
 }
-#line 1851 "y.tab.c" /* yacc.c:1646  */
+#line 1839 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 86:
-#line 356 "par.y" /* yacc.c:1646  */
+#line 357 "par.y" /* yacc.c:1646  */
     {
 if(flg==0){
 	getidtype(idname); op2=(char *)malloc(strlen(typ)*sizeof(char));  strcpy(op2,typ);
@@ -1865,11 +1853,11 @@ if(flg==0){
 		return -1;
 	}
 }
-#line 1869 "y.tab.c" /* yacc.c:1646  */
+#line 1857 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 87:
-#line 369 "par.y" /* yacc.c:1646  */
+#line 370 "par.y" /* yacc.c:1646  */
     {
 	if(flg==0){
 	getidtype(idname); op1=(char *)malloc(strlen(typ)*sizeof(char));  strcpy(op1,typ);}
@@ -1878,11 +1866,11 @@ if(flg==0){
 		return -1;
 	}
 }
-#line 1882 "y.tab.c" /* yacc.c:1646  */
+#line 1870 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 88:
-#line 376 "par.y" /* yacc.c:1646  */
+#line 377 "par.y" /* yacc.c:1646  */
     {
 if(flg==0){
 	getidtype(idname); op2=(char *)malloc(strlen(typ)*sizeof(char));  strcpy(op2,typ);
@@ -1896,22 +1884,22 @@ if(flg==0){
 		return -1;
 	}
 }
-#line 1900 "y.tab.c" /* yacc.c:1646  */
+#line 1888 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 90:
-#line 391 "par.y" /* yacc.c:1646  */
+#line 392 "par.y" /* yacc.c:1646  */
     {
 	if(flg!=1){
 		printf("Invalid operand in line %d",yylineno);
 		return -1;
 	}
 }
-#line 1911 "y.tab.c" /* yacc.c:1646  */
+#line 1899 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 91:
-#line 399 "par.y" /* yacc.c:1646  */
+#line 400 "par.y" /* yacc.c:1646  */
     {	
 		if(hash_lookup_scope(idname)==0){
 			printf("Undeclared Variable: '%s' in line %d\n",idname,yylineno);
@@ -1919,11 +1907,11 @@ if(flg==0){
 		}
 		
 }
-#line 1923 "y.tab.c" /* yacc.c:1646  */
+#line 1911 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 92:
-#line 408 "par.y" /* yacc.c:1646  */
+#line 409 "par.y" /* yacc.c:1646  */
     {	
 
 	if(hash_lookup_scope(idname)==0){
@@ -1955,11 +1943,11 @@ if(flg==0){
 return 0;
 
 }
-#line 1959 "y.tab.c" /* yacc.c:1646  */
+#line 1947 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 93:
-#line 441 "par.y" /* yacc.c:1646  */
+#line 442 "par.y" /* yacc.c:1646  */
     {
 	dim = (yyvsp[-2]);
 	if(dim<1){
@@ -1968,11 +1956,11 @@ return 0;
 	}
 	insert_hash(idname,"array",getCurrentScope(),yylineno,dim,"NA");
 }
-#line 1972 "y.tab.c" /* yacc.c:1646  */
+#line 1960 "y.tab.c" /* yacc.c:1646  */
     break;
 
 
-#line 1976 "y.tab.c" /* yacc.c:1646  */
+#line 1964 "y.tab.c" /* yacc.c:1646  */
       default: break;
     }
   /* User semantic actions sometimes alter yychar, and that requires
@@ -2200,7 +2188,7 @@ yyreturn:
 #endif
   return yyresult;
 }
-#line 457 "par.y" /* yacc.c:1906  */
+#line 458 "par.y" /* yacc.c:1906  */
 
 #include"lex.yy.c"
 #include<ctype.h>
