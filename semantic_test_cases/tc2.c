@@ -5,7 +5,7 @@ int main()
 	int b;
 	int a[2];
 	a[2]=6;
-b=a+'a';
+	b=a+'a';
 	//int b[-1];
 	return 0;
 }

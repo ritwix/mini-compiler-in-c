@@ -1,0 +1,3061 @@
+Terminals unused in grammar
+
+   _INCR_VAL
+   _DECR_VAL
+   _MULT_VAL
+   _DIV_VAL
+   _MOD_VAL
+   MOD_VAL
+
+
+Grammar
+
+    0 $accept: global $end
+
+    1 global: _PREPROC _HEADER funcdec
+
+    2 funcdec: funcdec_ mainfunc
+    3        | funcdec_ mainfunc funcdec_
+    4        | mainfunc funcdec_
+
+    5 mainfunc: main '{' body '}'
+
+    6 funcdec_: functiondec '{' body '}'
+    7         | declaration
+    8         | funcdec_ functiondec '{' body '}'
+    9         | funcdec_ declaration
+
+   10 declaration: type_specifier declist ';'
+
+   11 type_specifier: _INT
+   12               | _CHAR
+   13               | _VOID
+
+   14 declist: declist ',' pointer _IDENTIFIER optional '=' expression
+   15        | declist ',' pointer _IDENTIFIER optional '=' funccall_statement
+   16        | declist ',' pointer _IDENTIFIER optional
+   17        | pointer _IDENTIFIER optional
+   18        | pointer _IDENTIFIER optional '=' expression
+   19        | pointer _IDENTIFIER optional '=' funccall_statement
+
+   20 pointer: '*'
+   21        | %empty
+
+   22 optional: '[' ']'
+   23         | '[' _CONSTANT ']'
+   24         | '[' _CONSTANT ']' '[' _CONSTANT ']'
+   25         | %empty
+
+   26 optional_call: '[' ']'
+   27              | '[' _IDENTIFIER ']'
+   28              | '[' _IDENTIFIER ']' '[' _IDENTIFIER ']'
+   29              | %empty
+
+   30 main: type_specifier _MAIN '(' ')'
+
+   31 functiondec: type_specifier pointer _IDENTIFIER '(' type_specifier _IDENTIFIER optional ',' type_specifier _IDENTIFIER optional ')'
+
+   32 body: declaration
+   33     | statement
+   34     | funccall_statement ';'
+   35     | body declaration
+   36     | body statement
+   37     | body funccall_statement ';'
+
+   38 expression: expression '+' expression
+   39           | expression '-' expression
+   40           | expression '*' expression
+   41           | expression '/' expression
+   42           | expression '%' expression
+   43           | '(' expression ')'
+   44           | expression '>' expression
+   45           | expression '<' expression
+   46           | expression _GREAT_EQ expression
+   47           | expression _LESS_EQ expression
+   48           | expression _NOT_EQ expression
+   49           | expression _EQUAL expression
+   50           | expression _LOGIC_AND expression
+   51           | expression _LOGIC_OR expression
+   52           | expression ',' expression
+   53           | _IDENTIFIER '=' expression
+   54           | _IDENTIFIER _INCR_1
+   55           | _IDENTIFIER optional_call _DECR_1
+   56           | _IDENTIFIER optional_call
+   57           | _CONSTANT
+   58           | _STRING
+
+   59 expression_statement: ';'
+   60                     | expression ';'
+
+   61 funccall_statement: _IDENTIFIER '(' expression ',' expression ')'
+
+   62 return_statement: _RETURN expression ';'
+
+   63 io_statement: _PRINT '(' _STRING ',' identifier_list ')' ';'
+   64             | _SCAN '(' _STRING ',' identifieraddr_list ')' ';'
+
+   65 identifier_list: identifier_list ',' _IDENTIFIER optional_call
+   66                | _IDENTIFIER optional_call
+
+   67 identifieraddr_list: identifieraddr_list ',' '&' _IDENTIFIER optional_call
+   68                    | '&' _IDENTIFIER optional_call
+   69                    | identifieraddr_list ',' _IDENTIFIER optional_call
+   70                    | _IDENTIFIER optional_call
+
+   71 statement: expression_statement
+   72          | if_statement '{' body '}'
+   73          | if_statement '{' body '}' else_statement '{' body '}'
+   74          | loop_statement '{' body '}'
+   75          | do_statement '{' body '}' _WHILE '(' expression ')' ';'
+   76          | return_statement
+   77          | io_statement
+
+   78 loop_statement: _FOR '(' expression_statement expression_statement ')'
+   79               | _FOR '(' expression_statement expression_statement expression ')'
+   80               | _WHILE '(' expression ')'
+
+   81 do_statement: _DO
+
+   82 if_statement: _IF '(' expression ')'
+
+   83 else_statement: _ELSE
+
+
+Terminals, with rules where they appear
+
+$end (0) 0
+'%' (37) 42
+'&' (38) 67 68
+'(' (40) 30 31 43 61 63 64 75 78 79 80 82
+')' (41) 30 31 43 61 63 64 75 78 79 80 82
+'*' (42) 20 40
+'+' (43) 38
+',' (44) 14 15 16 31 52 61 63 64 65 67 69
+'-' (45) 39
+'/' (47) 41
+';' (59) 10 34 37 59 60 62 63 64 75
+'<' (60) 45
+'=' (61) 14 15 18 19 53
+'>' (62) 44
+'[' (91) 22 23 24 26 27 28
+']' (93) 22 23 24 26 27 28
+'{' (123) 5 6 8 72 73 74 75
+'}' (125) 5 6 8 72 73 74 75
+error (256)
+_GREAT_EQ (258) 46
+_LESS_EQ (259) 47
+_LOGIC_OR (260) 51
+_LOGIC_AND (261) 50
+_NOT_EQ (262) 48
+_EQUAL (263) 49
+_INCR_1 (264) 54
+_DECR_1 (265) 55
+_INCR_VAL (266)
+_DECR_VAL (267)
+_MULT_VAL (268)
+_DIV_VAL (269)
+_MOD_VAL (270)
+_DO (271) 81
+_ELSE (272) 83
+_FOR (273) 78 79
+_IF (274) 82
+_INT (275) 11
+_VOID (276) 13
+_PRINT (277) 63
+_SCAN (278) 64
+_WHILE (279) 75 80
+_HEADER (280) 1
+_PREPROC (281) 1
+_STRING (282) 58 63 64
+_RETURN (283) 62
+_CHAR (284) 12
+_CONSTANT (285) 23 24 57
+_IDENTIFIER (286) 14 15 16 17 18 19 27 28 31 53 54 55 56 61 65 66 67
+    68 69 70
+_MAIN (287) 30
+MOD_VAL (288)
+
+
+Nonterminals, with rules where they appear
+
+$accept (51)
+    on left: 0
+global (52)
+    on left: 1, on right: 0
+funcdec (53)
+    on left: 2 3 4, on right: 1
+mainfunc (54)
+    on left: 5, on right: 2 3 4
+funcdec_ (55)
+    on left: 6 7 8 9, on right: 2 3 4 8 9
+declaration (56)
+    on left: 10, on right: 7 9 32 35
+type_specifier (57)
+    on left: 11 12 13, on right: 10 30 31
+declist (58)
+    on left: 14 15 16 17 18 19, on right: 10 14 15 16
+pointer (59)
+    on left: 20 21, on right: 14 15 16 17 18 19 31
+optional (60)
+    on left: 22 23 24 25, on right: 14 15 16 17 18 19 31
+optional_call (61)
+    on left: 26 27 28 29, on right: 55 56 65 66 67 68 69 70
+main (62)
+    on left: 30, on right: 5
+functiondec (63)
+    on left: 31, on right: 6 8
+body (64)
+    on left: 32 33 34 35 36 37, on right: 5 6 8 35 36 37 72 73 74 75
+expression (65)
+    on left: 38 39 40 41 42 43 44 45 46 47 48 49 50 51 52 53 54 55
+    56 57 58, on right: 14 18 38 39 40 41 42 43 44 45 46 47 48 49 50
+    51 52 53 60 61 62 75 79 80 82
+expression_statement (66)
+    on left: 59 60, on right: 71 78 79
+funccall_statement (67)
+    on left: 61, on right: 15 19 34 37
+return_statement (68)
+    on left: 62, on right: 76
+io_statement (69)
+    on left: 63 64, on right: 77
+identifier_list (70)
+    on left: 65 66, on right: 63 65
+identifieraddr_list (71)
+    on left: 67 68 69 70, on right: 64 67 69
+statement (72)
+    on left: 71 72 73 74 75 76 77, on right: 33 36
+loop_statement (73)
+    on left: 78 79 80, on right: 74
+do_statement (74)
+    on left: 81, on right: 75
+if_statement (75)
+    on left: 82, on right: 72 73
+else_statement (76)
+    on left: 83, on right: 73
+
+
+State 0
+
+    0 $accept: . global $end
+
+    _PREPROC  shift, and go to state 1
+
+    global  go to state 2
+
+
+State 1
+
+    1 global: _PREPROC . _HEADER funcdec
+
+    _HEADER  shift, and go to state 3
+
+
+State 2
+
+    0 $accept: global . $end
+
+    $end  shift, and go to state 4
+
+
+State 3
+
+    1 global: _PREPROC _HEADER . funcdec
+
+    _INT   shift, and go to state 5
+    _VOID  shift, and go to state 6
+    _CHAR  shift, and go to state 7
+
+    funcdec         go to state 8
+    mainfunc        go to state 9
+    funcdec_        go to state 10
+    declaration     go to state 11
+    type_specifier  go to state 12
+    main            go to state 13
+    functiondec     go to state 14
+
+
+State 4
+
+    0 $accept: global $end .
+
+    $default  accept
+
+
+State 5
+
+   11 type_specifier: _INT .
+
+    $default  reduce using rule 11 (type_specifier)
+
+
+State 6
+
+   13 type_specifier: _VOID .
+
+    $default  reduce using rule 13 (type_specifier)
+
+
+State 7
+
+   12 type_specifier: _CHAR .
+
+    $default  reduce using rule 12 (type_specifier)
+
+
+State 8
+
+    1 global: _PREPROC _HEADER funcdec .
+
+    $default  reduce using rule 1 (global)
+
+
+State 9
+
+    4 funcdec: mainfunc . funcdec_
+
+    _INT   shift, and go to state 5
+    _VOID  shift, and go to state 6
+    _CHAR  shift, and go to state 7
+
+    funcdec_        go to state 15
+    declaration     go to state 11
+    type_specifier  go to state 16
+    functiondec     go to state 14
+
+
+State 10
+
+    2 funcdec: funcdec_ . mainfunc
+    3        | funcdec_ . mainfunc funcdec_
+    8 funcdec_: funcdec_ . functiondec '{' body '}'
+    9         | funcdec_ . declaration
+
+    _INT   shift, and go to state 5
+    _VOID  shift, and go to state 6
+    _CHAR  shift, and go to state 7
+
+    mainfunc        go to state 17
+    declaration     go to state 18
+    type_specifier  go to state 12
+    main            go to state 13
+    functiondec     go to state 19
+
+
+State 11
+
+    7 funcdec_: declaration .
+
+    $default  reduce using rule 7 (funcdec_)
+
+
+State 12
+
+   10 declaration: type_specifier . declist ';'
+   30 main: type_specifier . _MAIN '(' ')'
+   31 functiondec: type_specifier . pointer _IDENTIFIER '(' type_specifier _IDENTIFIER optional ',' type_specifier _IDENTIFIER optional ')'
+
+    _MAIN  shift, and go to state 20
+    '*'    shift, and go to state 21
+
+    $default  reduce using rule 21 (pointer)
+
+    declist  go to state 22
+    pointer  go to state 23
+
+
+State 13
+
+    5 mainfunc: main . '{' body '}'
+
+    '{'  shift, and go to state 24
+
+
+State 14
+
+    6 funcdec_: functiondec . '{' body '}'
+
+    '{'  shift, and go to state 25
+
+
+State 15
+
+    4 funcdec: mainfunc funcdec_ .
+    8 funcdec_: funcdec_ . functiondec '{' body '}'
+    9         | funcdec_ . declaration
+
+    _INT   shift, and go to state 5
+    _VOID  shift, and go to state 6
+    _CHAR  shift, and go to state 7
+
+    $default  reduce using rule 4 (funcdec)
+
+    declaration     go to state 18
+    type_specifier  go to state 16
+    functiondec     go to state 19
+
+
+State 16
+
+   10 declaration: type_specifier . declist ';'
+   31 functiondec: type_specifier . pointer _IDENTIFIER '(' type_specifier _IDENTIFIER optional ',' type_specifier _IDENTIFIER optional ')'
+
+    '*'  shift, and go to state 21
+
+    $default  reduce using rule 21 (pointer)
+
+    declist  go to state 22
+    pointer  go to state 23
+
+
+State 17
+
+    2 funcdec: funcdec_ mainfunc .
+    3        | funcdec_ mainfunc . funcdec_
+
+    _INT   shift, and go to state 5
+    _VOID  shift, and go to state 6
+    _CHAR  shift, and go to state 7
+
+    $default  reduce using rule 2 (funcdec)
+
+    funcdec_        go to state 26
+    declaration     go to state 11
+    type_specifier  go to state 16
+    functiondec     go to state 14
+
+
+State 18
+
+    9 funcdec_: funcdec_ declaration .
+
+    $default  reduce using rule 9 (funcdec_)
+
+
+State 19
+
+    8 funcdec_: funcdec_ functiondec . '{' body '}'
+
+    '{'  shift, and go to state 27
+
+
+State 20
+
+   30 main: type_specifier _MAIN . '(' ')'
+
+    '('  shift, and go to state 28
+
+
+State 21
+
+   20 pointer: '*' .
+
+    $default  reduce using rule 20 (pointer)
+
+
+State 22
+
+   10 declaration: type_specifier declist . ';'
+   14 declist: declist . ',' pointer _IDENTIFIER optional '=' expression
+   15        | declist . ',' pointer _IDENTIFIER optional '=' funccall_statement
+   16        | declist . ',' pointer _IDENTIFIER optional
+
+    ','  shift, and go to state 29
+    ';'  shift, and go to state 30
+
+
+State 23
+
+   17 declist: pointer . _IDENTIFIER optional
+   18        | pointer . _IDENTIFIER optional '=' expression
+   19        | pointer . _IDENTIFIER optional '=' funccall_statement
+   31 functiondec: type_specifier pointer . _IDENTIFIER '(' type_specifier _IDENTIFIER optional ',' type_specifier _IDENTIFIER optional ')'
+
+    _IDENTIFIER  shift, and go to state 31
+
+
+State 24
+
+    5 mainfunc: main '{' . body '}'
+
+    _DO          shift, and go to state 32
+    _FOR         shift, and go to state 33
+    _IF          shift, and go to state 34
+    _INT         shift, and go to state 5
+    _VOID        shift, and go to state 6
+    _PRINT       shift, and go to state 35
+    _SCAN        shift, and go to state 36
+    _WHILE       shift, and go to state 37
+    _STRING      shift, and go to state 38
+    _RETURN      shift, and go to state 39
+    _CHAR        shift, and go to state 7
+    _CONSTANT    shift, and go to state 40
+    _IDENTIFIER  shift, and go to state 41
+    '('          shift, and go to state 42
+    ';'          shift, and go to state 43
+
+    declaration           go to state 44
+    type_specifier        go to state 45
+    body                  go to state 46
+    expression            go to state 47
+    expression_statement  go to state 48
+    funccall_statement    go to state 49
+    return_statement      go to state 50
+    io_statement          go to state 51
+    statement             go to state 52
+    loop_statement        go to state 53
+    do_statement          go to state 54
+    if_statement          go to state 55
+
+
+State 25
+
+    6 funcdec_: functiondec '{' . body '}'
+
+    _DO          shift, and go to state 32
+    _FOR         shift, and go to state 33
+    _IF          shift, and go to state 34
+    _INT         shift, and go to state 5
+    _VOID        shift, and go to state 6
+    _PRINT       shift, and go to state 35
+    _SCAN        shift, and go to state 36
+    _WHILE       shift, and go to state 37
+    _STRING      shift, and go to state 38
+    _RETURN      shift, and go to state 39
+    _CHAR        shift, and go to state 7
+    _CONSTANT    shift, and go to state 40
+    _IDENTIFIER  shift, and go to state 41
+    '('          shift, and go to state 42
+    ';'          shift, and go to state 43
+
+    declaration           go to state 44
+    type_specifier        go to state 45
+    body                  go to state 56
+    expression            go to state 47
+    expression_statement  go to state 48
+    funccall_statement    go to state 49
+    return_statement      go to state 50
+    io_statement          go to state 51
+    statement             go to state 52
+    loop_statement        go to state 53
+    do_statement          go to state 54
+    if_statement          go to state 55
+
+
+State 26
+
+    3 funcdec: funcdec_ mainfunc funcdec_ .
+    8 funcdec_: funcdec_ . functiondec '{' body '}'
+    9         | funcdec_ . declaration
+
+    _INT   shift, and go to state 5
+    _VOID  shift, and go to state 6
+    _CHAR  shift, and go to state 7
+
+    $default  reduce using rule 3 (funcdec)
+
+    declaration     go to state 18
+    type_specifier  go to state 16
+    functiondec     go to state 19
+
+
+State 27
+
+    8 funcdec_: funcdec_ functiondec '{' . body '}'
+
+    _DO          shift, and go to state 32
+    _FOR         shift, and go to state 33
+    _IF          shift, and go to state 34
+    _INT         shift, and go to state 5
+    _VOID        shift, and go to state 6
+    _PRINT       shift, and go to state 35
+    _SCAN        shift, and go to state 36
+    _WHILE       shift, and go to state 37
+    _STRING      shift, and go to state 38
+    _RETURN      shift, and go to state 39
+    _CHAR        shift, and go to state 7
+    _CONSTANT    shift, and go to state 40
+    _IDENTIFIER  shift, and go to state 41
+    '('          shift, and go to state 42
+    ';'          shift, and go to state 43
+
+    declaration           go to state 44
+    type_specifier        go to state 45
+    body                  go to state 57
+    expression            go to state 47
+    expression_statement  go to state 48
+    funccall_statement    go to state 49
+    return_statement      go to state 50
+    io_statement          go to state 51
+    statement             go to state 52
+    loop_statement        go to state 53
+    do_statement          go to state 54
+    if_statement          go to state 55
+
+
+State 28
+
+   30 main: type_specifier _MAIN '(' . ')'
+
+    ')'  shift, and go to state 58
+
+
+State 29
+
+   14 declist: declist ',' . pointer _IDENTIFIER optional '=' expression
+   15        | declist ',' . pointer _IDENTIFIER optional '=' funccall_statement
+   16        | declist ',' . pointer _IDENTIFIER optional
+
+    '*'  shift, and go to state 21
+
+    $default  reduce using rule 21 (pointer)
+
+    pointer  go to state 59
+
+
+State 30
+
+   10 declaration: type_specifier declist ';' .
+
+    $default  reduce using rule 10 (declaration)
+
+
+State 31
+
+   17 declist: pointer _IDENTIFIER . optional
+   18        | pointer _IDENTIFIER . optional '=' expression
+   19        | pointer _IDENTIFIER . optional '=' funccall_statement
+   31 functiondec: type_specifier pointer _IDENTIFIER . '(' type_specifier _IDENTIFIER optional ',' type_specifier _IDENTIFIER optional ')'
+
+    '('  shift, and go to state 60
+    '['  shift, and go to state 61
+
+    $default  reduce using rule 25 (optional)
+
+    optional  go to state 62
+
+
+State 32
+
+   81 do_statement: _DO .
+
+    $default  reduce using rule 81 (do_statement)
+
+
+State 33
+
+   78 loop_statement: _FOR . '(' expression_statement expression_statement ')'
+   79               | _FOR . '(' expression_statement expression_statement expression ')'
+
+    '('  shift, and go to state 63
+
+
+State 34
+
+   82 if_statement: _IF . '(' expression ')'
+
+    '('  shift, and go to state 64
+
+
+State 35
+
+   63 io_statement: _PRINT . '(' _STRING ',' identifier_list ')' ';'
+
+    '('  shift, and go to state 65
+
+
+State 36
+
+   64 io_statement: _SCAN . '(' _STRING ',' identifieraddr_list ')' ';'
+
+    '('  shift, and go to state 66
+
+
+State 37
+
+   80 loop_statement: _WHILE . '(' expression ')'
+
+    '('  shift, and go to state 67
+
+
+State 38
+
+   58 expression: _STRING .
+
+    $default  reduce using rule 58 (expression)
+
+
+State 39
+
+   62 return_statement: _RETURN . expression ';'
+
+    _STRING      shift, and go to state 38
+    _CONSTANT    shift, and go to state 40
+    _IDENTIFIER  shift, and go to state 68
+    '('          shift, and go to state 42
+
+    expression  go to state 69
+
+
+State 40
+
+   57 expression: _CONSTANT .
+
+    $default  reduce using rule 57 (expression)
+
+
+State 41
+
+   53 expression: _IDENTIFIER . '=' expression
+   54           | _IDENTIFIER . _INCR_1
+   55           | _IDENTIFIER . optional_call _DECR_1
+   56           | _IDENTIFIER . optional_call
+   61 funccall_statement: _IDENTIFIER . '(' expression ',' expression ')'
+
+    _INCR_1  shift, and go to state 70
+    '='      shift, and go to state 71
+    '('      shift, and go to state 72
+    '['      shift, and go to state 73
+
+    $default  reduce using rule 29 (optional_call)
+
+    optional_call  go to state 74
+
+
+State 42
+
+   43 expression: '(' . expression ')'
+
+    _STRING      shift, and go to state 38
+    _CONSTANT    shift, and go to state 40
+    _IDENTIFIER  shift, and go to state 68
+    '('          shift, and go to state 42
+
+    expression  go to state 75
+
+
+State 43
+
+   59 expression_statement: ';' .
+
+    $default  reduce using rule 59 (expression_statement)
+
+
+State 44
+
+   32 body: declaration .
+
+    $default  reduce using rule 32 (body)
+
+
+State 45
+
+   10 declaration: type_specifier . declist ';'
+
+    '*'  shift, and go to state 21
+
+    $default  reduce using rule 21 (pointer)
+
+    declist  go to state 22
+    pointer  go to state 76
+
+
+State 46
+
+    5 mainfunc: main '{' body . '}'
+   35 body: body . declaration
+   36     | body . statement
+   37     | body . funccall_statement ';'
+
+    _DO          shift, and go to state 32
+    _FOR         shift, and go to state 33
+    _IF          shift, and go to state 34
+    _INT         shift, and go to state 5
+    _VOID        shift, and go to state 6
+    _PRINT       shift, and go to state 35
+    _SCAN        shift, and go to state 36
+    _WHILE       shift, and go to state 37
+    _STRING      shift, and go to state 38
+    _RETURN      shift, and go to state 39
+    _CHAR        shift, and go to state 7
+    _CONSTANT    shift, and go to state 40
+    _IDENTIFIER  shift, and go to state 41
+    '('          shift, and go to state 42
+    '}'          shift, and go to state 77
+    ';'          shift, and go to state 43
+
+    declaration           go to state 78
+    type_specifier        go to state 45
+    expression            go to state 47
+    expression_statement  go to state 48
+    funccall_statement    go to state 79
+    return_statement      go to state 50
+    io_statement          go to state 51
+    statement             go to state 80
+    loop_statement        go to state 53
+    do_statement          go to state 54
+    if_statement          go to state 55
+
+
+State 47
+
+   38 expression: expression . '+' expression
+   39           | expression . '-' expression
+   40           | expression . '*' expression
+   41           | expression . '/' expression
+   42           | expression . '%' expression
+   44           | expression . '>' expression
+   45           | expression . '<' expression
+   46           | expression . _GREAT_EQ expression
+   47           | expression . _LESS_EQ expression
+   48           | expression . _NOT_EQ expression
+   49           | expression . _EQUAL expression
+   50           | expression . _LOGIC_AND expression
+   51           | expression . _LOGIC_OR expression
+   52           | expression . ',' expression
+   60 expression_statement: expression . ';'
+
+    _GREAT_EQ   shift, and go to state 81
+    _LESS_EQ    shift, and go to state 82
+    _LOGIC_OR   shift, and go to state 83
+    _LOGIC_AND  shift, and go to state 84
+    _NOT_EQ     shift, and go to state 85
+    _EQUAL      shift, and go to state 86
+    ','         shift, and go to state 87
+    '>'         shift, and go to state 88
+    '<'         shift, and go to state 89
+    '+'         shift, and go to state 90
+    '-'         shift, and go to state 91
+    '*'         shift, and go to state 92
+    '/'         shift, and go to state 93
+    '%'         shift, and go to state 94
+    ';'         shift, and go to state 95
+
+
+State 48
+
+   71 statement: expression_statement .
+
+    $default  reduce using rule 71 (statement)
+
+
+State 49
+
+   34 body: funccall_statement . ';'
+
+    ';'  shift, and go to state 96
+
+
+State 50
+
+   76 statement: return_statement .
+
+    $default  reduce using rule 76 (statement)
+
+
+State 51
+
+   77 statement: io_statement .
+
+    $default  reduce using rule 77 (statement)
+
+
+State 52
+
+   33 body: statement .
+
+    $default  reduce using rule 33 (body)
+
+
+State 53
+
+   74 statement: loop_statement . '{' body '}'
+
+    '{'  shift, and go to state 97
+
+
+State 54
+
+   75 statement: do_statement . '{' body '}' _WHILE '(' expression ')' ';'
+
+    '{'  shift, and go to state 98
+
+
+State 55
+
+   72 statement: if_statement . '{' body '}'
+   73          | if_statement . '{' body '}' else_statement '{' body '}'
+
+    '{'  shift, and go to state 99
+
+
+State 56
+
+    6 funcdec_: functiondec '{' body . '}'
+   35 body: body . declaration
+   36     | body . statement
+   37     | body . funccall_statement ';'
+
+    _DO          shift, and go to state 32
+    _FOR         shift, and go to state 33
+    _IF          shift, and go to state 34
+    _INT         shift, and go to state 5
+    _VOID        shift, and go to state 6
+    _PRINT       shift, and go to state 35
+    _SCAN        shift, and go to state 36
+    _WHILE       shift, and go to state 37
+    _STRING      shift, and go to state 38
+    _RETURN      shift, and go to state 39
+    _CHAR        shift, and go to state 7
+    _CONSTANT    shift, and go to state 40
+    _IDENTIFIER  shift, and go to state 41
+    '('          shift, and go to state 42
+    '}'          shift, and go to state 100
+    ';'          shift, and go to state 43
+
+    declaration           go to state 78
+    type_specifier        go to state 45
+    expression            go to state 47
+    expression_statement  go to state 48
+    funccall_statement    go to state 79
+    return_statement      go to state 50
+    io_statement          go to state 51
+    statement             go to state 80
+    loop_statement        go to state 53
+    do_statement          go to state 54
+    if_statement          go to state 55
+
+
+State 57
+
+    8 funcdec_: funcdec_ functiondec '{' body . '}'
+   35 body: body . declaration
+   36     | body . statement
+   37     | body . funccall_statement ';'
+
+    _DO          shift, and go to state 32
+    _FOR         shift, and go to state 33
+    _IF          shift, and go to state 34
+    _INT         shift, and go to state 5
+    _VOID        shift, and go to state 6
+    _PRINT       shift, and go to state 35
+    _SCAN        shift, and go to state 36
+    _WHILE       shift, and go to state 37
+    _STRING      shift, and go to state 38
+    _RETURN      shift, and go to state 39
+    _CHAR        shift, and go to state 7
+    _CONSTANT    shift, and go to state 40
+    _IDENTIFIER  shift, and go to state 41
+    '('          shift, and go to state 42
+    '}'          shift, and go to state 101
+    ';'          shift, and go to state 43
+
+    declaration           go to state 78
+    type_specifier        go to state 45
+    expression            go to state 47
+    expression_statement  go to state 48
+    funccall_statement    go to state 79
+    return_statement      go to state 50
+    io_statement          go to state 51
+    statement             go to state 80
+    loop_statement        go to state 53
+    do_statement          go to state 54
+    if_statement          go to state 55
+
+
+State 58
+
+   30 main: type_specifier _MAIN '(' ')' .
+
+    $default  reduce using rule 30 (main)
+
+
+State 59
+
+   14 declist: declist ',' pointer . _IDENTIFIER optional '=' expression
+   15        | declist ',' pointer . _IDENTIFIER optional '=' funccall_statement
+   16        | declist ',' pointer . _IDENTIFIER optional
+
+    _IDENTIFIER  shift, and go to state 102
+
+
+State 60
+
+   31 functiondec: type_specifier pointer _IDENTIFIER '(' . type_specifier _IDENTIFIER optional ',' type_specifier _IDENTIFIER optional ')'
+
+    _INT   shift, and go to state 5
+    _VOID  shift, and go to state 6
+    _CHAR  shift, and go to state 7
+
+    type_specifier  go to state 103
+
+
+State 61
+
+   22 optional: '[' . ']'
+   23         | '[' . _CONSTANT ']'
+   24         | '[' . _CONSTANT ']' '[' _CONSTANT ']'
+
+    _CONSTANT  shift, and go to state 104
+    ']'        shift, and go to state 105
+
+
+State 62
+
+   17 declist: pointer _IDENTIFIER optional .
+   18        | pointer _IDENTIFIER optional . '=' expression
+   19        | pointer _IDENTIFIER optional . '=' funccall_statement
+
+    '='  shift, and go to state 106
+
+    $default  reduce using rule 17 (declist)
+
+
+State 63
+
+   78 loop_statement: _FOR '(' . expression_statement expression_statement ')'
+   79               | _FOR '(' . expression_statement expression_statement expression ')'
+
+    _STRING      shift, and go to state 38
+    _CONSTANT    shift, and go to state 40
+    _IDENTIFIER  shift, and go to state 68
+    '('          shift, and go to state 42
+    ';'          shift, and go to state 43
+
+    expression            go to state 47
+    expression_statement  go to state 107
+
+
+State 64
+
+   82 if_statement: _IF '(' . expression ')'
+
+    _STRING      shift, and go to state 38
+    _CONSTANT    shift, and go to state 40
+    _IDENTIFIER  shift, and go to state 68
+    '('          shift, and go to state 42
+
+    expression  go to state 108
+
+
+State 65
+
+   63 io_statement: _PRINT '(' . _STRING ',' identifier_list ')' ';'
+
+    _STRING  shift, and go to state 109
+
+
+State 66
+
+   64 io_statement: _SCAN '(' . _STRING ',' identifieraddr_list ')' ';'
+
+    _STRING  shift, and go to state 110
+
+
+State 67
+
+   80 loop_statement: _WHILE '(' . expression ')'
+
+    _STRING      shift, and go to state 38
+    _CONSTANT    shift, and go to state 40
+    _IDENTIFIER  shift, and go to state 68
+    '('          shift, and go to state 42
+
+    expression  go to state 111
+
+
+State 68
+
+   53 expression: _IDENTIFIER . '=' expression
+   54           | _IDENTIFIER . _INCR_1
+   55           | _IDENTIFIER . optional_call _DECR_1
+   56           | _IDENTIFIER . optional_call
+
+    _INCR_1  shift, and go to state 70
+    '='      shift, and go to state 71
+    '['      shift, and go to state 73
+
+    $default  reduce using rule 29 (optional_call)
+
+    optional_call  go to state 74
+
+
+State 69
+
+   38 expression: expression . '+' expression
+   39           | expression . '-' expression
+   40           | expression . '*' expression
+   41           | expression . '/' expression
+   42           | expression . '%' expression
+   44           | expression . '>' expression
+   45           | expression . '<' expression
+   46           | expression . _GREAT_EQ expression
+   47           | expression . _LESS_EQ expression
+   48           | expression . _NOT_EQ expression
+   49           | expression . _EQUAL expression
+   50           | expression . _LOGIC_AND expression
+   51           | expression . _LOGIC_OR expression
+   52           | expression . ',' expression
+   62 return_statement: _RETURN expression . ';'
+
+    _GREAT_EQ   shift, and go to state 81
+    _LESS_EQ    shift, and go to state 82
+    _LOGIC_OR   shift, and go to state 83
+    _LOGIC_AND  shift, and go to state 84
+    _NOT_EQ     shift, and go to state 85
+    _EQUAL      shift, and go to state 86
+    ','         shift, and go to state 87
+    '>'         shift, and go to state 88
+    '<'         shift, and go to state 89
+    '+'         shift, and go to state 90
+    '-'         shift, and go to state 91
+    '*'         shift, and go to state 92
+    '/'         shift, and go to state 93
+    '%'         shift, and go to state 94
+    ';'         shift, and go to state 112
+
+
+State 70
+
+   54 expression: _IDENTIFIER _INCR_1 .
+
+    $default  reduce using rule 54 (expression)
+
+
+State 71
+
+   53 expression: _IDENTIFIER '=' . expression
+
+    _STRING      shift, and go to state 38
+    _CONSTANT    shift, and go to state 40
+    _IDENTIFIER  shift, and go to state 68
+    '('          shift, and go to state 42
+
+    expression  go to state 113
+
+
+State 72
+
+   61 funccall_statement: _IDENTIFIER '(' . expression ',' expression ')'
+
+    _STRING      shift, and go to state 38
+    _CONSTANT    shift, and go to state 40
+    _IDENTIFIER  shift, and go to state 68
+    '('          shift, and go to state 42
+
+    expression  go to state 114
+
+
+State 73
+
+   26 optional_call: '[' . ']'
+   27              | '[' . _IDENTIFIER ']'
+   28              | '[' . _IDENTIFIER ']' '[' _IDENTIFIER ']'
+
+    _IDENTIFIER  shift, and go to state 115
+    ']'          shift, and go to state 116
+
+
+State 74
+
+   55 expression: _IDENTIFIER optional_call . _DECR_1
+   56           | _IDENTIFIER optional_call .
+
+    _DECR_1  shift, and go to state 117
+
+    $default  reduce using rule 56 (expression)
+
+
+State 75
+
+   38 expression: expression . '+' expression
+   39           | expression . '-' expression
+   40           | expression . '*' expression
+   41           | expression . '/' expression
+   42           | expression . '%' expression
+   43           | '(' expression . ')'
+   44           | expression . '>' expression
+   45           | expression . '<' expression
+   46           | expression . _GREAT_EQ expression
+   47           | expression . _LESS_EQ expression
+   48           | expression . _NOT_EQ expression
+   49           | expression . _EQUAL expression
+   50           | expression . _LOGIC_AND expression
+   51           | expression . _LOGIC_OR expression
+   52           | expression . ',' expression
+
+    _GREAT_EQ   shift, and go to state 81
+    _LESS_EQ    shift, and go to state 82
+    _LOGIC_OR   shift, and go to state 83
+    _LOGIC_AND  shift, and go to state 84
+    _NOT_EQ     shift, and go to state 85
+    _EQUAL      shift, and go to state 86
+    ','         shift, and go to state 87
+    '>'         shift, and go to state 88
+    '<'         shift, and go to state 89
+    '+'         shift, and go to state 90
+    '-'         shift, and go to state 91
+    '*'         shift, and go to state 92
+    '/'         shift, and go to state 93
+    '%'         shift, and go to state 94
+    ')'         shift, and go to state 118
+
+
+State 76
+
+   17 declist: pointer . _IDENTIFIER optional
+   18        | pointer . _IDENTIFIER optional '=' expression
+   19        | pointer . _IDENTIFIER optional '=' funccall_statement
+
+    _IDENTIFIER  shift, and go to state 119
+
+
+State 77
+
+    5 mainfunc: main '{' body '}' .
+
+    $default  reduce using rule 5 (mainfunc)
+
+
+State 78
+
+   35 body: body declaration .
+
+    $default  reduce using rule 35 (body)
+
+
+State 79
+
+   37 body: body funccall_statement . ';'
+
+    ';'  shift, and go to state 120
+
+
+State 80
+
+   36 body: body statement .
+
+    $default  reduce using rule 36 (body)
+
+
+State 81
+
+   46 expression: expression _GREAT_EQ . expression
+
+    _STRING      shift, and go to state 38
+    _CONSTANT    shift, and go to state 40
+    _IDENTIFIER  shift, and go to state 68
+    '('          shift, and go to state 42
+
+    expression  go to state 121
+
+
+State 82
+
+   47 expression: expression _LESS_EQ . expression
+
+    _STRING      shift, and go to state 38
+    _CONSTANT    shift, and go to state 40
+    _IDENTIFIER  shift, and go to state 68
+    '('          shift, and go to state 42
+
+    expression  go to state 122
+
+
+State 83
+
+   51 expression: expression _LOGIC_OR . expression
+
+    _STRING      shift, and go to state 38
+    _CONSTANT    shift, and go to state 40
+    _IDENTIFIER  shift, and go to state 68
+    '('          shift, and go to state 42
+
+    expression  go to state 123
+
+
+State 84
+
+   50 expression: expression _LOGIC_AND . expression
+
+    _STRING      shift, and go to state 38
+    _CONSTANT    shift, and go to state 40
+    _IDENTIFIER  shift, and go to state 68
+    '('          shift, and go to state 42
+
+    expression  go to state 124
+
+
+State 85
+
+   48 expression: expression _NOT_EQ . expression
+
+    _STRING      shift, and go to state 38
+    _CONSTANT    shift, and go to state 40
+    _IDENTIFIER  shift, and go to state 68
+    '('          shift, and go to state 42
+
+    expression  go to state 125
+
+
+State 86
+
+   49 expression: expression _EQUAL . expression
+
+    _STRING      shift, and go to state 38
+    _CONSTANT    shift, and go to state 40
+    _IDENTIFIER  shift, and go to state 68
+    '('          shift, and go to state 42
+
+    expression  go to state 126
+
+
+State 87
+
+   52 expression: expression ',' . expression
+
+    _STRING      shift, and go to state 38
+    _CONSTANT    shift, and go to state 40
+    _IDENTIFIER  shift, and go to state 68
+    '('          shift, and go to state 42
+
+    expression  go to state 127
+
+
+State 88
+
+   44 expression: expression '>' . expression
+
+    _STRING      shift, and go to state 38
+    _CONSTANT    shift, and go to state 40
+    _IDENTIFIER  shift, and go to state 68
+    '('          shift, and go to state 42
+
+    expression  go to state 128
+
+
+State 89
+
+   45 expression: expression '<' . expression
+
+    _STRING      shift, and go to state 38
+    _CONSTANT    shift, and go to state 40
+    _IDENTIFIER  shift, and go to state 68
+    '('          shift, and go to state 42
+
+    expression  go to state 129
+
+
+State 90
+
+   38 expression: expression '+' . expression
+
+    _STRING      shift, and go to state 38
+    _CONSTANT    shift, and go to state 40
+    _IDENTIFIER  shift, and go to state 68
+    '('          shift, and go to state 42
+
+    expression  go to state 130
+
+
+State 91
+
+   39 expression: expression '-' . expression
+
+    _STRING      shift, and go to state 38
+    _CONSTANT    shift, and go to state 40
+    _IDENTIFIER  shift, and go to state 68
+    '('          shift, and go to state 42
+
+    expression  go to state 131
+
+
+State 92
+
+   40 expression: expression '*' . expression
+
+    _STRING      shift, and go to state 38
+    _CONSTANT    shift, and go to state 40
+    _IDENTIFIER  shift, and go to state 68
+    '('          shift, and go to state 42
+
+    expression  go to state 132
+
+
+State 93
+
+   41 expression: expression '/' . expression
+
+    _STRING      shift, and go to state 38
+    _CONSTANT    shift, and go to state 40
+    _IDENTIFIER  shift, and go to state 68
+    '('          shift, and go to state 42
+
+    expression  go to state 133
+
+
+State 94
+
+   42 expression: expression '%' . expression
+
+    _STRING      shift, and go to state 38
+    _CONSTANT    shift, and go to state 40
+    _IDENTIFIER  shift, and go to state 68
+    '('          shift, and go to state 42
+
+    expression  go to state 134
+
+
+State 95
+
+   60 expression_statement: expression ';' .
+
+    $default  reduce using rule 60 (expression_statement)
+
+
+State 96
+
+   34 body: funccall_statement ';' .
+
+    $default  reduce using rule 34 (body)
+
+
+State 97
+
+   74 statement: loop_statement '{' . body '}'
+
+    _DO          shift, and go to state 32
+    _FOR         shift, and go to state 33
+    _IF          shift, and go to state 34
+    _INT         shift, and go to state 5
+    _VOID        shift, and go to state 6
+    _PRINT       shift, and go to state 35
+    _SCAN        shift, and go to state 36
+    _WHILE       shift, and go to state 37
+    _STRING      shift, and go to state 38
+    _RETURN      shift, and go to state 39
+    _CHAR        shift, and go to state 7
+    _CONSTANT    shift, and go to state 40
+    _IDENTIFIER  shift, and go to state 41
+    '('          shift, and go to state 42
+    ';'          shift, and go to state 43
+
+    declaration           go to state 44
+    type_specifier        go to state 45
+    body                  go to state 135
+    expression            go to state 47
+    expression_statement  go to state 48
+    funccall_statement    go to state 49
+    return_statement      go to state 50
+    io_statement          go to state 51
+    statement             go to state 52
+    loop_statement        go to state 53
+    do_statement          go to state 54
+    if_statement          go to state 55
+
+
+State 98
+
+   75 statement: do_statement '{' . body '}' _WHILE '(' expression ')' ';'
+
+    _DO          shift, and go to state 32
+    _FOR         shift, and go to state 33
+    _IF          shift, and go to state 34
+    _INT         shift, and go to state 5
+    _VOID        shift, and go to state 6
+    _PRINT       shift, and go to state 35
+    _SCAN        shift, and go to state 36
+    _WHILE       shift, and go to state 37
+    _STRING      shift, and go to state 38
+    _RETURN      shift, and go to state 39
+    _CHAR        shift, and go to state 7
+    _CONSTANT    shift, and go to state 40
+    _IDENTIFIER  shift, and go to state 41
+    '('          shift, and go to state 42
+    ';'          shift, and go to state 43
+
+    declaration           go to state 44
+    type_specifier        go to state 45
+    body                  go to state 136
+    expression            go to state 47
+    expression_statement  go to state 48
+    funccall_statement    go to state 49
+    return_statement      go to state 50
+    io_statement          go to state 51
+    statement             go to state 52
+    loop_statement        go to state 53
+    do_statement          go to state 54
+    if_statement          go to state 55
+
+
+State 99
+
+   72 statement: if_statement '{' . body '}'
+   73          | if_statement '{' . body '}' else_statement '{' body '}'
+
+    _DO          shift, and go to state 32
+    _FOR         shift, and go to state 33
+    _IF          shift, and go to state 34
+    _INT         shift, and go to state 5
+    _VOID        shift, and go to state 6
+    _PRINT       shift, and go to state 35
+    _SCAN        shift, and go to state 36
+    _WHILE       shift, and go to state 37
+    _STRING      shift, and go to state 38
+    _RETURN      shift, and go to state 39
+    _CHAR        shift, and go to state 7
+    _CONSTANT    shift, and go to state 40
+    _IDENTIFIER  shift, and go to state 41
+    '('          shift, and go to state 42
+    ';'          shift, and go to state 43
+
+    declaration           go to state 44
+    type_specifier        go to state 45
+    body                  go to state 137
+    expression            go to state 47
+    expression_statement  go to state 48
+    funccall_statement    go to state 49
+    return_statement      go to state 50
+    io_statement          go to state 51
+    statement             go to state 52
+    loop_statement        go to state 53
+    do_statement          go to state 54
+    if_statement          go to state 55
+
+
+State 100
+
+    6 funcdec_: functiondec '{' body '}' .
+
+    $default  reduce using rule 6 (funcdec_)
+
+
+State 101
+
+    8 funcdec_: funcdec_ functiondec '{' body '}' .
+
+    $default  reduce using rule 8 (funcdec_)
+
+
+State 102
+
+   14 declist: declist ',' pointer _IDENTIFIER . optional '=' expression
+   15        | declist ',' pointer _IDENTIFIER . optional '=' funccall_statement
+   16        | declist ',' pointer _IDENTIFIER . optional
+
+    '['  shift, and go to state 61
+
+    $default  reduce using rule 25 (optional)
+
+    optional  go to state 138
+
+
+State 103
+
+   31 functiondec: type_specifier pointer _IDENTIFIER '(' type_specifier . _IDENTIFIER optional ',' type_specifier _IDENTIFIER optional ')'
+
+    _IDENTIFIER  shift, and go to state 139
+
+
+State 104
+
+   23 optional: '[' _CONSTANT . ']'
+   24         | '[' _CONSTANT . ']' '[' _CONSTANT ']'
+
+    ']'  shift, and go to state 140
+
+
+State 105
+
+   22 optional: '[' ']' .
+
+    $default  reduce using rule 22 (optional)
+
+
+State 106
+
+   18 declist: pointer _IDENTIFIER optional '=' . expression
+   19        | pointer _IDENTIFIER optional '=' . funccall_statement
+
+    _STRING      shift, and go to state 38
+    _CONSTANT    shift, and go to state 40
+    _IDENTIFIER  shift, and go to state 41
+    '('          shift, and go to state 42
+
+    expression          go to state 141
+    funccall_statement  go to state 142
+
+
+State 107
+
+   78 loop_statement: _FOR '(' expression_statement . expression_statement ')'
+   79               | _FOR '(' expression_statement . expression_statement expression ')'
+
+    _STRING      shift, and go to state 38
+    _CONSTANT    shift, and go to state 40
+    _IDENTIFIER  shift, and go to state 68
+    '('          shift, and go to state 42
+    ';'          shift, and go to state 43
+
+    expression            go to state 47
+    expression_statement  go to state 143
+
+
+State 108
+
+   38 expression: expression . '+' expression
+   39           | expression . '-' expression
+   40           | expression . '*' expression
+   41           | expression . '/' expression
+   42           | expression . '%' expression
+   44           | expression . '>' expression
+   45           | expression . '<' expression
+   46           | expression . _GREAT_EQ expression
+   47           | expression . _LESS_EQ expression
+   48           | expression . _NOT_EQ expression
+   49           | expression . _EQUAL expression
+   50           | expression . _LOGIC_AND expression
+   51           | expression . _LOGIC_OR expression
+   52           | expression . ',' expression
+   82 if_statement: _IF '(' expression . ')'
+
+    _GREAT_EQ   shift, and go to state 81
+    _LESS_EQ    shift, and go to state 82
+    _LOGIC_OR   shift, and go to state 83
+    _LOGIC_AND  shift, and go to state 84
+    _NOT_EQ     shift, and go to state 85
+    _EQUAL      shift, and go to state 86
+    ','         shift, and go to state 87
+    '>'         shift, and go to state 88
+    '<'         shift, and go to state 89
+    '+'         shift, and go to state 90
+    '-'         shift, and go to state 91
+    '*'         shift, and go to state 92
+    '/'         shift, and go to state 93
+    '%'         shift, and go to state 94
+    ')'         shift, and go to state 144
+
+
+State 109
+
+   63 io_statement: _PRINT '(' _STRING . ',' identifier_list ')' ';'
+
+    ','  shift, and go to state 145
+
+
+State 110
+
+   64 io_statement: _SCAN '(' _STRING . ',' identifieraddr_list ')' ';'
+
+    ','  shift, and go to state 146
+
+
+State 111
+
+   38 expression: expression . '+' expression
+   39           | expression . '-' expression
+   40           | expression . '*' expression
+   41           | expression . '/' expression
+   42           | expression . '%' expression
+   44           | expression . '>' expression
+   45           | expression . '<' expression
+   46           | expression . _GREAT_EQ expression
+   47           | expression . _LESS_EQ expression
+   48           | expression . _NOT_EQ expression
+   49           | expression . _EQUAL expression
+   50           | expression . _LOGIC_AND expression
+   51           | expression . _LOGIC_OR expression
+   52           | expression . ',' expression
+   80 loop_statement: _WHILE '(' expression . ')'
+
+    _GREAT_EQ   shift, and go to state 81
+    _LESS_EQ    shift, and go to state 82
+    _LOGIC_OR   shift, and go to state 83
+    _LOGIC_AND  shift, and go to state 84
+    _NOT_EQ     shift, and go to state 85
+    _EQUAL      shift, and go to state 86
+    ','         shift, and go to state 87
+    '>'         shift, and go to state 88
+    '<'         shift, and go to state 89
+    '+'         shift, and go to state 90
+    '-'         shift, and go to state 91
+    '*'         shift, and go to state 92
+    '/'         shift, and go to state 93
+    '%'         shift, and go to state 94
+    ')'         shift, and go to state 147
+
+
+State 112
+
+   62 return_statement: _RETURN expression ';' .
+
+    $default  reduce using rule 62 (return_statement)
+
+
+State 113
+
+   38 expression: expression . '+' expression
+   39           | expression . '-' expression
+   40           | expression . '*' expression
+   41           | expression . '/' expression
+   42           | expression . '%' expression
+   44           | expression . '>' expression
+   45           | expression . '<' expression
+   46           | expression . _GREAT_EQ expression
+   47           | expression . _LESS_EQ expression
+   48           | expression . _NOT_EQ expression
+   49           | expression . _EQUAL expression
+   50           | expression . _LOGIC_AND expression
+   51           | expression . _LOGIC_OR expression
+   52           | expression . ',' expression
+   53           | _IDENTIFIER '=' expression .
+
+    _GREAT_EQ   shift, and go to state 81
+    _LESS_EQ    shift, and go to state 82
+    _LOGIC_OR   shift, and go to state 83
+    _LOGIC_AND  shift, and go to state 84
+    _NOT_EQ     shift, and go to state 85
+    _EQUAL      shift, and go to state 86
+    '>'         shift, and go to state 88
+    '<'         shift, and go to state 89
+    '+'         shift, and go to state 90
+    '-'         shift, and go to state 91
+    '*'         shift, and go to state 92
+    '/'         shift, and go to state 93
+    '%'         shift, and go to state 94
+
+    $default  reduce using rule 53 (expression)
+
+
+State 114
+
+   38 expression: expression . '+' expression
+   39           | expression . '-' expression
+   40           | expression . '*' expression
+   41           | expression . '/' expression
+   42           | expression . '%' expression
+   44           | expression . '>' expression
+   45           | expression . '<' expression
+   46           | expression . _GREAT_EQ expression
+   47           | expression . _LESS_EQ expression
+   48           | expression . _NOT_EQ expression
+   49           | expression . _EQUAL expression
+   50           | expression . _LOGIC_AND expression
+   51           | expression . _LOGIC_OR expression
+   52           | expression . ',' expression
+   61 funccall_statement: _IDENTIFIER '(' expression . ',' expression ')'
+
+    _GREAT_EQ   shift, and go to state 81
+    _LESS_EQ    shift, and go to state 82
+    _LOGIC_OR   shift, and go to state 83
+    _LOGIC_AND  shift, and go to state 84
+    _NOT_EQ     shift, and go to state 85
+    _EQUAL      shift, and go to state 86
+    ','         shift, and go to state 148
+    '>'         shift, and go to state 88
+    '<'         shift, and go to state 89
+    '+'         shift, and go to state 90
+    '-'         shift, and go to state 91
+    '*'         shift, and go to state 92
+    '/'         shift, and go to state 93
+    '%'         shift, and go to state 94
+
+
+State 115
+
+   27 optional_call: '[' _IDENTIFIER . ']'
+   28              | '[' _IDENTIFIER . ']' '[' _IDENTIFIER ']'
+
+    ']'  shift, and go to state 149
+
+
+State 116
+
+   26 optional_call: '[' ']' .
+
+    $default  reduce using rule 26 (optional_call)
+
+
+State 117
+
+   55 expression: _IDENTIFIER optional_call _DECR_1 .
+
+    $default  reduce using rule 55 (expression)
+
+
+State 118
+
+   43 expression: '(' expression ')' .
+
+    $default  reduce using rule 43 (expression)
+
+
+State 119
+
+   17 declist: pointer _IDENTIFIER . optional
+   18        | pointer _IDENTIFIER . optional '=' expression
+   19        | pointer _IDENTIFIER . optional '=' funccall_statement
+
+    '['  shift, and go to state 61
+
+    $default  reduce using rule 25 (optional)
+
+    optional  go to state 62
+
+
+State 120
+
+   37 body: body funccall_statement ';' .
+
+    $default  reduce using rule 37 (body)
+
+
+State 121
+
+   38 expression: expression . '+' expression
+   39           | expression . '-' expression
+   40           | expression . '*' expression
+   41           | expression . '/' expression
+   42           | expression . '%' expression
+   44           | expression . '>' expression
+   45           | expression . '<' expression
+   46           | expression . _GREAT_EQ expression
+   46           | expression _GREAT_EQ expression .
+   47           | expression . _LESS_EQ expression
+   48           | expression . _NOT_EQ expression
+   49           | expression . _EQUAL expression
+   50           | expression . _LOGIC_AND expression
+   51           | expression . _LOGIC_OR expression
+   52           | expression . ',' expression
+
+    _NOT_EQ  shift, and go to state 85
+    _EQUAL   shift, and go to state 86
+    '+'      shift, and go to state 90
+    '-'      shift, and go to state 91
+    '*'      shift, and go to state 92
+    '/'      shift, and go to state 93
+    '%'      shift, and go to state 94
+
+    $default  reduce using rule 46 (expression)
+
+
+State 122
+
+   38 expression: expression . '+' expression
+   39           | expression . '-' expression
+   40           | expression . '*' expression
+   41           | expression . '/' expression
+   42           | expression . '%' expression
+   44           | expression . '>' expression
+   45           | expression . '<' expression
+   46           | expression . _GREAT_EQ expression
+   47           | expression . _LESS_EQ expression
+   47           | expression _LESS_EQ expression .
+   48           | expression . _NOT_EQ expression
+   49           | expression . _EQUAL expression
+   50           | expression . _LOGIC_AND expression
+   51           | expression . _LOGIC_OR expression
+   52           | expression . ',' expression
+
+    _NOT_EQ  shift, and go to state 85
+    _EQUAL   shift, and go to state 86
+    '+'      shift, and go to state 90
+    '-'      shift, and go to state 91
+    '*'      shift, and go to state 92
+    '/'      shift, and go to state 93
+    '%'      shift, and go to state 94
+
+    $default  reduce using rule 47 (expression)
+
+
+State 123
+
+   38 expression: expression . '+' expression
+   39           | expression . '-' expression
+   40           | expression . '*' expression
+   41           | expression . '/' expression
+   42           | expression . '%' expression
+   44           | expression . '>' expression
+   45           | expression . '<' expression
+   46           | expression . _GREAT_EQ expression
+   47           | expression . _LESS_EQ expression
+   48           | expression . _NOT_EQ expression
+   49           | expression . _EQUAL expression
+   50           | expression . _LOGIC_AND expression
+   51           | expression . _LOGIC_OR expression
+   51           | expression _LOGIC_OR expression .
+   52           | expression . ',' expression
+
+    _GREAT_EQ  shift, and go to state 81
+    _LESS_EQ   shift, and go to state 82
+    _NOT_EQ    shift, and go to state 85
+    _EQUAL     shift, and go to state 86
+    '>'        shift, and go to state 88
+    '<'        shift, and go to state 89
+    '+'        shift, and go to state 90
+    '-'        shift, and go to state 91
+    '*'        shift, and go to state 92
+    '/'        shift, and go to state 93
+    '%'        shift, and go to state 94
+
+    $default  reduce using rule 51 (expression)
+
+
+State 124
+
+   38 expression: expression . '+' expression
+   39           | expression . '-' expression
+   40           | expression . '*' expression
+   41           | expression . '/' expression
+   42           | expression . '%' expression
+   44           | expression . '>' expression
+   45           | expression . '<' expression
+   46           | expression . _GREAT_EQ expression
+   47           | expression . _LESS_EQ expression
+   48           | expression . _NOT_EQ expression
+   49           | expression . _EQUAL expression
+   50           | expression . _LOGIC_AND expression
+   50           | expression _LOGIC_AND expression .
+   51           | expression . _LOGIC_OR expression
+   52           | expression . ',' expression
+
+    _GREAT_EQ  shift, and go to state 81
+    _LESS_EQ   shift, and go to state 82
+    _NOT_EQ    shift, and go to state 85
+    _EQUAL     shift, and go to state 86
+    '>'        shift, and go to state 88
+    '<'        shift, and go to state 89
+    '+'        shift, and go to state 90
+    '-'        shift, and go to state 91
+    '*'        shift, and go to state 92
+    '/'        shift, and go to state 93
+    '%'        shift, and go to state 94
+
+    $default  reduce using rule 50 (expression)
+
+
+State 125
+
+   38 expression: expression . '+' expression
+   39           | expression . '-' expression
+   40           | expression . '*' expression
+   41           | expression . '/' expression
+   42           | expression . '%' expression
+   44           | expression . '>' expression
+   45           | expression . '<' expression
+   46           | expression . _GREAT_EQ expression
+   47           | expression . _LESS_EQ expression
+   48           | expression . _NOT_EQ expression
+   48           | expression _NOT_EQ expression .
+   49           | expression . _EQUAL expression
+   50           | expression . _LOGIC_AND expression
+   51           | expression . _LOGIC_OR expression
+   52           | expression . ',' expression
+
+    '+'  shift, and go to state 90
+    '-'  shift, and go to state 91
+    '*'  shift, and go to state 92
+    '/'  shift, and go to state 93
+    '%'  shift, and go to state 94
+
+    $default  reduce using rule 48 (expression)
+
+
+State 126
+
+   38 expression: expression . '+' expression
+   39           | expression . '-' expression
+   40           | expression . '*' expression
+   41           | expression . '/' expression
+   42           | expression . '%' expression
+   44           | expression . '>' expression
+   45           | expression . '<' expression
+   46           | expression . _GREAT_EQ expression
+   47           | expression . _LESS_EQ expression
+   48           | expression . _NOT_EQ expression
+   49           | expression . _EQUAL expression
+   49           | expression _EQUAL expression .
+   50           | expression . _LOGIC_AND expression
+   51           | expression . _LOGIC_OR expression
+   52           | expression . ',' expression
+
+    '+'  shift, and go to state 90
+    '-'  shift, and go to state 91
+    '*'  shift, and go to state 92
+    '/'  shift, and go to state 93
+    '%'  shift, and go to state 94
+
+    $default  reduce using rule 49 (expression)
+
+
+State 127
+
+   38 expression: expression . '+' expression
+   39           | expression . '-' expression
+   40           | expression . '*' expression
+   41           | expression . '/' expression
+   42           | expression . '%' expression
+   44           | expression . '>' expression
+   45           | expression . '<' expression
+   46           | expression . _GREAT_EQ expression
+   47           | expression . _LESS_EQ expression
+   48           | expression . _NOT_EQ expression
+   49           | expression . _EQUAL expression
+   50           | expression . _LOGIC_AND expression
+   51           | expression . _LOGIC_OR expression
+   52           | expression . ',' expression
+   52           | expression ',' expression .
+
+    _GREAT_EQ   shift, and go to state 81
+    _LESS_EQ    shift, and go to state 82
+    _LOGIC_OR   shift, and go to state 83
+    _LOGIC_AND  shift, and go to state 84
+    _NOT_EQ     shift, and go to state 85
+    _EQUAL      shift, and go to state 86
+    '>'         shift, and go to state 88
+    '<'         shift, and go to state 89
+    '+'         shift, and go to state 90
+    '-'         shift, and go to state 91
+    '*'         shift, and go to state 92
+    '/'         shift, and go to state 93
+    '%'         shift, and go to state 94
+
+    $default  reduce using rule 52 (expression)
+
+
+State 128
+
+   38 expression: expression . '+' expression
+   39           | expression . '-' expression
+   40           | expression . '*' expression
+   41           | expression . '/' expression
+   42           | expression . '%' expression
+   44           | expression . '>' expression
+   44           | expression '>' expression .
+   45           | expression . '<' expression
+   46           | expression . _GREAT_EQ expression
+   47           | expression . _LESS_EQ expression
+   48           | expression . _NOT_EQ expression
+   49           | expression . _EQUAL expression
+   50           | expression . _LOGIC_AND expression
+   51           | expression . _LOGIC_OR expression
+   52           | expression . ',' expression
+
+    _NOT_EQ  shift, and go to state 85
+    _EQUAL   shift, and go to state 86
+    '+'      shift, and go to state 90
+    '-'      shift, and go to state 91
+    '*'      shift, and go to state 92
+    '/'      shift, and go to state 93
+    '%'      shift, and go to state 94
+
+    $default  reduce using rule 44 (expression)
+
+
+State 129
+
+   38 expression: expression . '+' expression
+   39           | expression . '-' expression
+   40           | expression . '*' expression
+   41           | expression . '/' expression
+   42           | expression . '%' expression
+   44           | expression . '>' expression
+   45           | expression . '<' expression
+   45           | expression '<' expression .
+   46           | expression . _GREAT_EQ expression
+   47           | expression . _LESS_EQ expression
+   48           | expression . _NOT_EQ expression
+   49           | expression . _EQUAL expression
+   50           | expression . _LOGIC_AND expression
+   51           | expression . _LOGIC_OR expression
+   52           | expression . ',' expression
+
+    _NOT_EQ  shift, and go to state 85
+    _EQUAL   shift, and go to state 86
+    '+'      shift, and go to state 90
+    '-'      shift, and go to state 91
+    '*'      shift, and go to state 92
+    '/'      shift, and go to state 93
+    '%'      shift, and go to state 94
+
+    $default  reduce using rule 45 (expression)
+
+
+State 130
+
+   38 expression: expression . '+' expression
+   38           | expression '+' expression .
+   39           | expression . '-' expression
+   40           | expression . '*' expression
+   41           | expression . '/' expression
+   42           | expression . '%' expression
+   44           | expression . '>' expression
+   45           | expression . '<' expression
+   46           | expression . _GREAT_EQ expression
+   47           | expression . _LESS_EQ expression
+   48           | expression . _NOT_EQ expression
+   49           | expression . _EQUAL expression
+   50           | expression . _LOGIC_AND expression
+   51           | expression . _LOGIC_OR expression
+   52           | expression . ',' expression
+
+    '*'  shift, and go to state 92
+    '/'  shift, and go to state 93
+    '%'  shift, and go to state 94
+
+    $default  reduce using rule 38 (expression)
+
+
+State 131
+
+   38 expression: expression . '+' expression
+   39           | expression . '-' expression
+   39           | expression '-' expression .
+   40           | expression . '*' expression
+   41           | expression . '/' expression
+   42           | expression . '%' expression
+   44           | expression . '>' expression
+   45           | expression . '<' expression
+   46           | expression . _GREAT_EQ expression
+   47           | expression . _LESS_EQ expression
+   48           | expression . _NOT_EQ expression
+   49           | expression . _EQUAL expression
+   50           | expression . _LOGIC_AND expression
+   51           | expression . _LOGIC_OR expression
+   52           | expression . ',' expression
+
+    '*'  shift, and go to state 92
+    '/'  shift, and go to state 93
+    '%'  shift, and go to state 94
+
+    $default  reduce using rule 39 (expression)
+
+
+State 132
+
+   38 expression: expression . '+' expression
+   39           | expression . '-' expression
+   40           | expression . '*' expression
+   40           | expression '*' expression .
+   41           | expression . '/' expression
+   42           | expression . '%' expression
+   44           | expression . '>' expression
+   45           | expression . '<' expression
+   46           | expression . _GREAT_EQ expression
+   47           | expression . _LESS_EQ expression
+   48           | expression . _NOT_EQ expression
+   49           | expression . _EQUAL expression
+   50           | expression . _LOGIC_AND expression
+   51           | expression . _LOGIC_OR expression
+   52           | expression . ',' expression
+
+    $default  reduce using rule 40 (expression)
+
+
+State 133
+
+   38 expression: expression . '+' expression
+   39           | expression . '-' expression
+   40           | expression . '*' expression
+   41           | expression . '/' expression
+   41           | expression '/' expression .
+   42           | expression . '%' expression
+   44           | expression . '>' expression
+   45           | expression . '<' expression
+   46           | expression . _GREAT_EQ expression
+   47           | expression . _LESS_EQ expression
+   48           | expression . _NOT_EQ expression
+   49           | expression . _EQUAL expression
+   50           | expression . _LOGIC_AND expression
+   51           | expression . _LOGIC_OR expression
+   52           | expression . ',' expression
+
+    $default  reduce using rule 41 (expression)
+
+
+State 134
+
+   38 expression: expression . '+' expression
+   39           | expression . '-' expression
+   40           | expression . '*' expression
+   41           | expression . '/' expression
+   42           | expression . '%' expression
+   42           | expression '%' expression .
+   44           | expression . '>' expression
+   45           | expression . '<' expression
+   46           | expression . _GREAT_EQ expression
+   47           | expression . _LESS_EQ expression
+   48           | expression . _NOT_EQ expression
+   49           | expression . _EQUAL expression
+   50           | expression . _LOGIC_AND expression
+   51           | expression . _LOGIC_OR expression
+   52           | expression . ',' expression
+
+    $default  reduce using rule 42 (expression)
+
+
+State 135
+
+   35 body: body . declaration
+   36     | body . statement
+   37     | body . funccall_statement ';'
+   74 statement: loop_statement '{' body . '}'
+
+    _DO          shift, and go to state 32
+    _FOR         shift, and go to state 33
+    _IF          shift, and go to state 34
+    _INT         shift, and go to state 5
+    _VOID        shift, and go to state 6
+    _PRINT       shift, and go to state 35
+    _SCAN        shift, and go to state 36
+    _WHILE       shift, and go to state 37
+    _STRING      shift, and go to state 38
+    _RETURN      shift, and go to state 39
+    _CHAR        shift, and go to state 7
+    _CONSTANT    shift, and go to state 40
+    _IDENTIFIER  shift, and go to state 41
+    '('          shift, and go to state 42
+    '}'          shift, and go to state 150
+    ';'          shift, and go to state 43
+
+    declaration           go to state 78
+    type_specifier        go to state 45
+    expression            go to state 47
+    expression_statement  go to state 48
+    funccall_statement    go to state 79
+    return_statement      go to state 50
+    io_statement          go to state 51
+    statement             go to state 80
+    loop_statement        go to state 53
+    do_statement          go to state 54
+    if_statement          go to state 55
+
+
+State 136
+
+   35 body: body . declaration
+   36     | body . statement
+   37     | body . funccall_statement ';'
+   75 statement: do_statement '{' body . '}' _WHILE '(' expression ')' ';'
+
+    _DO          shift, and go to state 32
+    _FOR         shift, and go to state 33
+    _IF          shift, and go to state 34
+    _INT         shift, and go to state 5
+    _VOID        shift, and go to state 6
+    _PRINT       shift, and go to state 35
+    _SCAN        shift, and go to state 36
+    _WHILE       shift, and go to state 37
+    _STRING      shift, and go to state 38
+    _RETURN      shift, and go to state 39
+    _CHAR        shift, and go to state 7
+    _CONSTANT    shift, and go to state 40
+    _IDENTIFIER  shift, and go to state 41
+    '('          shift, and go to state 42
+    '}'          shift, and go to state 151
+    ';'          shift, and go to state 43
+
+    declaration           go to state 78
+    type_specifier        go to state 45
+    expression            go to state 47
+    expression_statement  go to state 48
+    funccall_statement    go to state 79
+    return_statement      go to state 50
+    io_statement          go to state 51
+    statement             go to state 80
+    loop_statement        go to state 53
+    do_statement          go to state 54
+    if_statement          go to state 55
+
+
+State 137
+
+   35 body: body . declaration
+   36     | body . statement
+   37     | body . funccall_statement ';'
+   72 statement: if_statement '{' body . '}'
+   73          | if_statement '{' body . '}' else_statement '{' body '}'
+
+    _DO          shift, and go to state 32
+    _FOR         shift, and go to state 33
+    _IF          shift, and go to state 34
+    _INT         shift, and go to state 5
+    _VOID        shift, and go to state 6
+    _PRINT       shift, and go to state 35
+    _SCAN        shift, and go to state 36
+    _WHILE       shift, and go to state 37
+    _STRING      shift, and go to state 38
+    _RETURN      shift, and go to state 39
+    _CHAR        shift, and go to state 7
+    _CONSTANT    shift, and go to state 40
+    _IDENTIFIER  shift, and go to state 41
+    '('          shift, and go to state 42
+    '}'          shift, and go to state 152
+    ';'          shift, and go to state 43
+
+    declaration           go to state 78
+    type_specifier        go to state 45
+    expression            go to state 47
+    expression_statement  go to state 48
+    funccall_statement    go to state 79
+    return_statement      go to state 50
+    io_statement          go to state 51
+    statement             go to state 80
+    loop_statement        go to state 53
+    do_statement          go to state 54
+    if_statement          go to state 55
+
+
+State 138
+
+   14 declist: declist ',' pointer _IDENTIFIER optional . '=' expression
+   15        | declist ',' pointer _IDENTIFIER optional . '=' funccall_statement
+   16        | declist ',' pointer _IDENTIFIER optional .
+
+    '='  shift, and go to state 153
+
+    $default  reduce using rule 16 (declist)
+
+
+State 139
+
+   31 functiondec: type_specifier pointer _IDENTIFIER '(' type_specifier _IDENTIFIER . optional ',' type_specifier _IDENTIFIER optional ')'
+
+    '['  shift, and go to state 61
+
+    $default  reduce using rule 25 (optional)
+
+    optional  go to state 154
+
+
+State 140
+
+   23 optional: '[' _CONSTANT ']' .
+   24         | '[' _CONSTANT ']' . '[' _CONSTANT ']'
+
+    '['  shift, and go to state 155
+
+    $default  reduce using rule 23 (optional)
+
+
+State 141
+
+   18 declist: pointer _IDENTIFIER optional '=' expression .
+   38 expression: expression . '+' expression
+   39           | expression . '-' expression
+   40           | expression . '*' expression
+   41           | expression . '/' expression
+   42           | expression . '%' expression
+   44           | expression . '>' expression
+   45           | expression . '<' expression
+   46           | expression . _GREAT_EQ expression
+   47           | expression . _LESS_EQ expression
+   48           | expression . _NOT_EQ expression
+   49           | expression . _EQUAL expression
+   50           | expression . _LOGIC_AND expression
+   51           | expression . _LOGIC_OR expression
+   52           | expression . ',' expression
+
+    _GREAT_EQ   shift, and go to state 81
+    _LESS_EQ    shift, and go to state 82
+    _LOGIC_OR   shift, and go to state 83
+    _LOGIC_AND  shift, and go to state 84
+    _NOT_EQ     shift, and go to state 85
+    _EQUAL      shift, and go to state 86
+    '>'         shift, and go to state 88
+    '<'         shift, and go to state 89
+    '+'         shift, and go to state 90
+    '-'         shift, and go to state 91
+    '*'         shift, and go to state 92
+    '/'         shift, and go to state 93
+    '%'         shift, and go to state 94
+
+    $default  reduce using rule 18 (declist)
+
+
+State 142
+
+   19 declist: pointer _IDENTIFIER optional '=' funccall_statement .
+
+    $default  reduce using rule 19 (declist)
+
+
+State 143
+
+   78 loop_statement: _FOR '(' expression_statement expression_statement . ')'
+   79               | _FOR '(' expression_statement expression_statement . expression ')'
+
+    _STRING      shift, and go to state 38
+    _CONSTANT    shift, and go to state 40
+    _IDENTIFIER  shift, and go to state 68
+    '('          shift, and go to state 42
+    ')'          shift, and go to state 156
+
+    expression  go to state 157
+
+
+State 144
+
+   82 if_statement: _IF '(' expression ')' .
+
+    $default  reduce using rule 82 (if_statement)
+
+
+State 145
+
+   63 io_statement: _PRINT '(' _STRING ',' . identifier_list ')' ';'
+
+    _IDENTIFIER  shift, and go to state 158
+
+    identifier_list  go to state 159
+
+
+State 146
+
+   64 io_statement: _SCAN '(' _STRING ',' . identifieraddr_list ')' ';'
+
+    _IDENTIFIER  shift, and go to state 160
+    '&'          shift, and go to state 161
+
+    identifieraddr_list  go to state 162
+
+
+State 147
+
+   80 loop_statement: _WHILE '(' expression ')' .
+
+    $default  reduce using rule 80 (loop_statement)
+
+
+State 148
+
+   52 expression: expression ',' . expression
+   61 funccall_statement: _IDENTIFIER '(' expression ',' . expression ')'
+
+    _STRING      shift, and go to state 38
+    _CONSTANT    shift, and go to state 40
+    _IDENTIFIER  shift, and go to state 68
+    '('          shift, and go to state 42
+
+    expression  go to state 163
+
+
+State 149
+
+   27 optional_call: '[' _IDENTIFIER ']' .
+   28              | '[' _IDENTIFIER ']' . '[' _IDENTIFIER ']'
+
+    '['  shift, and go to state 164
+
+    $default  reduce using rule 27 (optional_call)
+
+
+State 150
+
+   74 statement: loop_statement '{' body '}' .
+
+    $default  reduce using rule 74 (statement)
+
+
+State 151
+
+   75 statement: do_statement '{' body '}' . _WHILE '(' expression ')' ';'
+
+    _WHILE  shift, and go to state 165
+
+
+State 152
+
+   72 statement: if_statement '{' body '}' .
+   73          | if_statement '{' body '}' . else_statement '{' body '}'
+
+    _ELSE  shift, and go to state 166
+
+    $default  reduce using rule 72 (statement)
+
+    else_statement  go to state 167
+
+
+State 153
+
+   14 declist: declist ',' pointer _IDENTIFIER optional '=' . expression
+   15        | declist ',' pointer _IDENTIFIER optional '=' . funccall_statement
+
+    _STRING      shift, and go to state 38
+    _CONSTANT    shift, and go to state 40
+    _IDENTIFIER  shift, and go to state 41
+    '('          shift, and go to state 42
+
+    expression          go to state 168
+    funccall_statement  go to state 169
+
+
+State 154
+
+   31 functiondec: type_specifier pointer _IDENTIFIER '(' type_specifier _IDENTIFIER optional . ',' type_specifier _IDENTIFIER optional ')'
+
+    ','  shift, and go to state 170
+
+
+State 155
+
+   24 optional: '[' _CONSTANT ']' '[' . _CONSTANT ']'
+
+    _CONSTANT  shift, and go to state 171
+
+
+State 156
+
+   78 loop_statement: _FOR '(' expression_statement expression_statement ')' .
+
+    $default  reduce using rule 78 (loop_statement)
+
+
+State 157
+
+   38 expression: expression . '+' expression
+   39           | expression . '-' expression
+   40           | expression . '*' expression
+   41           | expression . '/' expression
+   42           | expression . '%' expression
+   44           | expression . '>' expression
+   45           | expression . '<' expression
+   46           | expression . _GREAT_EQ expression
+   47           | expression . _LESS_EQ expression
+   48           | expression . _NOT_EQ expression
+   49           | expression . _EQUAL expression
+   50           | expression . _LOGIC_AND expression
+   51           | expression . _LOGIC_OR expression
+   52           | expression . ',' expression
+   79 loop_statement: _FOR '(' expression_statement expression_statement expression . ')'
+
+    _GREAT_EQ   shift, and go to state 81
+    _LESS_EQ    shift, and go to state 82
+    _LOGIC_OR   shift, and go to state 83
+    _LOGIC_AND  shift, and go to state 84
+    _NOT_EQ     shift, and go to state 85
+    _EQUAL      shift, and go to state 86
+    ','         shift, and go to state 87
+    '>'         shift, and go to state 88
+    '<'         shift, and go to state 89
+    '+'         shift, and go to state 90
+    '-'         shift, and go to state 91
+    '*'         shift, and go to state 92
+    '/'         shift, and go to state 93
+    '%'         shift, and go to state 94
+    ')'         shift, and go to state 172
+
+
+State 158
+
+   66 identifier_list: _IDENTIFIER . optional_call
+
+    '['  shift, and go to state 73
+
+    $default  reduce using rule 29 (optional_call)
+
+    optional_call  go to state 173
+
+
+State 159
+
+   63 io_statement: _PRINT '(' _STRING ',' identifier_list . ')' ';'
+   65 identifier_list: identifier_list . ',' _IDENTIFIER optional_call
+
+    ','  shift, and go to state 174
+    ')'  shift, and go to state 175
+
+
+State 160
+
+   70 identifieraddr_list: _IDENTIFIER . optional_call
+
+    '['  shift, and go to state 73
+
+    $default  reduce using rule 29 (optional_call)
+
+    optional_call  go to state 176
+
+
+State 161
+
+   68 identifieraddr_list: '&' . _IDENTIFIER optional_call
+
+    _IDENTIFIER  shift, and go to state 177
+
+
+State 162
+
+   64 io_statement: _SCAN '(' _STRING ',' identifieraddr_list . ')' ';'
+   67 identifieraddr_list: identifieraddr_list . ',' '&' _IDENTIFIER optional_call
+   69                    | identifieraddr_list . ',' _IDENTIFIER optional_call
+
+    ','  shift, and go to state 178
+    ')'  shift, and go to state 179
+
+
+State 163
+
+   38 expression: expression . '+' expression
+   39           | expression . '-' expression
+   40           | expression . '*' expression
+   41           | expression . '/' expression
+   42           | expression . '%' expression
+   44           | expression . '>' expression
+   45           | expression . '<' expression
+   46           | expression . _GREAT_EQ expression
+   47           | expression . _LESS_EQ expression
+   48           | expression . _NOT_EQ expression
+   49           | expression . _EQUAL expression
+   50           | expression . _LOGIC_AND expression
+   51           | expression . _LOGIC_OR expression
+   52           | expression . ',' expression
+   52           | expression ',' expression .
+   61 funccall_statement: _IDENTIFIER '(' expression ',' expression . ')'
+
+    _GREAT_EQ   shift, and go to state 81
+    _LESS_EQ    shift, and go to state 82
+    _LOGIC_OR   shift, and go to state 83
+    _LOGIC_AND  shift, and go to state 84
+    _NOT_EQ     shift, and go to state 85
+    _EQUAL      shift, and go to state 86
+    '>'         shift, and go to state 88
+    '<'         shift, and go to state 89
+    '+'         shift, and go to state 90
+    '-'         shift, and go to state 91
+    '*'         shift, and go to state 92
+    '/'         shift, and go to state 93
+    '%'         shift, and go to state 94
+    ')'         shift, and go to state 180
+
+    $default  reduce using rule 52 (expression)
+
+
+State 164
+
+   28 optional_call: '[' _IDENTIFIER ']' '[' . _IDENTIFIER ']'
+
+    _IDENTIFIER  shift, and go to state 181
+
+
+State 165
+
+   75 statement: do_statement '{' body '}' _WHILE . '(' expression ')' ';'
+
+    '('  shift, and go to state 182
+
+
+State 166
+
+   83 else_statement: _ELSE .
+
+    $default  reduce using rule 83 (else_statement)
+
+
+State 167
+
+   73 statement: if_statement '{' body '}' else_statement . '{' body '}'
+
+    '{'  shift, and go to state 183
+
+
+State 168
+
+   14 declist: declist ',' pointer _IDENTIFIER optional '=' expression .
+   38 expression: expression . '+' expression
+   39           | expression . '-' expression
+   40           | expression . '*' expression
+   41           | expression . '/' expression
+   42           | expression . '%' expression
+   44           | expression . '>' expression
+   45           | expression . '<' expression
+   46           | expression . _GREAT_EQ expression
+   47           | expression . _LESS_EQ expression
+   48           | expression . _NOT_EQ expression
+   49           | expression . _EQUAL expression
+   50           | expression . _LOGIC_AND expression
+   51           | expression . _LOGIC_OR expression
+   52           | expression . ',' expression
+
+    _GREAT_EQ   shift, and go to state 81
+    _LESS_EQ    shift, and go to state 82
+    _LOGIC_OR   shift, and go to state 83
+    _LOGIC_AND  shift, and go to state 84
+    _NOT_EQ     shift, and go to state 85
+    _EQUAL      shift, and go to state 86
+    '>'         shift, and go to state 88
+    '<'         shift, and go to state 89
+    '+'         shift, and go to state 90
+    '-'         shift, and go to state 91
+    '*'         shift, and go to state 92
+    '/'         shift, and go to state 93
+    '%'         shift, and go to state 94
+
+    $default  reduce using rule 14 (declist)
+
+
+State 169
+
+   15 declist: declist ',' pointer _IDENTIFIER optional '=' funccall_statement .
+
+    $default  reduce using rule 15 (declist)
+
+
+State 170
+
+   31 functiondec: type_specifier pointer _IDENTIFIER '(' type_specifier _IDENTIFIER optional ',' . type_specifier _IDENTIFIER optional ')'
+
+    _INT   shift, and go to state 5
+    _VOID  shift, and go to state 6
+    _CHAR  shift, and go to state 7
+
+    type_specifier  go to state 184
+
+
+State 171
+
+   24 optional: '[' _CONSTANT ']' '[' _CONSTANT . ']'
+
+    ']'  shift, and go to state 185
+
+
+State 172
+
+   79 loop_statement: _FOR '(' expression_statement expression_statement expression ')' .
+
+    $default  reduce using rule 79 (loop_statement)
+
+
+State 173
+
+   66 identifier_list: _IDENTIFIER optional_call .
+
+    $default  reduce using rule 66 (identifier_list)
+
+
+State 174
+
+   65 identifier_list: identifier_list ',' . _IDENTIFIER optional_call
+
+    _IDENTIFIER  shift, and go to state 186
+
+
+State 175
+
+   63 io_statement: _PRINT '(' _STRING ',' identifier_list ')' . ';'
+
+    ';'  shift, and go to state 187
+
+
+State 176
+
+   70 identifieraddr_list: _IDENTIFIER optional_call .
+
+    $default  reduce using rule 70 (identifieraddr_list)
+
+
+State 177
+
+   68 identifieraddr_list: '&' _IDENTIFIER . optional_call
+
+    '['  shift, and go to state 73
+
+    $default  reduce using rule 29 (optional_call)
+
+    optional_call  go to state 188
+
+
+State 178
+
+   67 identifieraddr_list: identifieraddr_list ',' . '&' _IDENTIFIER optional_call
+   69                    | identifieraddr_list ',' . _IDENTIFIER optional_call
+
+    _IDENTIFIER  shift, and go to state 189
+    '&'          shift, and go to state 190
+
+
+State 179
+
+   64 io_statement: _SCAN '(' _STRING ',' identifieraddr_list ')' . ';'
+
+    ';'  shift, and go to state 191
+
+
+State 180
+
+   61 funccall_statement: _IDENTIFIER '(' expression ',' expression ')' .
+
+    $default  reduce using rule 61 (funccall_statement)
+
+
+State 181
+
+   28 optional_call: '[' _IDENTIFIER ']' '[' _IDENTIFIER . ']'
+
+    ']'  shift, and go to state 192
+
+
+State 182
+
+   75 statement: do_statement '{' body '}' _WHILE '(' . expression ')' ';'
+
+    _STRING      shift, and go to state 38
+    _CONSTANT    shift, and go to state 40
+    _IDENTIFIER  shift, and go to state 68
+    '('          shift, and go to state 42
+
+    expression  go to state 193
+
+
+State 183
+
+   73 statement: if_statement '{' body '}' else_statement '{' . body '}'
+
+    _DO          shift, and go to state 32
+    _FOR         shift, and go to state 33
+    _IF          shift, and go to state 34
+    _INT         shift, and go to state 5
+    _VOID        shift, and go to state 6
+    _PRINT       shift, and go to state 35
+    _SCAN        shift, and go to state 36
+    _WHILE       shift, and go to state 37
+    _STRING      shift, and go to state 38
+    _RETURN      shift, and go to state 39
+    _CHAR        shift, and go to state 7
+    _CONSTANT    shift, and go to state 40
+    _IDENTIFIER  shift, and go to state 41
+    '('          shift, and go to state 42
+    ';'          shift, and go to state 43
+
+    declaration           go to state 44
+    type_specifier        go to state 45
+    body                  go to state 194
+    expression            go to state 47
+    expression_statement  go to state 48
+    funccall_statement    go to state 49
+    return_statement      go to state 50
+    io_statement          go to state 51
+    statement             go to state 52
+    loop_statement        go to state 53
+    do_statement          go to state 54
+    if_statement          go to state 55
+
+
+State 184
+
+   31 functiondec: type_specifier pointer _IDENTIFIER '(' type_specifier _IDENTIFIER optional ',' type_specifier . _IDENTIFIER optional ')'
+
+    _IDENTIFIER  shift, and go to state 195
+
+
+State 185
+
+   24 optional: '[' _CONSTANT ']' '[' _CONSTANT ']' .
+
+    $default  reduce using rule 24 (optional)
+
+
+State 186
+
+   65 identifier_list: identifier_list ',' _IDENTIFIER . optional_call
+
+    '['  shift, and go to state 73
+
+    $default  reduce using rule 29 (optional_call)
+
+    optional_call  go to state 196
+
+
+State 187
+
+   63 io_statement: _PRINT '(' _STRING ',' identifier_list ')' ';' .
+
+    $default  reduce using rule 63 (io_statement)
+
+
+State 188
+
+   68 identifieraddr_list: '&' _IDENTIFIER optional_call .
+
+    $default  reduce using rule 68 (identifieraddr_list)
+
+
+State 189
+
+   69 identifieraddr_list: identifieraddr_list ',' _IDENTIFIER . optional_call
+
+    '['  shift, and go to state 73
+
+    $default  reduce using rule 29 (optional_call)
+
+    optional_call  go to state 197
+
+
+State 190
+
+   67 identifieraddr_list: identifieraddr_list ',' '&' . _IDENTIFIER optional_call
+
+    _IDENTIFIER  shift, and go to state 198
+
+
+State 191
+
+   64 io_statement: _SCAN '(' _STRING ',' identifieraddr_list ')' ';' .
+
+    $default  reduce using rule 64 (io_statement)
+
+
+State 192
+
+   28 optional_call: '[' _IDENTIFIER ']' '[' _IDENTIFIER ']' .
+
+    $default  reduce using rule 28 (optional_call)
+
+
+State 193
+
+   38 expression: expression . '+' expression
+   39           | expression . '-' expression
+   40           | expression . '*' expression
+   41           | expression . '/' expression
+   42           | expression . '%' expression
+   44           | expression . '>' expression
+   45           | expression . '<' expression
+   46           | expression . _GREAT_EQ expression
+   47           | expression . _LESS_EQ expression
+   48           | expression . _NOT_EQ expression
+   49           | expression . _EQUAL expression
+   50           | expression . _LOGIC_AND expression
+   51           | expression . _LOGIC_OR expression
+   52           | expression . ',' expression
+   75 statement: do_statement '{' body '}' _WHILE '(' expression . ')' ';'
+
+    _GREAT_EQ   shift, and go to state 81
+    _LESS_EQ    shift, and go to state 82
+    _LOGIC_OR   shift, and go to state 83
+    _LOGIC_AND  shift, and go to state 84
+    _NOT_EQ     shift, and go to state 85
+    _EQUAL      shift, and go to state 86
+    ','         shift, and go to state 87
+    '>'         shift, and go to state 88
+    '<'         shift, and go to state 89
+    '+'         shift, and go to state 90
+    '-'         shift, and go to state 91
+    '*'         shift, and go to state 92
+    '/'         shift, and go to state 93
+    '%'         shift, and go to state 94
+    ')'         shift, and go to state 199
+
+
+State 194
+
+   35 body: body . declaration
+   36     | body . statement
+   37     | body . funccall_statement ';'
+   73 statement: if_statement '{' body '}' else_statement '{' body . '}'
+
+    _DO          shift, and go to state 32
+    _FOR         shift, and go to state 33
+    _IF          shift, and go to state 34
+    _INT         shift, and go to state 5
+    _VOID        shift, and go to state 6
+    _PRINT       shift, and go to state 35
+    _SCAN        shift, and go to state 36
+    _WHILE       shift, and go to state 37
+    _STRING      shift, and go to state 38
+    _RETURN      shift, and go to state 39
+    _CHAR        shift, and go to state 7
+    _CONSTANT    shift, and go to state 40
+    _IDENTIFIER  shift, and go to state 41
+    '('          shift, and go to state 42
+    '}'          shift, and go to state 200
+    ';'          shift, and go to state 43
+
+    declaration           go to state 78
+    type_specifier        go to state 45
+    expression            go to state 47
+    expression_statement  go to state 48
+    funccall_statement    go to state 79
+    return_statement      go to state 50
+    io_statement          go to state 51
+    statement             go to state 80
+    loop_statement        go to state 53
+    do_statement          go to state 54
+    if_statement          go to state 55
+
+
+State 195
+
+   31 functiondec: type_specifier pointer _IDENTIFIER '(' type_specifier _IDENTIFIER optional ',' type_specifier _IDENTIFIER . optional ')'
+
+    '['  shift, and go to state 61
+
+    $default  reduce using rule 25 (optional)
+
+    optional  go to state 201
+
+
+State 196
+
+   65 identifier_list: identifier_list ',' _IDENTIFIER optional_call .
+
+    $default  reduce using rule 65 (identifier_list)
+
+
+State 197
+
+   69 identifieraddr_list: identifieraddr_list ',' _IDENTIFIER optional_call .
+
+    $default  reduce using rule 69 (identifieraddr_list)
+
+
+State 198
+
+   67 identifieraddr_list: identifieraddr_list ',' '&' _IDENTIFIER . optional_call
+
+    '['  shift, and go to state 73
+
+    $default  reduce using rule 29 (optional_call)
+
+    optional_call  go to state 202
+
+
+State 199
+
+   75 statement: do_statement '{' body '}' _WHILE '(' expression ')' . ';'
+
+    ';'  shift, and go to state 203
+
+
+State 200
+
+   73 statement: if_statement '{' body '}' else_statement '{' body '}' .
+
+    $default  reduce using rule 73 (statement)
+
+
+State 201
+
+   31 functiondec: type_specifier pointer _IDENTIFIER '(' type_specifier _IDENTIFIER optional ',' type_specifier _IDENTIFIER optional . ')'
+
+    ')'  shift, and go to state 204
+
+
+State 202
+
+   67 identifieraddr_list: identifieraddr_list ',' '&' _IDENTIFIER optional_call .
+
+    $default  reduce using rule 67 (identifieraddr_list)
+
+
+State 203
+
+   75 statement: do_statement '{' body '}' _WHILE '(' expression ')' ';' .
+
+    $default  reduce using rule 75 (statement)
+
+
+State 204
+
+   31 functiondec: type_specifier pointer _IDENTIFIER '(' type_specifier _IDENTIFIER optional ',' type_specifier _IDENTIFIER optional ')' .
+
+    $default  reduce using rule 31 (functiondec)
